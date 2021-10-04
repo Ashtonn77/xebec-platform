@@ -343,9 +343,9 @@
 
 @code{
 
-    private string dropClass = "";
-    private bool fileTypeError = false;
-    private List<IFileListEntry> selectedFiles = new List<IFileListEntry>();
+    private string dropClass = ""; //Not being called
+    private bool fileTypeError = false; //Not being called
+    private List<IFileListEntry> selectedFiles = new List<IFileListEntry>(); //Stores a list of files from the user
 
     /*private void HandleDragEnter()
     {
@@ -359,8 +359,8 @@
 
     private async Task OnInputFileChange(IFileListEntry[] files)
     {
-        dropClass = "";
-        fileTypeError = false;
+        dropClass = ""; //Can be removed
+        fileTypeError = false; //Can be removed
         List<string> acceptedFileTypes = new List<string>() { "image/png", "image/jpeg", "image/gif", "application/pdf", "application/msword" };
         if (files != null)
         {
@@ -388,7 +388,7 @@
     {
         selectedFiles.Remove(file);
     }
-
+    //Model used by the form
     public AdditionalInformation AdditionalInformation { get; set; } = new AdditionalInformation();
 }
 

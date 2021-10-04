@@ -1,3 +1,7 @@
+@*
+    *All page directives for the components in the Shared folder can be removed we will not be navigating to those pages directly
+    *All components in the Shared folder are reusable.
+*@
 @page "/education-form"
 @using Microsoft.AspNetCore.Components.Forms;
 @inject IJSRuntime JS
@@ -301,5 +305,7 @@
         Education.StartDate = DateTime.Now;
         Education.EndDate = DateTime.Now;
     }
+    //This is a model used in the form
+    //Add changes to the fields are automatically updated.
     public Education Education { get; set; } = new Education();
 }

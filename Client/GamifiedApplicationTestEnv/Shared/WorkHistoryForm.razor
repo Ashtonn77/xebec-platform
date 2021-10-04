@@ -1,3 +1,7 @@
+@*
+    *All page directives for the components in the Shared folder can be removed we will not be navigating to those pages directly
+    *All components in the Shared folder are reusable.
+*@
 @page "/workhistoryform"
 @using Microsoft.Extensions.Logging
 @using Microsoft.AspNetCore.Components.Forms;
@@ -307,13 +311,15 @@
 
 </form>
 @code{
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        WorkHistory.StartDate = DateTime.Now;
+        WorkHistory.StartDate = DateTime.Now; 
         WorkHistory.EndDate = DateTime.Now;
     }
-
+    //This is a model used in the form
+    //Add changes to the fields are automatically updated.
     public WorkHistory WorkHistory { get; set; } = new WorkHistory();
 
 }

@@ -311,13 +311,15 @@
     private async Task OnAfterRenderAsync()
 
     {
-        await JS.InvokeVoidAsync("addDiv");
+        await JS.InvokeVoidAsync("addDiv"); // Can be removed. We are using c# now (not javascript).
     }
-
+    //This stores a list of components (WorkHistoryForms) to render
     List<RenderFragment> forms = new List<RenderFragment>();
 
-    private const string WorkHistoryFormstr = "<WorkHistoryForm />";
-    public WorkHistoryForm WorkHistoryForm = null;
+    private const string WorkHistoryFormstr = "<WorkHistoryForm />"; //Not being used
+
+    //This represents the component being rendered (or added by the addNewDiv method).
+    public WorkHistoryForm WorkHistoryForm = null; 
     private void addNewDiv()
     {
 
@@ -331,6 +333,9 @@
             })
         );
     }
+
+    //Removes a razor component
+
     private void removeDiv(int index)
     {
 

@@ -274,7 +274,7 @@
             <div class="add-button-div">
                 <button class="add-button" @onclick="addNewDiv">Add</button>
             </div><br />
-
+            @* Displays all form components saved in the the forms list *@
             @for (int i = 0; i < forms.Count; ++i)
             {
                 @forms[i];
@@ -291,7 +291,7 @@
                         <h2 class="nav-item">Previous</h2>
                     </div>
                 </NavLink>
-                
+
                 <NavLink class="buttondivs" href="/work-history">
                     <div class="btn-next">
                         <h2 class="nav-item">Next</h2>
@@ -303,7 +303,11 @@
     </div>
 
 </div>
-@code{
+    @code{
+    /*
+    * The logic here is the same as the one in WorkHistoryPage.
+    * Removing and add components works the same way
+    */
     private async Task OnAfterRenderAsync()
 
     {
@@ -312,7 +316,7 @@
 
     List<RenderFragment> forms = new List<RenderFragment>();
 
-    private const string EducationFormstr = "<EducationForm />";
+    private const string EducationFormstr = "<EducationForm />"; //
     public EducationForm EducationForm = null;
 
     private void addNewDiv()

@@ -351,15 +351,17 @@
 
 }
 @functions{
+    // This handles changes to the Gender drop box.
     [Parameter]
     public EventCallback<string> GenderChanged
     {
         get;
         set;
     }
-
+    //This task handles any changes to the Gender drop box (received by GenderChanged).
     private Task OnGenderChanged(ChangeEventArgs e)
     {
+        //e is the new drop box option
         PersonalInfo.Gender = e.Value.ToString();
         return GenderChanged.InvokeAsync(PersonalInfo.Gender);
     }
