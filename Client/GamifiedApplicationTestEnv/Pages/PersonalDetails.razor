@@ -1,0 +1,389 @@
+﻿@page "/personal-details"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@using XebecPortal.Client.Shared
+
+<style>
+    .wrapper {
+        height: 100vh;
+        width: 100%;
+    }
+
+    .nav {
+        height: 10vh;
+        background-color: lightgrey;
+        width: 100%;
+        display: flex;
+    }
+
+    .main-body {
+        height: 90vh;
+        width: 100%;
+    }
+
+    .progress-div {
+        margin-top: 2.5%;
+        height: 10%;
+        margin-bottom: 2.5%;
+        width: 60%;
+        margin-left: 20%;
+        margin-right: 20%;
+        display: flex;
+    }
+
+    .progress-img {
+        height: 100%;
+        width: 10%;
+        text-align: center;
+    }
+
+    .progress-line {
+        height: 100%;
+        width: 20%;
+        text-align: center;
+    }
+
+    .form-div {
+        height: auto;
+        margin-bottom: 5%;
+        width: 60%;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .main-form {
+        height: 83.5%;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 2.5%;
+        background-color: lightgrey;
+        border: black 1px solid;
+    }
+
+    .div-buttons {
+        margin-top: 1%;
+        height: 10%;
+        display: flex;
+        align-content: center;
+        text-align: center;
+        margin-left: 20%;
+        margin-right: 20%;
+        width: 60%;
+    }
+
+    .form-group-first {
+        margin-top: 5%;
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+    }
+
+    .form-group-others {
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+        margin-top: 2%;
+    }
+
+    .form-group-text-area {
+        width: 70%;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-top: 2%;
+    }
+
+    .form-control-style {
+        border: 2px darkgrey solid;
+        background-color: yellow;
+    }
+
+    .form-control-text-area {
+        border: 2px darkgrey solid;
+        height: 400px;
+        width: 100%;
+    }
+
+    .btn-previous {
+        height: 100%;
+        width: 60%;
+        margin-left: 30%;
+        margin-right: 10%;
+        background-color: #22577A;
+        border: transparent;
+        border-radius: 10px;
+    }
+
+    .btn-next {
+        height: 100%;
+        width: 60%;
+        margin-left: 10%;
+        margin-right: 30%;
+        background-color: #0B8457;
+        border: transparent;
+        border-radius: 10px;
+    }
+
+    .buttondivs {
+        height: 80%;
+        width: 50%;
+        margin-bottom: 20%;
+        border: none;
+        color: white;
+    }
+
+        .buttondivs:hover {
+            text-decoration: none;
+        }
+
+    .add-button-div {
+        height: 10%;
+        width: 40%;
+        margin-left: 30%;
+        margin-right: 30%;
+        border: none;
+        display: flex;
+    }
+
+    .add-button {
+        width: 80px;
+        margin-left: 35%;
+        margin-right: 35%;
+        height: 100%;
+        border: transparent;
+        border-radius: 10px;
+        background-color: #28ABB9;
+        color: white;
+    }
+
+    h1 {
+        font-family: SigmarOne;
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .material-icon {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .material-line {
+        font-size: 50px;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        height: 100%;
+        background-color: maroon;
+    }
+
+    .no-material-line {
+        font-size: 50px;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        background-color: white;
+    }
+
+    .material-color {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+        color: purple;
+    }
+
+    .material-none {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .no-form-icon {
+        color: lightgrey;
+    }
+
+    .form-icon {
+        color: black;
+    }
+
+    .labels-div {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 5px;
+        display: flex;
+        height: 30px;
+    }
+
+    label {
+        margin-top: 5px;
+        color: black;
+        font-family: Calibri;
+        font-size: 15px;
+    }
+
+    .mini-label1 {
+        width: 40%;
+        display: inline-block;
+        margin-right: 9%;
+        margin-left: 1%;
+    }
+
+    .mini-label2 {
+        display: inline-block;
+        width: 40%;
+        margin-left: 4.5%;
+    }
+
+    h2 {
+        text-decoration: none;
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    h3 {
+        font-family: SigmarOne;
+        font-size: 20px;
+    }
+
+    .form-check-div {
+        width: 20px;
+        height: 100%;
+        margin-left: 5px;
+    }
+</style>
+
+<div class="wrapper">
+    <div class="nav">
+        <NavMenu />
+    </div>
+    <div class="main-body">
+        <div class="progress-div">
+            <div class="progress-img">
+                <i class="fa fa-user-circle material-color"></i>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-img">
+                <i class="fa fa-graduation-cap material-none"></i>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-img">
+                <i class="fa fa-briefcase material-none"></i>
+            </div>
+            <div class="progress-line">
+            </div>
+            <div class="progress-img">
+                <i class="fa fa-laptop material-none"></i>
+            </div>
+        </div>
+        <div class="form-div">
+            <h1>Personal Details</h1>
+            <form class="main-form">
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="firstname" pattern="" class="form-control form-control-style" @bind="PersonalInfo.FirstName" placeholder="First Name">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="first-name-check">
+
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="lastName" class="form-control form-control-style" @bind="PersonalInfo.LastName" placeholder="Last Name">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="last-name-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="phonenumber" class="form-control form-control-style" @bind="PersonalInfo.PhoneNumber" placeholder="Phone Number">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="phone-number-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="email" class="form-control form-control-style" @bind="PersonalInfo.Email" placeholder="Email">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="email-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="idnumber" class="form-control form-control-style" @bind="PersonalInfo.IdNumber" placeholder="ID Number">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="id-number-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <label for="disability" class="m-2">Disability:    </label>
+                    <select class="form-control form-control-style" @onchange="OnDisabilityChanged" title="Disability" id="disability">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="disability-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <select class="form-control form-control-style" @onchange="OnGenderChanged" title="Gender" id="gender">
+                        <option value="empty" selected disabled="disabled">(Gender)</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="NA">Rather Not Say</option>
+                    </select>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="gender-check">
+                </div>
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="ethnicity" class="form-control form-control-style" @bind="PersonalInfo.Ethnicity" placeholder="Ethnicity">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="ethnicity-check">
+                </div>
+                <div class="form-group form-check-inline form-group-text-area">
+                    <textarea type="text" class="form-control form-control-text-area" rows="2" id="textarea" placeholder="Address" @bind="PersonalInfo.Address"></textarea>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="address-check">
+                </div>
+            </form>
+        </div>
+        <form class="div-buttons">
+
+            <NavLink class="buttondivs" href="/">
+                <div class="btn-previous">
+                    <h2 class="nav-item">Previous</h2>
+                </div>
+            </NavLink>
+            <NavLink class="buttondivs" href="/educational">
+                <div class="btn-next">
+                    <h2 class="nav-item">Next</h2>
+                </div>
+            </NavLink>
+
+        </form>
+    </div>
+</div>
+@code{
+    public PersonalInformation PersonalInfo { get; set; } = new PersonalInformation();
+
+
+}
+@functions{
+    [Parameter]
+    public EventCallback<string> GenderChanged
+    {
+        get;
+        set;
+    }
+
+    private Task OnGenderChanged(ChangeEventArgs e)
+    {
+        PersonalInfo.Gender = e.Value.ToString();
+        return GenderChanged.InvokeAsync(PersonalInfo.Gender);
+    }
+}
+
+@functions{
+    /*
+        * Html <option>'s values are string
+        * the below code will allow us to accept boolean values from the disability drop down
+        * Yes - true
+        * No - false
+        */
+    [Parameter]
+    public EventCallback<bool> DisabilityChanged
+    {
+        get;
+        set;
+    }
+
+    private Task OnDisabilityChanged(ChangeEventArgs e)
+    {
+        PersonalInfo.Disability = Convert.ToBoolean(e.Value.ToString());
+        return DisabilityChanged.InvokeAsync(PersonalInfo.Disability);
+    }
+
+
+}

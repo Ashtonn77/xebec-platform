@@ -1,0 +1,281 @@
+@page "/candidateinfo"
+@inject IJSRuntime jsr
+@using XebecPortal.Client.JobPortalTestEnv.Models
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .wrapper-job {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #d8e2dc;
+    }
+
+    .add-job-container {
+        padding: 20px;
+        width: 90%;
+        max-width: 650px;
+        margin: auto;
+        height: 90%;
+        max-height: 500px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .inner-wrapper {
+        width: 100%;
+        height: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+    .left {
+        width: 45%;
+        height: inherit;
+        padding: 5px;
+        overflow-y: scroll;
+    }
+
+    .left::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .left::-webkit-scrollbar-track {
+        background-color: #EAF2F8;
+    }
+
+    .left::-webkit-scrollbar-thumb {
+        background-color: #95A5A6;
+        border-radius: 20px;
+        border: 3px solid #EAF2F8;
+    }
+
+    .box {
+        width: 90%;
+        height: fit-content;
+        padding: 10px;
+        margin: 5px auto;
+        cursor: pointer;
+    }
+
+    .right {
+        width: 55%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .select-details {
+        width: 90%;
+        height: 70%;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .box,
+    .select-details {
+        border: 1px solid #95A5A6;
+        border-radius: 5px;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .btn-container {
+        width: 90%;
+        height: 25%;
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+
+    ul span
+    {
+        font-weight: bold;
+    }
+ 
+    li
+    {
+        list-style: none;
+    }
+
+    .select-details p span
+    {
+        font-weight: bold;
+    }
+
+</style>
+
+
+<div class="wrapper-job">
+
+    <h1 class="mt-5" style="margin-bottom: -5px;">Candidates</h1>
+
+    <div class="add-job-container">
+
+        <input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">
+
+        <div class="inner-wrapper">
+
+            <div class="left">
+
+                @if(SearchResults != null && SearchResults.Count > 0)
+                {
+                     @foreach (var candidate in SearchResults)
+                    {
+                        <div class="box" @onclick="On" id=@($"{(candidate.Id)}")>
+                   
+                            <ul>
+                              <span>ID: </span> <li id="child">@candidate.Id</li> 
+                              <span>Name: </span> <li>@candidate.Name</li>
+                              <span>Job Applied For: </span> <li>@candidate.JobAppliedFor</li>
+
+                            </ul>
+
+                        </div>
+
+                    }
+                }
+               
+                         
+
+            </div>
+
+            <div class="right">
+                <div class="select-details">
+                    
+                    
+                    @if(IsClicked && CurrentCandidate != null)
+                    {
+                    
+                  
+                       
+                        <p><span>ID: </span>@CurrentCandidate.Id</p>
+                        <p><span>Name: </span>@CurrentCandidate.Name</p>
+                        <p><span>Job Applied For: </span>@CurrentCandidate.JobAppliedFor</p>
+                        <p><span>Years of Exp: </span>@CurrentCandidate.YearsOfExp</p>                        
+                        <p><span>Additional Info: </span>@CurrentCandidate.ExtraInfo</p>
+                    }
+
+
+                </div>
+                <div class="btn-container">
+                    <button class="btn btn-outline-info btn-sm" @onclick="Search">Search</button>
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+@code
+{
+    static string searchTerm = string.Empty;
+    private static List<CandidateTest> Candidates = new List<CandidateTest>
+    {
+
+
+        new CandidateTest
+        {
+            Id = 1,
+            Name = "Johnathan Snow",
+            JobAppliedFor = "Developer",
+            YearsOfExp = 2,
+            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+
+        },
+
+        new CandidateTest
+        {
+            Id = 2,
+            Name = "Edward Stark",
+            JobAppliedFor = "Lawyer",
+            YearsOfExp = 8,
+            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+
+        },
+
+        new CandidateTest
+        {
+            Id = 3,
+            Name = "Peter Parker",
+            JobAppliedFor = "Developer",
+            YearsOfExp = 1,
+            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+
+        },
+
+        new CandidateTest
+        {
+            Id = 4,
+            Name = "Bruce Banner",
+            JobAppliedFor = "Cloud Engineer",
+            YearsOfExp = 5,
+            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+
+        }
+
+    };
+
+    private static List<CandidateTest> SearchResults = Candidates;
+    private static bool isFound = false;    
+
+    private static void Search()
+    {
+        SearchResults = Candidates.FindAll(q => q.JobAppliedFor.ToLower().Equals(searchTerm.ToLower())); 
+
+        //this is for when the search bar is empty
+       @* if(SearchResults == null || SearchResults.Count <= 0)
+            SearchResults = Candidates; *@
+    }    
+
+    bool IsClicked = false;
+    private int ReturnedCandidateId = 0;
+    private CandidateTest CurrentCandidate = null;
+    private async Task On()
+    {
+        IsClicked = true;
+        ReturnedCandidateId = Int32.Parse(await jsr.InvokeAsync<string>("show"));
+       
+       
+        CurrentCandidate = SearchResults.FirstOrDefault(q => q.Id == ReturnedCandidateId); 
+    
+           
+            
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await jsr.InvokeVoidAsync("initialize");
+        }
+    }
+
+    
+
+
+
+}

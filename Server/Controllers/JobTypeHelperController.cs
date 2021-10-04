@@ -1,0 +1,164 @@
+﻿using AutoMapper;
+using Server.Data;
+using Server.IRepository;
+using XebecPortal.Shared;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace Server.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class JobTypeHelperController : ControllerBase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public JobTypeHelperController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        // GET: api/<JobTypeHelpersController>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetJobTypeHelpers()
+        {
+            try
+            {
+                var JobTypeHelpers = await _unitOfWork.JobTypeHelpers.GetAll();
+             
+                return Ok(JobTypeHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<JobTypeHelpersController>/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetJobTypeHelper(int id)
+        {
+            try
+            {
+                var JobTypeHelper = await _unitOfWork.JobTypeHelpers.GetT(q => q.Id == id);
+                return Ok(JobTypeHelper);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // POST api/<JobTypeHelpersController>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateJobTypeHelper([FromBody] JobTypeHelper JobTypeHelper)
+        {
+
+            if (!ModelState.IsValid)
+            {
+
+                return BadRequest(ModelState);
+            }
+
+
+            try
+            {
+
+                await _unitOfWork.JobTypeHelpers.Insert(JobTypeHelper);
+                await _unitOfWork.Save();
+
+                return CreatedAtAction("GetJobTypeHelper", new { id = JobTypeHelper.Id }, JobTypeHelper);
+
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    e.InnerException);
+            }
+
+
+        }
+
+
+        // PUT api/<JobTypeHelpersController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateJobTypeHelper(int id, [FromBody] JobTypeHelper JobTypeHelper)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var originalJobTypeHelper = await _unitOfWork.JobTypeHelpers.GetT(q => q.Id == id);
+
+                if (originalJobTypeHelper == null)
+                {
+                    return BadRequest("Submitted data is invalid");
+                }
+                _unitOfWork.JobTypeHelpers.Update(originalJobTypeHelper);
+                await _unitOfWork.Save();
+
+                return NoContent();
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+
+        }
+
+
+        // DELETE api/<JobTypeHelpersController>/5
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteJobTypeHelper(int id)
+        {
+            if (id < 1)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var JobTypeHelper = await _unitOfWork.JobTypeHelpers.GetT(q => q.Id == id);
+
+                if (JobTypeHelper == null)
+                {
+                    return BadRequest("Submitted data is invalid");
+                }
+
+                await _unitOfWork.JobTypeHelpers.Delete(id);
+                await _unitOfWork.Save();
+
+                return NoContent();
+
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+
+        }
+    }
+}
