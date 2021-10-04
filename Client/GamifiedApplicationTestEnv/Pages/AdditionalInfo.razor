@@ -342,9 +342,11 @@
 </div>
 
 @code{
+    
+    private string dropClass = "";  //Not being used
+    private bool fileTypeError = false; //Not being used
 
-    private string dropClass = "";
-    private bool fileTypeError = false;
+    //List of files added by the user
     private List<IFileListEntry> selectedFiles = new List<IFileListEntry>();
 
     /*private void HandleDragEnter()
@@ -356,11 +358,11 @@
     {
         dropClass = "";
     }*/
-
+    
     private async Task OnInputFileChange(IFileListEntry[] files)
     {
-        dropClass = "";
-        fileTypeError = false;
+        dropClass = ""; //Can be removed
+        fileTypeError = false; //Can be removed
         List<string> acceptedFileTypes = new List<string>() { "image/png", "image/jpeg", "image/gif", "application/pdf", "application/msword" };
         if (files != null)
         {
@@ -383,12 +385,12 @@
         }
         await base.OnInitializedAsync();
     }
-
+    
     private void RemoveFile(IFileListEntry file)
     {
         selectedFiles.Remove(file);
     }
-
+    //The model used in the form
     public AdditionalInformation AdditionalInformation { get; set; } = new AdditionalInformation();
 }
 
