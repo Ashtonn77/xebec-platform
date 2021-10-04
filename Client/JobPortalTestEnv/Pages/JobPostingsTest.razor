@@ -122,28 +122,39 @@
 </style>
 
 
+<!--Entire page as a flexbox-->
 <div class="wrapper-job">
 
+    <!--Heading-->
     <h1 class="mt-5" style="margin-bottom: -5px;">Job Postings</h1>
 
+    <!--Div in the center of the page-->
     <div class="add-job-container">
 
+        <!--Search bar-->
         <input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">
 
+        <!--Div containing the functionality-->
         <div class="inner-wrapper">
 
+            <!--Boxes on the left/summary boxes-->
             <div class="left">
 
-                @if(SearchResults != null && SearchResults.Count > 0)
+                @if (SearchResults != null && SearchResults.Count > 0)
                 {
-                     @foreach (var job in SearchResults)
+                    @foreach (var job in SearchResults)
                     {
                         <div class="box" @onclick="On" id=@($"{(job.Id)}")>
-                   
+
                             <ul>
-                              <span>ID: </span> <li id="child">@job.Id</li> <br>
-                              <span>Title: </span> <li>@job.Title</li> <br>  
-                              <span>Location: </span> <li>@job.Location</li>
+                                <span>ID: </span>
+                                <li id="child">@job.Id</li>
+                                <br>
+                                <span>Title: </span>
+                                <li>@job.Title</li>
+                                <br>
+                                <span>Location: </span>
+                                <li>@job.Location</li>
 
                             </ul>
 
@@ -151,29 +162,32 @@
 
                     }
                 }
-               
-                         
+
+
 
             </div>
 
+            <!--Box on the right/Details box + buttons-->
             <div class="right">
+                <!--Details box-->
                 <div class="select-details">
-                    
-                    
-                    @if(IsClicked && CurrentJob != null)
+
+
+                    @if (IsClicked && CurrentJob != null)
                     {
-                    
-                  
-                       
+
+
+
                         <p><span>ID: </span>@CurrentJob.Id</p>
                         <p><span>Title: </span>@CurrentJob.Title</p>
                         <p><span>Location: </span>@CurrentJob.Location</p>
-                        <p><span>Compensation: </span>@CurrentJob.Compensation</p>                        
+                        <p><span>Compensation: </span>@CurrentJob.Compensation</p>
                         <p><span>Description: </span>@CurrentJob.Description</p>
                     }
 
 
                 </div>
+                <!--Search + post job buttons-->
                 <div class="btn-container">
                     <button class="btn btn-outline-info btn-sm mr-1" @onclick="Search">Search</button>
                     <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
@@ -191,8 +205,12 @@
 
 @code
 {
+    // Search variable
     static string searchTerm = string.Empty;
+
+    //Data 
 static List<JobTest> Jobs = new List<JobTest>
+
 {
 
             new JobTest
@@ -247,8 +265,10 @@ static List<JobTest> Jobs = new List<JobTest>
 
 
     private static List<JobTest> SearchResults = Jobs;
+
     private static bool isFound = false;    
 
+    // Search Function
     private static void Search()
     {
         SearchResults = Jobs.FindAll(q => q.Title.ToLower().Equals(searchTerm.ToLower())); 
@@ -256,26 +276,31 @@ static List<JobTest> Jobs = new List<JobTest>
         //this is for when the search bar is empty
         @* if(SearchResults == null || SearchResults.Count <= 0)
             SearchResults = Jobs; *@
-       
-    }    
+
+    }
+
 
     bool IsClicked = false;
+
     private int ReturnedJobId = 0;
+
     private JobTest CurrentJob = null;
+
+    //Method for when a summary box is clicked. Uses the JobPostingTest.js in the js folder inside the wwwroot. 
     private async Task On()
     {
         IsClicked = true;
-        ReturnedJobId = Int32.Parse(await jsr.InvokeAsync<string>("show"));       
-       
-        CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId); 
-    
+        ReturnedJobId = Int32.Parse(await jsr.InvokeAsync<string>("show")); //Calls the show function from the javascript file.      
+
+        CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId);
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-            await jsr.InvokeVoidAsync("initialize");
+            await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.  
         }
     }
 
