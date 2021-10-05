@@ -1,6 +1,7 @@
 ﻿@page "/work-historyP3"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
+@using XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Shared
 
 <style>
     .wrapper {
@@ -319,7 +320,7 @@
     private const string WorkHistoryFormstr = "<WorkHistoryForm />"; //Not being used
 
     //This represents the component being rendered (or added by the addNewDiv method).
-    public WorkHistoryForm WorkHistoryForm = null; 
+    public WorkHistoryForm WorkHistoryForm = null;
     private void addNewDiv()
     {
 
