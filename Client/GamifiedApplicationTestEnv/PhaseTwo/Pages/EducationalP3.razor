@@ -1,12 +1,6 @@
-@*
-    *All page directives for the components in the Shared folder can be removed we will not be navigating to those pages directly
-    *All components in the Shared folder are reusable.
-*@
-@page "/education-form"
-@using Microsoft.AspNetCore.Components.Forms;
+﻿@page "/educationalP3"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
-@using XebecPortal.Client.Shared
 
 <style>
     .wrapper {
@@ -18,6 +12,7 @@
         height: 10vh;
         background-color: lightgrey;
         width: 100%;
+        display: flex;
     }
 
     .main-body {
@@ -99,11 +94,6 @@
         border: 2px darkgrey solid;
     }
 
-
-    .form-control-style {
-        border: 2px darkgrey solid;
-    }
-
     .form-control-text-area {
         border: 2px darkgrey solid;
         height: 400px;
@@ -137,10 +127,6 @@
         border: none;
         color: white;
     }
-
-        .buttondivs:hover {
-            text-decoration: none;
-        }
 
         .buttondivs:hover {
             text-decoration: none;
@@ -218,14 +204,6 @@
         color: black;
     }
 
-    .no-form-icon {
-        color: lightgrey;
-    }
-
-    .form-icon {
-        color: black;
-    }
-
     .labels-div {
         width: 90%;
         margin-left: 5%;
@@ -267,45 +245,99 @@
     }
 </style>
 
-
-<form class="main-form">
-    <div class="form-check-inline form-group-first">
-        <h3>Education</h3>
-    </div><br />
-    <div class="form-check-inline form-group-others">
-        <input id="institution" type="text" class="form-control form-control-style" @bind="Education.Insitution" placeholder="Insitution">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="institution-check">
+<div class="wrapper">
+    <div class="nav">
+        <NavMenuP3 />
     </div>
-    <div class="form-check-inline form-group-others">
-        <input id="qualification" type="text" class="form-control form-control-style" @bind="Education.Qualification" placeholder="Qualification">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
-    </div><br>
-    <div class="form-check-inline labels-div">
-        <div class="mini-label1">
-            <label>Start Date</label>
+    <div class="main-body">
+        <div class="progress-div">
+            <div class="progress-img">
+                <i class="fa fa-user-circle material-none"></i>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-img">
+                <i class="fa fa-graduation-cap material-color"></i>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-img">
+                <i class="fa fa-briefcase material-none"></i>
+            </div>
+            <div class="progress-line">
+            </div>
+            <div class="progress-img">
+                <i class="fa fa-laptop material-none"></i>
+            </div>
         </div>
-        <div class="mini-label2">
-            <label>End Date</label>
+        <div class="form-div">
+            <h1>Education</h1>
+            <EducationFormP3 />
+            <div class="add-button-div">
+                <button class="add-button" @onclick="addNewDiv">Add</button>
+            </div><br />
+            @* Displays all form components saved in the the forms list *@
+            @for (int i = 0; i < forms.Count; ++i)
+            {
+                @forms[i];
+                <div class="add-button-div">
+                    <button class="add-button" @onclick="addNewDiv">Add</button>
+                    <button class="add-button" @onclick="(()=>removeDiv(i-1))">Remove</button>
+                </div><br />
+
+            }
+            <form class="div-buttons">
+
+                <NavLink class="buttondivs" href="/personal-details">
+                    <div class="btn-previous">
+                        <h2 class="nav-item">Previous</h2>
+                    </div>
+                </NavLink>
+
+                <NavLink class="buttondivs" href="/work-history">
+                    <div class="btn-next">
+                        <h2 class="nav-item">Next</h2>
+                    </div>
+                </NavLink>
+
+            </form>
         </div>
     </div>
-    <div class="form-group form-check-inline form-group-others">
-        <input id="eduend" type="date" class="form-control" @bind="Education.StartDate" placeholder="First Name">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
-    </div>
-    <div class="form-group form-check-inline form-group-others">
-        <input type="date" id="edusend" class="form-control" @bind="Education.EndDate" placeholder="Last Name">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
-    </div>
-</form>
 
-@code{
-    protected override async Task OnInitializedAsync()
+</div>
+    @code{
+    /*
+    * The logic here is the same as the one in WorkHistoryPage.
+    * Removing and add components works the same way
+    */
+    private async Task OnAfterRenderAsync()
+
     {
-        await base.OnInitializedAsync();
-        Education.StartDate = DateTime.Now;
-        Education.EndDate = DateTime.Now;
+        await JS.InvokeVoidAsync("addDiv");
     }
-    //This is a model used in the form
-    //Add changes to the fields are automatically updated.
-    public Education Education { get; set; } = new Education();
+
+    List<RenderFragment> forms = new List<RenderFragment>();
+
+    private const string EducationFormstr = "<EducationForm />"; //
+    public EducationForm EducationForm = null;
+
+    private void addNewDiv()
+    {
+
+        forms.Add(
+            new RenderFragment(builder =>
+            {
+                builder.OpenComponent<EducationForm>(0);
+                builder.AddComponentReferenceCapture(0, inst => { EducationForm = (EducationForm)inst; });
+                builder.CloseComponent();
+            })
+        );
+    }
+    private void removeDiv(int index)
+    {
+
+        if (index < forms.Count)
+        {
+            forms.RemoveAt(index);
+        }
+
+    }
 }
