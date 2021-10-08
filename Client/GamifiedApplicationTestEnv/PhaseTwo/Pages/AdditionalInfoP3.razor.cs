@@ -1,4 +1,5 @@
 ﻿using BlazorInputFile;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,5 @@ namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
         }
         //Model used by the form
         public AdditionalInformation AdditionalInformation { get; set; } = new AdditionalInformation();
-
     }
 }
