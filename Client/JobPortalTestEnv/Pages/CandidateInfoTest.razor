@@ -279,11 +279,7 @@
          IsClicked = true;
          ReturnedCandidateId = Int32.Parse(await jsr.InvokeAsync<string>("show"));  //Calls the show function from the javascript file.  
 
-
          CurrentCandidate = SearchResults.FirstOrDefault(q => q.Id == ReturnedCandidateId);
-
-
-
 
      }
 
