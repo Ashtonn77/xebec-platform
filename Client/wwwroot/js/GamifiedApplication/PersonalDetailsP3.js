@@ -1,5 +1,6 @@
 ﻿function personalDetails() {
 
+    //It prevents the checkbox to click by the user
     $("#first_name_check").click(function () { return false; });
     $("#last_name_check").click(function () { return false; });
     $("#phone_number_check").click(function () { return false; });
@@ -10,9 +11,11 @@
     $("#ethnicity_check").click(function () { return false; });
     $("#address_check").click(function () { return false; });
 
+    //The disability checkbox is already checked at the start of the page
     $("#disability_check").prop("checked", true);
     $("#disability_check").val(true);
 
+    //Everytime the user types in, these functions checks if the field is populated or not by the indication of the checkbox
     $("#firstname").keyup(function () {
         if ($(this).val().length != 0) {
             $("#first_name_check").prop("checked", true);
@@ -116,6 +119,7 @@
         }
     });
 
+    //This function here checks if all the checkboxes are checked, if they are then the NEXT Button appears
     $("input:text").keyup(function () {
         if ($("input:checked").length == $("input:checkbox").length) {
             $("#next").show();
