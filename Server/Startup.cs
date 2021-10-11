@@ -38,17 +38,20 @@ namespace XebecPortal.Server
            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Gamified app middleware
-
             //These two did not want to work. Please fix
-            //services.ConfigureIdentity();
-            //services.ConfigureJwt(Configuration);
+            // services.ConfigureIdentity();
+            // services.ConfigureJwt(Configuration);
+
+
+            // services.AddDbContext<AppDbContext>(options => {
+
+            //     options.UseSqlServer(Configuration.GetConnectionString("gamifiedConnection"));
+
+            // });
+
 
             services.AddAutoMapper(typeof(MapperInitializer));
-            services.AddDbContext<AppDbContext>(options => {
-
-                options.UseSqlServer(Configuration.GetConnectionString("gamifiedConnection"));
-
-            });
+           
             services.AddTransient<IWorkOfUnit, WorkOfUnit>();
             services.AddTransient<IUserDb, UserDb>();
 
@@ -113,7 +116,11 @@ namespace XebecPortal.Server
 
             app.UseCors("AllowAll");
 
+            app.UseAuthentication();    
+
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Server.Configurations.Entities;
 using XebecPortal.Shared;
+using XebecPortal.Shared.Security;
 
 namespace Server.Data
 {
@@ -14,6 +15,10 @@ namespace Server.Data
         {
             
         }
+
+        /*Authentication*/
+        public DbSet<AppUser> AppUser { get; set; }
+        /*Authentication*/
 
         public DbSet<AdditionalInformation> AdditionalInformations { get; set; }
         public DbSet<Application> Applications { get; set; }

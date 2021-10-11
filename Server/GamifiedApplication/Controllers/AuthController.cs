@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using XebecPortal.Shared.GamifiedAplication;
+using XebecPortal.Shared.Security;
 using Server.GamifiedAplication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

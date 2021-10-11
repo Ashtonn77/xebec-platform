@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using XebecPortal.Shared.GamifiedAplication;
+using XebecPortal.Shared.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;

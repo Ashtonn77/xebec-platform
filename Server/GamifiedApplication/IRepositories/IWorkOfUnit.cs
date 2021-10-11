@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecPortal.Shared.GamifiedAplication;
+using XebecPortal.Shared.Security;
 
 namespace Server.GamifiedAplication
 {
