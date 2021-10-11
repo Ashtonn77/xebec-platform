@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Server.GamifiedApplicationPhaseFour.Models;
 using XebecPortal.Shared.Security;
 
-namespace Server.GamifiedAplication
+namespace Server.GamifiedApplicationPhaseFour
 {
     public class MapperInitializer : Profile
     {

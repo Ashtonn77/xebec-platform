@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace CodeSubmissionSimple.Server.Controllers
+namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
 	[ApiController]
 	public class AuthController : ControllerBase

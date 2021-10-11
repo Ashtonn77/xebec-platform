@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XebecPortal.Shared.GamifiedAplication
+namespace XebecPortal.Shared.Security
 {
     public class LoginResult
     {

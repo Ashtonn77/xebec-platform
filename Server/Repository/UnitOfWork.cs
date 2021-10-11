@@ -5,11 +5,17 @@ using System.Threading.Tasks;
 using Server.Data;
 using Server.IRepository;
 using XebecPortal.Shared;
+using XebecPortal.Shared.Security;
 
 namespace Server.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
+
+        /*Authentication*/
+        private IGenericRepository<AppUser> _appusers;
+        /*Authentication*/
+
         private readonly ApplicationDbContext _context;
 
         private IGenericRepository<Application> _applications;
@@ -69,6 +75,8 @@ namespace Server.Repository
         public IGenericRepository<WorkHistory> WorkHistory => _workHistories ??= new GenericRepository<WorkHistory>(_context);
 
         public IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers => _WorkHistoryHelpers ??= new GenericRepository<WorkHistoryHelper>(_context);
+
+        public IGenericRepository<AppUser> AppUsers => _appusers ??= new GenericRepository<AppUser>(_context);
 
         public void Dispose()
         {

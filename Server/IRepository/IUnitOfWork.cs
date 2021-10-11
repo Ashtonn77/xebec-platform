@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
+using XebecPortal.Shared.Security;
 
 namespace Server.IRepository
 {
     public interface IUnitOfWork : IDisposable
     {
+
+        /*Authentication*/
+        IGenericRepository<AppUser> AppUsers { get; } 
+        /*Authentication*/   
+
         //Model Repositories
         IGenericRepository<AdditionalInformation> AdditionalInformation { get; }
         IGenericRepository<Application> Applications { get; }

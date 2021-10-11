@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace XebecPortal.Shared
@@ -13,5 +12,6 @@ namespace XebecPortal.Shared
         public bool Indeed { get; set; }
 
         public bool Twitter { get; set; }
+
     }
 }
