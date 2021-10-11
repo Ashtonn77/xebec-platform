@@ -250,6 +250,10 @@
     <div class="nav">
         <NavMenuP3 />
     </div>
+    <!--A progress bar at 75%-->
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+    </div>
     <div class="main-body">
         <div class="progress-div">
             <div class="progress-img">
@@ -275,75 +279,40 @@
             <h1>Work History</h1>
 
             <WorkHistoryFormP3 />
-            <div class="add-button-div">
+            <div class="add-button-div" style="margin-top:20px">
                 <button class="add-button" @onclick="addNewDiv">Add</button>
             </div><br />
 
             @for (int i = 0; i < forms.Count; ++i)
             {
                 @forms[i];
-                <div class="add-button-div">
+                <div class="add-button-div" style="margin-top:20px">
                     <button class="add-button" @onclick="addNewDiv">Add</button>
                     <button class="add-button" @onclick="(()=>removeDiv(i-1))">Remove</button>
                 </div><br />
 
             }
-
             <form class="div-buttons">
-
-                <NavLink class="buttondivs" href="/educational">
+                <NavLink id="previous" class="buttondivs" href="/educationalP3">
                     <div class="btn-previous">
                         <h2 class="nav-item">Previous</h2>
                     </div>
                 </NavLink>
-                <NavLink class="buttondivs" href="/additional">
+                <NavLink id="next" class="buttondivs" href="/additionalP3" style="display:none">
                     <div class="btn-next">
                         <h2 class="nav-item">Next</h2>
                     </div>
                 </NavLink>
-
             </form>
         </div>
     </div>
 </div>
 
+<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "WorkHistoryForm.js"'-->
 @code{
-
-    private async Task OnAfterRenderAsync()
-
+    protected override async void OnAfterRender(bool firstRender)
     {
-        await JS.InvokeVoidAsync("addDiv"); // Can be removed. We are using c# now (not javascript).
-    }
-    //This stores a list of components (WorkHistoryForms) to render
-    List<RenderFragment> forms = new List<RenderFragment>();
-
-    private const string WorkHistoryFormstr = "<WorkHistoryForm />"; //Not being used
-
-    //This represents the component being rendered (or added by the addNewDiv method).
-    public WorkHistoryForm WorkHistoryForm = null;
-    private void addNewDiv()
-    {
-
-        forms.Add(
-            new RenderFragment(builder =>
-            {
-                builder.OpenComponent<WorkHistoryForm>(0);
-                builder.AddComponentReferenceCapture(0, inst => { WorkHistoryForm = (WorkHistoryForm)inst; });
-                builder.CloseComponent();
-
-            })
-        );
-    }
-
-    //Removes a razor component
-
-    private void removeDiv(int index)
-    {
-
-        if (index < forms.Count)
-        {
-            forms.RemoveAt(index);
-        }
-
+        await JS.InvokeVoidAsync("workHistoryForm");
+        base.OnAfterRender(firstRender);
     }
 }
