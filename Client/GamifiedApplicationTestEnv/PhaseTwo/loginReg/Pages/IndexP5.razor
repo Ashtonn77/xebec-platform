@@ -1,0 +1,229 @@
+﻿@page "/loginP5"
+@inject IJSRuntime jsr
+@inject HttpClient httpClient
+@using XebecPortal.Shared.GamifiedAplication
+@inject NavigationManager NavManager
+
+
+
+
+<div class="container-main">
+
+    <div class="forms-container">
+
+        <div class="signin-signup">
+
+            <!-- sign in -->
+            <EditForm Model="user" OnValidSubmit="OnValidLogin" action="" class="sign-in-form">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <h2 class="title">Sign In</h2>
+
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <InputText @bind-Value="user.Email" placeholder="Username"></InputText>
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <InputText @bind-Value="user.Password" type="password" placeholder="Password"></InputText>
+                </div>
+
+                <input type="submit" value="Login" class="btn solid">
+
+                <p class="social-text">Or sign in with social media</p>
+                <div class="social-media">
+
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+
+                </div>
+
+            </EditForm>
+
+            <!-- sign up -->
+            <EditForm Model="reg" OnValidSubmit="OnValidReg" action="" class="sign-up-form">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <h2 class="title">Sign Up</h2>
+
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Username">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" placeholder="Email">
+                </div>
+
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password">
+                </div>
+
+                <input type="submit" value="Register" class="btn solid">
+
+                <p class="social-text">Or sign up with social media</p>
+                <div class="social-media">
+
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+
+    </div>
+
+
+    <div class="panels-container">
+
+        <div class="panel left-panel">
+
+            <div class="content">
+                <h3>New here?</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi vitae autem rem nobis architecto at possimus delectus, perspiciatis pariatur repudiandae?</p>
+                <button class="btn transparent" id="sign-up-btn">Sign up</button>
+            </div>
+
+            <img src="img/log.svg" alt="" class="image">
+
+        </div>
+
+        <div class="panel right-panel">
+
+            <div class="content">
+                <h3>One of us?</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi vitae autem rem nobis architecto at possimus delectus, perspiciatis pariatur repudiandae?</p>
+                <button class="btn transparent" id="sign-in-btn">Sign in</button>
+            </div>
+
+            <img src="img/register.svg" alt="" class="image">
+
+        </div>
+
+
+    </div>
+
+</div>
+
+@code{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await jsr.InvokeVoidAsync("initializeLogin");
+    }
+
+    //variables used by both models
+    string message = string.Empty;
+    string login = string.Empty;
+    bool isDisabled = false;
+    bool IsSuccessful = false;
+    string test = string.Empty;
+    private string securityKey = string.Empty;
+
+
+    //login
+    LoginModel user = new LoginModel();
+    private async Task OnValidLogin()
+    {
+        isDisabled = true;
+        using (var msg = await httpClient.PostAsJsonAsync<LoginModel>("/api/auth/login", user,
+        System.Threading.CancellationToken.None))
+        {
+            if (msg.IsSuccessStatusCode)
+            {
+                LoginResult result = await msg.Content.ReadFromJsonAsync<LoginResult>();
+                message = result.Message;
+                isDisabled = false;
+                test = result.Role;
+                if (result.Success)
+                {
+                    await jsr.InvokeVoidAsync("localStorage.setItem", "user",
+                    $"{result.Email};{result.Role};{result.JwtBearer}").ConfigureAwait(false);
+                    IsSuccessful = true;
+                    NavManager.NavigateTo("/homepage");
+
+                }
+            }
+        }
+    }
+
+
+    //register
+    RegisterModel reg = new RegisterModel();
+
+    [Parameter]
+    public EventCallback<string> ValueChanged
+    {
+        get;
+        set;
+    }
+    private Task OnValueChanged(ChangeEventArgs e)
+    {
+        reg.Role = e.Value.ToString();
+        return ValueChanged.InvokeAsync(reg.Role);
+    }
+
+
+    private async Task OnValidReg()
+    {
+        bool validSecurityKey = true;
+
+        //check security key
+
+        if (reg.Role != null && !reg.Role.Equals("Candidate"))
+        {
+            if (string.IsNullOrEmpty(securityKey) || !securityKey.Equals("1234"))
+                validSecurityKey = false;
+
+        }
+
+        if (validSecurityKey)
+        {
+            isDisabled = true;
+            using (var msg = await httpClient.PostAsJsonAsync<RegisterModel>("/api/auth/register", reg, System.Threading.CancellationToken.None))
+            {
+                if (msg.IsSuccessStatusCode)
+                {
+                    LoginResult result = await msg.Content.ReadFromJsonAsync<LoginResult>();
+                    message = result.Message;
+                    if (result.Success)
+                    {
+                        message += " Please LOGIN to continue.";
+                        login = "Click here to LOGIN.";
+                    }
+                    else
+                        isDisabled = false;
+                }
+            }
+        }
+
+
+    }
+
+}

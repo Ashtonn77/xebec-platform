@@ -10,6 +10,8 @@ using Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Server.IRepository;
 using Server.Repository;
+using Server.GamifiedAplication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace XebecPortal.Server
 {
@@ -34,6 +36,47 @@ namespace XebecPortal.Server
             });
 
            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            //Gamified app middleware
+
+            //These two did not want to work. Please fix
+            //services.ConfigureIdentity();
+            //services.ConfigureJwt(Configuration);
+
+            services.AddAutoMapper(typeof(MapperInitializer));
+            services.AddDbContext<AppDbContext>(options => {
+
+                options.UseSqlServer(Configuration.GetConnectionString("gamifiedConnection"));
+
+            });
+            services.AddTransient<IWorkOfUnit, WorkOfUnit>();
+            services.AddTransient<IUserDb, UserDb>();
+
+            services.AddAuthentication(options => {
+
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options => {
+                options.LoginPath = "/signin";
+                options.LogoutPath = "/signout";
+            })
+           .AddGoogle(googleOptions =>
+           {
+               googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+               googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
+           })
+            .AddLinkedIn(Linkedinoptions =>
+            {
+                IConfigurationSection linkedinAuthNSection =
+                Configuration.GetSection("Authentication:Linkedin");
+
+                Linkedinoptions.ClientId = linkedinAuthNSection["ClientId"];
+                Linkedinoptions.ClientSecret = linkedinAuthNSection["ClientSecret"];
+                Linkedinoptions.Scope.Add("r_liteprofile");
+                Linkedinoptions.Scope.Add("r_emailaddress");
+            });
+            //
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 

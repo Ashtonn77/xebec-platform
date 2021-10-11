@@ -250,6 +250,10 @@
     <div class="nav">
         <NavMenuP3 />
     </div>
+    <!--A progress bar at 50%-->
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+    </div>
     <div class="main-body">
         <div class="progress-div">
             <div class="progress-img">
@@ -272,73 +276,40 @@
         <div class="form-div">
             <h1>Education</h1>
             <EducationFormP3 />
-            <div class="add-button-div">
+            <div class="add-button-div" style="margin-top:20px">
                 <button class="add-button" @onclick="addNewDiv">Add</button>
             </div><br />
             @* Displays all form components saved in the the forms list *@
             @for (int i = 0; i < forms.Count; ++i)
             {
                 @forms[i];
-                <div class="add-button-div">
+                <div class="add-button-div" style="margin-top:20px">
                     <button class="add-button" @onclick="addNewDiv">Add</button>
                     <button class="add-button" @onclick="(()=>removeDiv(i-1))">Remove</button>
                 </div><br />
 
             }
             <form class="div-buttons">
-
-                <NavLink class="buttondivs" href="/personal-details">
+                <NavLink id="previous" class="buttondivs" href="/personal-detailsP3">
                     <div class="btn-previous">
                         <h2 class="nav-item">Previous</h2>
                     </div>
                 </NavLink>
-
-                <NavLink class="buttondivs" href="/work-history">
+                <NavLink id="next" class="buttondivs" href="/work-historyP3" style="display:none">
                     <div class="btn-next">
                         <h2 class="nav-item">Next</h2>
                     </div>
                 </NavLink>
-
             </form>
         </div>
     </div>
-
 </div>
+
+<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "EducationFormP3.js"'-->
 @code{
-    /*
-    * The logic here is the same as the one in WorkHistoryPage.
-    * Removing and add components works the same way
-    */
-    private async Task OnAfterRenderAsync()
-
+    protected override async void OnAfterRender(bool firstRender)
     {
-        await JS.InvokeVoidAsync("addDiv");
-    }
-
-    List<RenderFragment> forms = new List<RenderFragment>();
-
-    private const string EducationFormstr = "<EducationForm />"; //
-    public EducationForm EducationForm = null;
-
-    private void addNewDiv()
-    {
-
-        forms.Add(
-            new RenderFragment(builder =>
-            {
-                builder.OpenComponent<EducationForm>(0);
-                builder.AddComponentReferenceCapture(0, inst => { EducationForm = (EducationForm)inst; });
-                builder.CloseComponent();
-            })
-        );
-    }
-    private void removeDiv(int index)
-    {
-
-        if (index < forms.Count)
-        {
-            forms.RemoveAt(index);
-        }
-
+        await JS.InvokeVoidAsync("educationalForm");
+        base.OnAfterRender(firstRender);
     }
 }
