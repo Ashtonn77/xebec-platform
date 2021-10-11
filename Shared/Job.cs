@@ -24,5 +24,8 @@ namespace XebecPortal.Shared
 
         public DateTime CreationDate { get; set; }
 
+        public string JobType { get; set; }
+
+        public JobPlatform JobPlatform { get; set; } = new JobPlatform();
     }
 }
