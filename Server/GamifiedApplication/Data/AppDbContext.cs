@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Server.Configurations.Entities;
-using XebecPortal.Shared.GamifiedAplication;
+using XebecPortal.Shared.Security;
 
 namespace Server.GamifiedAplication
 {

@@ -1,33 +1,25 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace XebecPortal.Shared.GamifiedAplication
+namespace Server.GamifiedApplicationPhaseFour.Models
 {
-    public class AppUser
+    public class AppUserDto
     {
-
-        public int Id { get; set; }
+       // public int Id { get; set; }
 
         public string Email { get; set; }
-
         public string Role { get; set; }
-
         public string PasswordHash { get; set; }
 
-        public AppUser(string email, string role)
+
+        public AppUserDto(string email, string role, string passwordHash)
         {
             this.Email = email;
             this.Role = role;
+            this.PasswordHash = passwordHash;
         }
-
-        public AppUser()
-        {
-            
-        }
-
 
     }
 }

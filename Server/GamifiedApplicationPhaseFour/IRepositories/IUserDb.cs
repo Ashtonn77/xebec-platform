@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared.Security;
 
-namespace Server.GamifiedAplication
+namespace Server.GamifiedApplicationPhaseFour.IRepositories
 {
     public interface IUserDb
     {
