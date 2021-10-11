@@ -2,8 +2,7 @@
     *All page directives for the components in the Shared folder can be removed we will not be navigating to those pages directly
     *All components in the Shared folder are reusable.
 *@
-@page "/workhistoryform"
-@using Microsoft.Extensions.Logging
+@page "/education-formP3"
 @using Microsoft.AspNetCore.Components.Forms;
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
@@ -139,11 +138,9 @@
         color: white;
     }
 
-
         .buttondivs:hover {
             text-decoration: none;
         }
-
 
         .buttondivs:hover {
             text-decoration: none;
@@ -213,7 +210,6 @@
         margin: 0;
     }
 
-
     .no-form-icon {
         color: lightgrey;
     }
@@ -272,18 +268,17 @@
 </style>
 
 
-
 <form class="main-form">
     <div class="form-check-inline form-group-first">
-        <h3>Work History </h3>
+        <h3>Education</h3>
     </div><br />
     <div class="form-check-inline form-group-others">
-        <input type="text" class="form-control form-control-style" id="companyname" placeholder="Company Name" @bind="WorkHistory.CompanyName">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="company-name-check">
+        <input id="institution" type="text" class="form-control form-control-style" @bind="Education.Insitution" placeholder="Insitution">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="institution-check">
     </div>
     <div class="form-check-inline form-group-others">
-        <input type="text" class="form-control form-control-style" id="jobtitle" placeholder="Job Title" @bind="WorkHistory.JobTitle">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job-title-check">
+        <input id="qualification" type="text" class="form-control form-control-style" @bind="Education.Qualification" placeholder="Qualification">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
     </div><br>
     <div class="form-check-inline labels-div">
         <div class="mini-label1">
@@ -294,32 +289,23 @@
         </div>
     </div>
     <div class="form-group form-check-inline form-group-others">
-        <input type="date" class="form-control form-control-style" id="startdate" @bind="WorkHistory.StartDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="start-date-check">
+        <input id="eduend" type="date" class="form-control" @bind="Education.StartDate" placeholder="First Name">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
     </div>
-
     <div class="form-group form-check-inline form-group-others">
-        <input type="date" class="form-control form-control-style" id="enddate" placeholder="End Date" @bind="WorkHistory.EndDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="end-date-check">
-
+        <input type="date" id="edusend" class="form-control" @bind="Education.EndDate" placeholder="Last Name">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification-check">
     </div>
-    <div class="form-group form-check-inline form-group-text-area">
-        <textarea type="text" class="form-control form-control-text-area" rows="5" id="textarea" placeholder="Job Description" @bind="WorkHistory.Description"></textarea>
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job-description-check">
-    </div><br />
-
-
 </form>
-@code{
 
+@code{
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        WorkHistory.StartDate = DateTime.Now; 
-        WorkHistory.EndDate = DateTime.Now;
+        Education.StartDate = DateTime.Now;
+        Education.EndDate = DateTime.Now;
     }
     //This is a model used in the form
     //Add changes to the fields are automatically updated.
-    public WorkHistory WorkHistory { get; set; } = new WorkHistory();
-
+    public Education Education { get; set; } = new Education();
 }

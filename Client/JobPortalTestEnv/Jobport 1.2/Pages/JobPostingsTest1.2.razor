@@ -1,0 +1,390 @@
+@page "/jobpostingstwo"
+@inject IJSRuntime jsr
+@using XebecPortal.Client.JobPortalTestEnv.Models
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .wrapper-job {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #d8e2dc;
+    }
+
+    .add-job-container {
+        padding: 20px;
+        width: 90%;
+        max-width: 650px;
+        margin: auto;
+        height: 90%;
+        max-height: 500px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .inner-wrapper {
+        width: 100%;
+        height: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+    .left {
+        width: 45%;
+        height: inherit;
+        padding: 5px;
+        overflow-y: scroll;
+    }
+
+        .left::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .left::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
+
+        .left::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
+
+    .box {
+        width: 90%;
+        height: fit-content;
+        padding: 10px;
+        margin: 5px auto;
+        cursor: pointer;
+    }
+
+    .right {
+        width: 55%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .select-details {
+        width: 90%;
+        height: 70%;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .box,
+    .select-details {
+        border: 1px solid #95A5A6;
+        border-radius: 5px;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .btn-container {
+        width: 90%;
+        height: 25%;
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+
+    ul span {
+        font-weight: bold;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .select-details p span {
+        font-weight: bold;
+    }
+</style>
+
+
+<!--Entire page as a flexbox-->
+<div class="wrapper-job">
+
+    <!--Heading-->
+    <h1 class="mt-5" style="margin-bottom: -5px;">Job Postings</h1>
+
+    <!--Div in the center of the page-->
+    <div class="add-job-container">
+
+        <!--Search bar-->
+        @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
+        <div class="input-group input-group-sm mb-3 justify-content-center">
+            <div class="input-group-prepend" @onclick="NewSearch">
+                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+            </div>
+            <input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Title, Location, Decription, Loca..." value="@SearchTerm" @onchange="@(e => onChange(e))">
+        </div>
+    
+    <!--Div containing the functionality-->
+        <div class="inner-wrapper">
+
+            <!--Boxes on the left/summary boxes-->
+            <div class="left">
+
+                @if (DisplayJobs != null && DisplayJobs.Count > 0)
+                {
+                    @foreach (var job in DisplayJobs)
+                    {
+                        <div class="box">
+                            <ul class="list-group" @onclick="() => ViewJob(job)">
+
+                                <li class=" col-12 d-flex justify-content-between">
+                                    <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
+
+                                    <span class="">
+                                        <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item"><span>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @job.Title </li>
+                                <li class="list-group-item"><span>Location: &nbsp;&nbsp;&nbsp;</span> @job.Location </li>
+                            </ul>
+                        </div>
+
+                    }
+                }
+
+
+
+            </div>
+
+            <!--Box on the right/Details box + buttons-->
+            <div class="right">
+                <!--Details box-->
+                <div class="select-details">
+
+
+                    @if (CurrentJob2 != null)
+                    {
+
+
+                        <p><span>ID: </span>@CurrentJob2.Id</p>
+                        <p><span>Title: </span>@CurrentJob2.Title</p>
+                        <p><span>Location: </span>@CurrentJob2.Location</p>
+                        <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
+                        <p><span>Description: </span>@CurrentJob2.Description</p>
+                    }
+
+
+                </div>
+                <!--Search + post job buttons-->
+                <div class="btn-container">
+                    <button class="btn btn-outline-info btn-sm mr-1" @onclick="Search">Search</button>
+                    <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+
+        <header class="w3-container" style="background-color: #d8e2dc;">
+            <span onclick="document.getElementById('id01').style.display='none'"
+                  class="w3-button w3-display-topright">&times;</span>
+            <h2>Edit Job</h2>
+        </header>
+
+        <div class="w3-container">
+            <form>
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" class="form-control" id="job-title" placeholder="@EditJob.Title" @bind-value="EditJob.Title">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+
+        <footer class="w3-container" style=" background-color: #d8e2dc;">
+            <p class="badge">Click Save to Save and x to dismiss</p>
+        </footer>
+
+    </div>
+</div>
+@code
+{
+    // Search variable
+    static string searchTerm = string.Empty;
+
+    //Data
+    static List<JobTest> Jobs = new List<JobTest>
+
+{
+
+            new JobTest
+            {
+                Id = 1,
+                Title = "Manager",
+                Description = "blah blah blah blah blah",
+                Location = "Durban",
+                Compensation = "R15000"
+
+
+
+            },
+
+
+             new JobTest
+            {
+                Id = 2,
+                Title = "Intern",
+                Description = "blah blah blah blah blah",
+                Location = "Cape Town",
+                Compensation = "R10000"
+            },
+
+                new JobTest
+            {
+                Id = 3,
+                Title = "Director",
+                Description = "blah blah blah blah blah",
+                Location = "Sandton",
+                Compensation = "R40000",
+
+            },
+              new JobTest
+            {
+                Id = 4,
+                Title = "Intern",
+                Description = "blah blah blah blah blah",
+                Location = "Durban",
+                Compensation = "R50000"
+            },
+              new JobTest
+            {
+                Id = 5,
+                Title = "Manager",
+                Description = "blah blah blah blah blah",
+                Location = "Cape Town",
+                Compensation = "R100000"
+            },
+
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Jobs != null)
+        {
+            DisplayJobs = Jobs;
+            if (Jobs.Count > 0)
+            {
+                CurrentJob2 = Jobs[0];
+            }
+        }
+
+    }
+
+    public JobTest EditJob { get; set; } = new JobTest();
+
+    public List<JobTest> DisplayJobs { get; set; }
+
+    public JobTest CurrentJob2 { get; set; } = new JobTest();
+
+    private void ViewJob(JobTest JobToView)
+    {
+        CurrentJob2 = JobToView;
+    }
+    private static List<JobTest> SearchResults = Jobs;
+
+    private static bool isFound = false;
+
+    public string SearchTerm { get; set; } = String.Empty;
+    public void NewSearch()
+    {
+
+        string lookingFor = SearchTerm.ToLower();
+        List<JobTest> TempJObs = Jobs.FindAll(q => (q.Title.ToLower().Contains(lookingFor) || q.Location.ToLower().Contains(lookingFor)));
+
+        if (TempJObs.Count < 1)
+        {
+            //Look under Discription
+            TempJObs = Jobs.FindAll(q => q.Description.ToLower().Contains(lookingFor) || q.Compensation.ToString().ToLower().Contains(lookingFor));
+        }
+
+        //if found
+        if (TempJObs.Count > 0)
+        {
+            DisplayJobs = TempJObs;
+        }
+        else
+        {
+            //Display alert item no found
+            //Todo
+        }
+
+    }
+    private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        SearchTerm = (string)args.Value;
+        if (string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            DisplayJobs = Jobs;
+        }
+    }
+
+    // Search Function
+    private static void Search()
+    {
+        SearchResults = Jobs.FindAll(q => q.Title.ToLower().Equals(searchTerm.ToLower()));
+
+        //this is for when the search bar is empty
+        @* if(SearchResults == null || SearchResults.Count <= 0)
+            SearchResults = Jobs; *@
+
+    }
+
+
+    bool IsClicked = false;
+
+    private int ReturnedJobId = 0;
+
+    private JobTest CurrentJob = null;
+
+    //Method for when a summary box is clicked. Uses the JobPostingTest.js in the js folder inside the wwwroot.
+    private async Task On()
+    {
+        IsClicked = true;
+        ReturnedJobId = Int32.Parse(await jsr.InvokeAsync<string>("show")); //Calls the show function from the javascript file.
+
+        CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId);
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
+        }
+    }
+
+}

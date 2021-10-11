@@ -1,13 +1,7 @@
-@*
-    *All page directives for the components in the Shared folder can be removed we will not be navigating to those pages directly
-    *All components in the Shared folder are reusable.
-*@
-@page "/workhistoryform"
-@using Microsoft.Extensions.Logging
-@using Microsoft.AspNetCore.Components.Forms;
+﻿@page "/work-historyP3"
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
-@using XebecPortal.Client.Shared
+@using XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Shared
 
 <style>
     .wrapper {
@@ -19,6 +13,7 @@
         height: 10vh;
         background-color: lightgrey;
         width: 100%;
+        display: flex;
     }
 
     .main-body {
@@ -100,11 +95,6 @@
         border: 2px darkgrey solid;
     }
 
-
-    .form-control-style {
-        border: 2px darkgrey solid;
-    }
-
     .form-control-text-area {
         border: 2px darkgrey solid;
         height: 400px;
@@ -138,12 +128,6 @@
         border: none;
         color: white;
     }
-
-
-        .buttondivs:hover {
-            text-decoration: none;
-        }
-
 
         .buttondivs:hover {
             text-decoration: none;
@@ -213,15 +197,6 @@
         margin: 0;
     }
 
-
-    .no-form-icon {
-        color: lightgrey;
-    }
-
-    .form-icon {
-        color: black;
-    }
-
     .no-form-icon {
         color: lightgrey;
     }
@@ -271,55 +246,104 @@
     }
 </style>
 
-
-
-<form class="main-form">
-    <div class="form-check-inline form-group-first">
-        <h3>Work History </h3>
-    </div><br />
-    <div class="form-check-inline form-group-others">
-        <input type="text" class="form-control form-control-style" id="companyname" placeholder="Company Name" @bind="WorkHistory.CompanyName">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="company-name-check">
+<div class="wrapper">
+    <div class="nav">
+        <NavMenuP3 />
     </div>
-    <div class="form-check-inline form-group-others">
-        <input type="text" class="form-control form-control-style" id="jobtitle" placeholder="Job Title" @bind="WorkHistory.JobTitle">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job-title-check">
-    </div><br>
-    <div class="form-check-inline labels-div">
-        <div class="mini-label1">
-            <label>Start Date</label>
+    <div class="main-body">
+        <div class="progress-div">
+            <div class="progress-img">
+                <i class="fa fa-user-circle material-none"></i>
+            </div>
+            <div class="progress-line">
+            </div>
+            <div class="progress-img">
+                <i class="fa fa-graduation-cap material-none"></i>
+            </div>
+            <div class="progress-line">
+            </div>
+            <div class="progress-img">
+                <i class="fa fa-briefcase material-color"></i>
+            </div>
+            <div class="progress-line">
+            </div>
+            <div class="progress-img">
+                <i class="fa fa-laptop material-none"></i>
+            </div>
         </div>
-        <div class="mini-label2">
-            <label>End Date</label>
+        <div class="form-div">
+            <h1>Work History</h1>
+
+            <WorkHistoryFormP3 />
+            <div class="add-button-div">
+                <button class="add-button" @onclick="addNewDiv">Add</button>
+            </div><br />
+
+            @for (int i = 0; i < forms.Count; ++i)
+            {
+                @forms[i];
+                <div class="add-button-div">
+                    <button class="add-button" @onclick="addNewDiv">Add</button>
+                    <button class="add-button" @onclick="(()=>removeDiv(i-1))">Remove</button>
+                </div><br />
+
+            }
+
+            <form class="div-buttons">
+
+                <NavLink class="buttondivs" href="/educational">
+                    <div class="btn-previous">
+                        <h2 class="nav-item">Previous</h2>
+                    </div>
+                </NavLink>
+                <NavLink class="buttondivs" href="/additional">
+                    <div class="btn-next">
+                        <h2 class="nav-item">Next</h2>
+                    </div>
+                </NavLink>
+
+            </form>
         </div>
     </div>
-    <div class="form-group form-check-inline form-group-others">
-        <input type="date" class="form-control form-control-style" id="startdate" @bind="WorkHistory.StartDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="start-date-check">
-    </div>
+</div>
 
-    <div class="form-group form-check-inline form-group-others">
-        <input type="date" class="form-control form-control-style" id="enddate" placeholder="End Date" @bind="WorkHistory.EndDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="end-date-check">
-
-    </div>
-    <div class="form-group form-check-inline form-group-text-area">
-        <textarea type="text" class="form-control form-control-text-area" rows="5" id="textarea" placeholder="Job Description" @bind="WorkHistory.Description"></textarea>
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job-description-check">
-    </div><br />
-
-
-</form>
 @code{
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        WorkHistory.StartDate = DateTime.Now; 
-        WorkHistory.EndDate = DateTime.Now;
-    }
-    //This is a model used in the form
-    //Add changes to the fields are automatically updated.
-    public WorkHistory WorkHistory { get; set; } = new WorkHistory();
+    private async Task OnAfterRenderAsync()
 
+    {
+        await JS.InvokeVoidAsync("addDiv"); // Can be removed. We are using c# now (not javascript).
+    }
+    //This stores a list of components (WorkHistoryForms) to render
+    List<RenderFragment> forms = new List<RenderFragment>();
+
+    private const string WorkHistoryFormstr = "<WorkHistoryForm />"; //Not being used
+
+    //This represents the component being rendered (or added by the addNewDiv method).
+    public WorkHistoryForm WorkHistoryForm = null;
+    private void addNewDiv()
+    {
+
+        forms.Add(
+            new RenderFragment(builder =>
+            {
+                builder.OpenComponent<WorkHistoryForm>(0);
+                builder.AddComponentReferenceCapture(0, inst => { WorkHistoryForm = (WorkHistoryForm)inst; });
+                builder.CloseComponent();
+
+            })
+        );
+    }
+
+    //Removes a razor component
+
+    private void removeDiv(int index)
+    {
+
+        if (index < forms.Count)
+        {
+            forms.RemoveAt(index);
+        }
+
+    }
 }
