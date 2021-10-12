@@ -25,7 +25,6 @@ namespace Server.Configurations.Entities
                      Department = "IT",
                      DueDate = DateTime.Now.AddMonths(2),
                      CreationDate = DateTime.Now
-
                 },
                 new Job
                 {

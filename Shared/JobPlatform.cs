@@ -7,11 +7,7 @@ namespace XebecPortal.Shared
 {
     public class JobPlatform
     {
-        public bool LinkedIn { get; set; }
-
-        public bool Indeed { get; set; }
-
-        public bool Twitter { get; set; }
-
+        public int Id { get; set; }
+        public string PlatformName { get; set; }
     }
 }

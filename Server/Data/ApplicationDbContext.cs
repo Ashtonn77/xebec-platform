@@ -68,6 +68,10 @@ namespace Server.Data
 
             modelBuilder.ApplyConfiguration(new WorkHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new WorkHistoryHelperConfiguration());
+
+            modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
+            modelBuilder.ApplyConfiguration(new JobPlatformHelperConfiguration());
+
         }
 
     }
