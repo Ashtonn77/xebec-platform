@@ -10,8 +10,12 @@ using Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Server.IRepository;
 using Server.Repository;
-using Server.GamifiedAplication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Server.GamifiedApplicationPhaseFour;
+using Server.GamifiedApplicationPhaseFour.IRepositories;
+using Server.GamifiedApplicationPhaseFour.Repositories;
 
 namespace XebecPortal.Server
 {
@@ -36,28 +40,14 @@ namespace XebecPortal.Server
             });
 
            services.AddTransient<IUnitOfWork, UnitOfWork>();
-
-            //Gamified app middleware
-            //These two did not want to work. Please fix
-            // services.ConfigureIdentity();
-            // services.ConfigureJwt(Configuration);
-
-
-            // services.AddDbContext<AppDbContext>(options => {
-
-            //     options.UseSqlServer(Configuration.GetConnectionString("gamifiedConnection"));
-
-            // });
-
-
+           
             services.AddAutoMapper(typeof(MapperInitializer));
            
-            services.AddTransient<IWorkOfUnit, WorkOfUnit>();
             services.AddTransient<IUserDb, UserDb>();
 
             services.AddAuthentication(options => {
 
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             }).AddCookie(options => {
                 options.LoginPath = "/signin";
                 options.LogoutPath = "/signout";
@@ -79,6 +69,24 @@ namespace XebecPortal.Server
                 Linkedinoptions.Scope.Add("r_emailaddress");
             });
             //
+
+             //for login/register   
+             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+
+                    ValidateAudience = true,
+                    ValidAudience = "domain.com",
+                    ValidateIssuer = true,
+                    ValidIssuer = "domain.com",
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("THIS IS THE SECRET KEY"))
+
+                };
+
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
