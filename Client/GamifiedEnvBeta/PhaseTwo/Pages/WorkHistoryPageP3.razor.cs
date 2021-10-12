@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecPortal.Client.GamifiedApplicationTestEnv.Shared;
+using XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Shared;
 
-namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
+namespace XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Pages
 {
     public partial class WorkHistoryPageP3
     {
@@ -21,15 +21,15 @@ namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
         private const string WorkHistoryFormstr = "<WorkHistoryForm />"; //Not being used
 
         //This represents the component being rendered (or added by the addNewDiv method).
-        public WorkHistoryForm WorkHistoryForm = null;
+        public WorkHistoryFormP3 WorkHistoryForm = null;
         private void addNewDiv()
         {
 
             forms.Add(
                 new RenderFragment(builder =>
                 {
-                    builder.OpenComponent<WorkHistoryForm>(0);
-                    builder.AddComponentReferenceCapture(0, inst => { WorkHistoryForm = (WorkHistoryForm)inst; });
+                    builder.OpenComponent<WorkHistoryFormP3>(0);
+                    builder.AddComponentReferenceCapture(0, inst => { WorkHistoryForm = (WorkHistoryFormP3)inst; });
                     builder.CloseComponent();
 
                 })

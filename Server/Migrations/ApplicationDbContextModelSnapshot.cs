@@ -87,7 +87,7 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             JobId = 1,
-                            TimeApplied = new DateTime(2021, 10, 4, 13, 58, 24, 862, DateTimeKind.Local).AddTicks(7466),
+                            TimeApplied = new DateTime(2021, 10, 12, 13, 9, 20, 381, DateTimeKind.Local).AddTicks(6730),
                             UserId = 1
                         });
                 });
@@ -175,7 +175,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Good Candidate, has potential to rule all of Westeros",
                             PhaseId = 1,
                             StatusId = 1,
-                            TimeMoved = new DateTime(2021, 10, 4, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(5204)
+                            TimeMoved = new DateTime(2021, 10, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8147)
                         },
                         new
                         {
@@ -184,7 +184,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Interview went well, He's really got potential",
                             PhaseId = 2,
                             StatusId = 1,
-                            TimeMoved = new DateTime(2021, 10, 6, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(5999)
+                            TimeMoved = new DateTime(2021, 10, 14, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8799)
                         },
                         new
                         {
@@ -193,7 +193,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "He's good, but won't become king",
                             PhaseId = 3,
                             StatusId = 2,
-                            TimeMoved = new DateTime(2021, 12, 4, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(6084)
+                            TimeMoved = new DateTime(2021, 12, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8869)
                         });
                 });
 
@@ -292,18 +292,18 @@ namespace XebecPortal.Server.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2021, 12, 4, 13, 56, 24, 870, DateTimeKind.Local).AddTicks(8198),
+                            EndDate = new DateTime(2021, 12, 12, 13, 7, 20, 386, DateTimeKind.Local).AddTicks(7269),
                             Insitution = "Richmond",
                             Qualification = "BSc Computer Science",
-                            StartDate = new DateTime(2021, 10, 4, 13, 56, 26, 870, DateTimeKind.Local).AddTicks(7426)
+                            StartDate = new DateTime(2021, 10, 12, 13, 7, 22, 386, DateTimeKind.Local).AddTicks(4156)
                         },
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2022, 12, 4, 13, 56, 24, 870, DateTimeKind.Local).AddTicks(9486),
+                            EndDate = new DateTime(2022, 12, 12, 13, 7, 20, 387, DateTimeKind.Local).AddTicks(173),
                             Insitution = "Hogwarts",
                             Qualification = "HighSchool Diploma",
-                            StartDate = new DateTime(2021, 10, 4, 13, 58, 24, 870, DateTimeKind.Local).AddTicks(9471)
+                            StartDate = new DateTime(2021, 10, 12, 13, 9, 20, 387, DateTimeKind.Local).AddTicks(148)
                         });
                 });
 
@@ -380,10 +380,10 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             Compensation = "R45000",
-                            CreationDate = new DateTime(2021, 10, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(7820),
+                            CreationDate = new DateTime(2021, 10, 12, 13, 7, 20, 376, DateTimeKind.Local).AddTicks(9064),
                             Department = "IT",
                             Description = "blah! blah! blah!",
-                            DueDate = new DateTime(2021, 12, 4, 13, 56, 24, 849, DateTimeKind.Local).AddTicks(1750),
+                            DueDate = new DateTime(2021, 12, 12, 13, 7, 20, 374, DateTimeKind.Local).AddTicks(7054),
                             Location = "JHB",
                             Title = "Developer"
                         },
@@ -391,12 +391,80 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 2,
                             Compensation = "R50000",
-                            CreationDate = new DateTime(2021, 10, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(8643),
+                            CreationDate = new DateTime(2021, 10, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(224),
                             Department = "IT",
                             Description = "beep! beep beep!",
-                            DueDate = new DateTime(2021, 11, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(8619),
+                            DueDate = new DateTime(2021, 11, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(167),
                             Location = "DBN",
                             Title = "Mobile Administrator"
+                        });
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.JobPlatform", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PlatformName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobPlatform");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PlatformName = "LinkedIn"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            PlatformName = "Indeed"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            PlatformName = "Twitter"
+                        });
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.JobPlatformHelper", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("JobID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("JobPlatformId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobID");
+
+                    b.HasIndex("JobPlatformId");
+
+                    b.ToTable("JobPlatformHelper");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            JobID = 1,
+                            JobPlatformId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            JobID = 2,
+                            JobPlatformId = 2
                         });
                 });
 
@@ -570,6 +638,27 @@ namespace XebecPortal.Server.Migrations
                     b.ToTable("RegisterHelpers");
                 });
 
+            modelBuilder.Entity("XebecPortal.Shared.Security.AppUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppUser");
+                });
+
             modelBuilder.Entity("XebecPortal.Shared.Status", b =>
                 {
                     b.Property<int>("Id")
@@ -671,18 +760,18 @@ namespace XebecPortal.Server.Migrations
                             Id = 1,
                             CompanyName = "White Wolf Inc",
                             Description = "Commanded an army to victory",
-                            EndDate = new DateTime(2023, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(894),
+                            EndDate = new DateTime(2023, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(3384),
                             JobTitle = "Commander",
-                            StartDate = new DateTime(2021, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(246)
+                            StartDate = new DateTime(2021, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(2619)
                         },
                         new
                         {
                             Id = 2,
                             CompanyName = "Westeros Pty Ltd",
                             Description = "Daydreaming on a Sunday afternoon",
-                            EndDate = new DateTime(2024, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(2763),
+                            EndDate = new DateTime(2024, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6971),
                             JobTitle = "King",
-                            StartDate = new DateTime(2022, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(2744)
+                            StartDate = new DateTime(2022, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6938)
                         });
                 });
 
@@ -805,6 +894,25 @@ namespace XebecPortal.Server.Migrations
                     b.Navigation("Education");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.JobPlatformHelper", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.JobPlatform", "JobPlatform")
+                        .WithMany()
+                        .HasForeignKey("JobPlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
+                    b.Navigation("JobPlatform");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.JobTypeHelper", b =>

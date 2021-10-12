@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace XebecPortal.Server.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,21 @@ namespace XebecPortal.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationPhases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUser",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUser", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,6 +63,19 @@ namespace XebecPortal.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Educations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobPlatform",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlatformName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobPlatform", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,6 +153,32 @@ namespace XebecPortal.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkHistories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobPlatformHelper",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobID = table.Column<int>(type: "int", nullable: false),
+                    JobPlatformId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobPlatformHelper", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobPlatformHelper_JobPlatform_JobPlatformId",
+                        column: x => x.JobPlatformId,
+                        principalTable: "JobPlatform",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobPlatformHelper_Jobs_JobID",
+                        column: x => x.JobID,
+                        principalTable: "Jobs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,8 +460,18 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "EndDate", "Insitution", "Qualification", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 12, 4, 13, 56, 24, 870, DateTimeKind.Local).AddTicks(8198), "Richmond", "BSc Computer Science", new DateTime(2021, 10, 4, 13, 56, 26, 870, DateTimeKind.Local).AddTicks(7426) },
-                    { 2, new DateTime(2022, 12, 4, 13, 56, 24, 870, DateTimeKind.Local).AddTicks(9486), "Hogwarts", "HighSchool Diploma", new DateTime(2021, 10, 4, 13, 58, 24, 870, DateTimeKind.Local).AddTicks(9471) }
+                    { 1, new DateTime(2021, 12, 12, 13, 7, 20, 386, DateTimeKind.Local).AddTicks(7269), "Richmond", "BSc Computer Science", new DateTime(2021, 10, 12, 13, 7, 22, 386, DateTimeKind.Local).AddTicks(4156) },
+                    { 2, new DateTime(2022, 12, 12, 13, 7, 20, 387, DateTimeKind.Local).AddTicks(173), "Hogwarts", "HighSchool Diploma", new DateTime(2021, 10, 12, 13, 9, 20, 387, DateTimeKind.Local).AddTicks(148) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "JobPlatform",
+                columns: new[] { "Id", "PlatformName" },
+                values: new object[,]
+                {
+                    { 3, "Twitter" },
+                    { 2, "Indeed" },
+                    { 1, "LinkedIn" }
                 });
 
             migrationBuilder.InsertData(
@@ -415,9 +479,9 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "Type" },
                 values: new object[,]
                 {
-                    { 3, "Internship" },
+                    { 1, "Full-Time" },
                     { 2, "Part-Time" },
-                    { 1, "Full-Time" }
+                    { 3, "Internship" }
                 });
 
             migrationBuilder.InsertData(
@@ -425,8 +489,8 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "Compensation", "CreationDate", "Department", "Description", "DueDate", "Location", "Title" },
                 values: new object[,]
                 {
-                    { 2, "R50000", new DateTime(2021, 10, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(8643), "IT", "beep! beep beep!", new DateTime(2021, 11, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(8619), "DBN", "Mobile Administrator" },
-                    { 1, "R45000", new DateTime(2021, 10, 4, 13, 56, 24, 857, DateTimeKind.Local).AddTicks(7820), "IT", "blah! blah! blah!", new DateTime(2021, 12, 4, 13, 56, 24, 849, DateTimeKind.Local).AddTicks(1750), "JHB", "Developer" }
+                    { 2, "R50000", new DateTime(2021, 10, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(224), "IT", "beep! beep beep!", new DateTime(2021, 11, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(167), "DBN", "Mobile Administrator" },
+                    { 1, "R45000", new DateTime(2021, 10, 12, 13, 7, 20, 376, DateTimeKind.Local).AddTicks(9064), "IT", "blah! blah! blah!", new DateTime(2021, 12, 12, 13, 7, 20, 374, DateTimeKind.Local).AddTicks(7054), "JHB", "Developer" }
                 });
 
             migrationBuilder.InsertData(
@@ -453,8 +517,8 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "CompanyName", "Description", "EndDate", "JobTitle", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, "White Wolf Inc", "Commanded an army to victory", new DateTime(2023, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(894), "Commander", new DateTime(2021, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(246) },
-                    { 2, "Westeros Pty Ltd", "Daydreaming on a Sunday afternoon", new DateTime(2024, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(2763), "King", new DateTime(2022, 10, 4, 13, 56, 24, 877, DateTimeKind.Local).AddTicks(2744) }
+                    { 1, "White Wolf Inc", "Commanded an army to victory", new DateTime(2023, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(3384), "Commander", new DateTime(2021, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(2619) },
+                    { 2, "Westeros Pty Ltd", "Daydreaming on a Sunday afternoon", new DateTime(2024, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6971), "King", new DateTime(2022, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6938) }
                 });
 
             migrationBuilder.InsertData(
@@ -465,7 +529,7 @@ namespace XebecPortal.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Applications",
                 columns: new[] { "Id", "JobId", "TimeApplied", "UserId" },
-                values: new object[] { 1, 1, new DateTime(2021, 10, 4, 13, 58, 24, 862, DateTimeKind.Local).AddTicks(7466), 1 });
+                values: new object[] { 1, 1, new DateTime(2021, 10, 12, 13, 9, 20, 381, DateTimeKind.Local).AddTicks(6730), 1 });
 
             migrationBuilder.InsertData(
                 table: "DocumentHelpers",
@@ -483,6 +547,15 @@ namespace XebecPortal.Server.Migrations
                 {
                     { 1, 1, 1 },
                     { 2, 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "JobPlatformHelper",
+                columns: new[] { "Id", "JobID", "JobPlatformId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 2, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -511,17 +584,17 @@ namespace XebecPortal.Server.Migrations
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 1, 1, null, "Good Candidate, has potential to rule all of Westeros", 1, 1, new DateTime(2021, 10, 4, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(5204) });
+                values: new object[] { 1, 1, null, "Good Candidate, has potential to rule all of Westeros", 1, 1, new DateTime(2021, 10, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8147) });
 
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 2, 1, null, "Interview went well, He's really got potential", 2, 1, new DateTime(2021, 10, 6, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(5999) });
+                values: new object[] { 2, 1, null, "Interview went well, He's really got potential", 2, 1, new DateTime(2021, 10, 14, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8799) });
 
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 3, 1, null, "He's good, but won't become king", 3, 2, new DateTime(2021, 12, 4, 13, 56, 24, 869, DateTimeKind.Local).AddTicks(6084) });
+                values: new object[] { 3, 1, null, "He's good, but won't become king", 3, 2, new DateTime(2021, 12, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8869) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalInformations_UserId",
@@ -569,6 +642,16 @@ namespace XebecPortal.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobPlatformHelper_JobID",
+                table: "JobPlatformHelper",
+                column: "JobID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobPlatformHelper_JobPlatformId",
+                table: "JobPlatformHelper",
+                column: "JobPlatformId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobTypeHelpers_JobID",
                 table: "JobTypeHelpers",
                 column: "JobID");
@@ -613,10 +696,16 @@ namespace XebecPortal.Server.Migrations
                 name: "ApplicationPhasesHelpers");
 
             migrationBuilder.DropTable(
+                name: "AppUser");
+
+            migrationBuilder.DropTable(
                 name: "DocumentHelpers");
 
             migrationBuilder.DropTable(
                 name: "EducationHelpers");
+
+            migrationBuilder.DropTable(
+                name: "JobPlatformHelper");
 
             migrationBuilder.DropTable(
                 name: "JobTypeHelpers");
@@ -647,6 +736,9 @@ namespace XebecPortal.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Educations");
+
+            migrationBuilder.DropTable(
+                name: "JobPlatform");
 
             migrationBuilder.DropTable(
                 name: "JobTypes");

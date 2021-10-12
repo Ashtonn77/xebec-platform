@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using XebecPortal.Shared.Security;
-using Server.GamifiedAplication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using Server.GamifiedApplicationPhaseFour.IRepositories;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {

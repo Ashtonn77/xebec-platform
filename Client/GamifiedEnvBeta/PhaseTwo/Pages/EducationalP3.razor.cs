@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecPortal.Client.GamifiedApplicationTestEnv.Shared;
+using XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Shared;
 
-namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
+namespace XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Pages
 {
     public partial class EducationalP3
     {
@@ -23,7 +23,7 @@ namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
         List<RenderFragment> forms = new List<RenderFragment>();
 
         private const string EducationFormstr = "<EducationForm />"; //
-        public EducationForm EducationForm = null;
+        public EducationFormP3 EducationForm = null;
 
         private void addNewDiv()
         {
@@ -31,8 +31,8 @@ namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
             forms.Add(
                 new RenderFragment(builder =>
                 {
-                    builder.OpenComponent<EducationForm>(0);
-                    builder.AddComponentReferenceCapture(0, inst => { EducationForm = (EducationForm)inst; });
+                    builder.OpenComponent<EducationFormP3>(0);
+                    builder.AddComponentReferenceCapture(0, inst => { EducationForm = (EducationFormP3)inst; });
                     builder.CloseComponent();
                 })
             );

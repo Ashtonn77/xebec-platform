@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
 
-namespace XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Pages
+namespace XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Pages
 {
     public partial class PersonalDetailsP3
     {

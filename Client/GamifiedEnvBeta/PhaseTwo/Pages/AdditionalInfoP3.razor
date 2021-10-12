@@ -1,7 +1,8 @@
-﻿@page "/educationalP3"
-@inject IJSRuntime JS
+﻿@page "/additionalP3"
 @inject NavigationManager NavigationManager
-@using XebecPortal.Client.GamifiedApplicationTestEnv.PhaseTwo.Shared
+@inject IJSRuntime JsRuntime
+@using XebecPortal.Shared
+@using XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Shared
 
 <style>
     .wrapper {
@@ -250,54 +251,97 @@
     <div class="nav">
         <NavMenuP3 />
     </div>
-    <!--A progress bar at 50%-->
+    <!--A progress bar at 100%-->
     <div class="progress">
-        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+        <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
     </div>
     <div class="main-body">
         <div class="progress-div">
             <div class="progress-img">
                 <i class="fa fa-user-circle material-none"></i>
             </div>
-            <div class="progress-line"></div>
-            <div class="progress-img">
-                <i class="fa fa-graduation-cap material-color"></i>
+            <div class="progress-line">
             </div>
-            <div class="progress-line"></div>
+            <div class="progress-img">
+                <i class="fa fa-graduation-cap material-none"></i>
+            </div>
+            <div class="progress-line">
+            </div>
             <div class="progress-img">
                 <i class="fa fa-briefcase material-none"></i>
             </div>
             <div class="progress-line">
             </div>
             <div class="progress-img">
-                <i class="fa fa-laptop material-none"></i>
+                <i class="fa fa-laptop material-color"></i>
             </div>
         </div>
         <div class="form-div">
-            <h1>Education</h1>
-            <EducationFormP3 />
-            <div class="add-button-div" style="margin-top:20px">
-                <button class="add-button" @onclick="addNewDiv">Add</button>
-            </div><br />
-            @* Displays all form components saved in the the forms list *@
-            @for (int i = 0; i < forms.Count; ++i)
-            {
-                @forms[i];
-                <div class="add-button-div" style="margin-top:20px">
-                    <button class="add-button" @onclick="addNewDiv">Add</button>
-                    <button class="add-button" @onclick="(()=>removeDiv(i-1))">Remove</button>
+            <h1>Additional Information</h1>
+            <form class="main-form">
+                <div class="form-group form-check-inline form-group-first">
+                    <i class="fa fa-github mr-2" style="color: black;"></i>
+                    <input type="text" class="form-control form-control-style" id="github" placeholder="Github Link" @bind="AdditionalInformation.GitHubLink">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="github_check">
+                </div>
+                <div class="form-group form-check-inline form-group-others">
+                    <i class="fa fa-facebook mr-2" style="color: #4267B2;"></i>
+                    <input type="text" class="form-control form-control-style" id="facebook" placeholder="Facebook" @bind="AdditionalInformation.FacebookLink">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="facebook_check">
+
+                </div><br>
+                <div class="form-group form-check-inline form-group-others">
+                    <i class="fa fa-linkedin mr-2" style="color:#0077b5"></i>
+                    <input type="text" class="form-control form-control-style" id="linkedin" placeholder="LinkedIn" @bind="AdditionalInformation.LinkedInLink">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="linkedin_check">
+                </div>
+                <div class="form-group form-check-inline form-group-others">
+                    <i class="fa fa-globe mr-1" style="color:orange;"></i>
+                    <input type="text" class="form-control form-control-style" id="website" placeholder="Website" @bind="AdditionalInformation.PersonalWebsiteUrl">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="website_check">
+
+                </div><br>
+
+                <div class="form-group form-check-inline form-group-text-area">
+                    <BlazorInputFile.InputFile class="dropzone" style="border: none;" id="fileInput" OnChange="@OnInputFileChange" accept="image/png,image/gif,image/jpeg,application/pdf,application/msword" />
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job_description_check">
                 </div><br />
 
-            }
+                <div class="form-group form-check-inline form-group-others">
+                    @if (selectedFiles != null && selectedFiles.Count > 0)
+                    {
+                        <div class="drop-zone-button-div">
+                            <ul>
+                                @foreach (var file in selectedFiles)
+                                {
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-lg-6"> @file.Name </div>
+                                            <div class="col-lg-6">
+                                                <button id="removeFile" class="drop-zone-button" type="button" @onclick="@(e => RemoveFile(file))">Remove</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </form>
+
+            <div class="add-button-div" style="margin-top:20px">
+                <button type="submit" class="add-button">Add</button>
+            </div><br />
             <form class="div-buttons">
-                <NavLink id="previous" class="buttondivs" href="/personal-detailsP3">
+                <NavLink id="previous" class="buttondivs" href="/work-historyP3">
                     <div class="btn-previous">
                         <h2 class="nav-item">Previous</h2>
                     </div>
                 </NavLink>
-                <NavLink id="next" class="buttondivs" href="/work-historyP3" style="display:none">
+                <NavLink id="submit" class="buttondivs" href="/" style="display:none">
                     <div class="btn-next">
-                        <h2 class="nav-item">Next</h2>
+                        <h2 class="nav-item">Submit</h2>
                     </div>
                 </NavLink>
             </form>
@@ -305,11 +349,11 @@
     </div>
 </div>
 
-<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "EducationFormP3.js"'-->
+<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "AdditionalInfoP3.js"'-->
 @code{
     protected override async void OnAfterRender(bool firstRender)
     {
-        await JS.InvokeVoidAsync("educationalForm");
+        await JsRuntime.InvokeVoidAsync("additionalInfo");
         base.OnAfterRender(firstRender);
     }
 }

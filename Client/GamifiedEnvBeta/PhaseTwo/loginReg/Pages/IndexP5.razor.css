@@ -88,7 +88,7 @@ form.sign-up-form{
     font-size: 1.1rem;
 }
 
-.input-field input{
+.input-field input, ::deep input{
     background: none;
     outline: none;
     border: none;
