@@ -1,5 +1,6 @@
 ﻿function personalDetails() {
 
+   
     //It prevents the checkbox to click by the user
     $("#first_name_check").click(function () { return false; });
     $("#last_name_check").click(function () { return false; });
@@ -10,6 +11,7 @@
     $("#gender_check").click(function () { return false; });
     $("#ethnicity_check").click(function () { return false; });
     $("#address_check").click(function () { return false; });
+    
 
     //The disability checkbox is already checked at the start of the page
     $("#disability_check").prop("checked", true);
