@@ -1,0 +1,106 @@
+
+@using Microsoft.AspNetCore.Components.Forms;
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@using XebecPortal.Client.Shared
+
+<style>
+
+    .main-form {
+        height: 85%;
+        max-height: 250px;
+        min-height: 250px;
+        width: 90%;
+        max-width: 550px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    }
+
+  
+    .date-outer-group
+    {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .date-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .date-inner-group {
+        display: flex;
+    }
+
+
+</style>
+
+<form class="main-form">
+
+    <div class="inner-main-form">
+        @*<div class="form-check-inline form-group-first">
+            <h3>Education</h3>
+        </div><br />*@
+
+
+        <div class="form-check-inline form-group-others">
+
+            <input id="institution" type="text" class="form-control form-control-style" @bind="Education.Insitution" placeholder="Insitution">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="institution_check">
+
+        </div>
+
+
+        <div class="form-check-inline form-group-others">
+
+            <input id="qualification" type="text" class="form-control form-control-style" @bind="Education.Qualification" placeholder="Qualification">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification_check">
+
+        </div>
+    
+
+    <div class="date-outer-group">
+
+        <div class="form-group form-check-inline form-group-others date-group">
+            <label>Start Date</label>
+            <div class="date-inner-group">
+                <input id="dateStart" type="date" class="form-control" @bind="Education.StartDate">
+                <input type="checkbox" class="form-check-input mt-2" style="margin-left: 5%;" id="eduStartDate_check">
+            </div>
+        </div>
+
+        <div class="form-group form-check-inline form-group-others date-group">
+            <label>End Date</label>
+            <div class="date-inner-group">
+                <input type="date" id="dateEnd" class="form-control" @bind="Education.EndDate">
+                <input type="checkbox" class="form-check-input mt-2" style="margin-left: 5%;" id="eduEndDate_check">
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+</form>
+
+@code{
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        Education.StartDate = DateTime.Now;
+        Education.EndDate = DateTime.Now;
+    }
+    //This is a model used in the form
+    //Add changes to the fields are automatically updated.
+    public Education Education { get; set; } = new Education();
+}

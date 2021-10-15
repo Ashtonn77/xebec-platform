@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
 
-namespace XebecPortal.Client.GamifiedEnvBeta.Pages
+namespace XebecPortal.Client.GamifiedEnvBeta.Components
 {
-    public partial class PersonalDetailsBeta
+    public partial class PersonalDetailsComponent
     {
         public PersonalInformation PersonalInfo { get; set; } = new PersonalInformation();
 

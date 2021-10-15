@@ -1,0 +1,79 @@
+ <style>
+
+      .main-form {
+        height: 85%;
+        max-height: 350px;
+        width: 90%;
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    }
+    
+ </style>
+ 
+ <form class="main-form">
+
+                <div class="inner-main-form">
+
+                    <div class="form-check-inline form-group-others">
+                    <input type="text" id="firstname" pattern="" class="form-control form-control-style" @bind="PersonalInfo.FirstName" placeholder="First Name">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="first_name_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="lastName" class="form-control form-control-style" @bind="PersonalInfo.LastName" placeholder="Last Name">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="last_name_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <input type="tel" maxlength="10" id="phonenumber" class="form-control form-control-style" @bind="PersonalInfo.PhoneNumber" placeholder="Phone Number">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="phone_number_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <input type="email" id="email" class="form-control form-control-style" @bind="PersonalInfo.Email" placeholder="Email">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="email_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <input type="text" maxlength="13" id="idnumber" class="form-control form-control-style" @bind="PersonalInfo.IdNumber" placeholder="ID Number">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="id_number_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <label for="disability" class="m-2">Disability:    </label> &nbsp;
+                    <select class="form-control form-control-style" @onchange="OnDisabilityChanged" title="Disability" id="disability">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="disability_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <select class="form-control form-control-style" @onchange="OnGenderChanged" title="Gender" id="gender">
+                        <option value="empty" selected disabled="disabled">(Gender)</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="NA">Rather Not Say</option>
+                    </select>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="gender_check">
+                </div>
+
+                <div class="form-check-inline form-group-others">
+                    <input type="text" id="ethnicity" class="form-control form-control-style" @bind="PersonalInfo.Ethnicity" placeholder="Ethnicity">
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="ethnicity_check">
+                </div>
+
+                <div class="form-group form-check-inline form-group-text-area">
+                    <textarea class="form-control form-control-text-area" rows="2" id="address" placeholder="Address" @bind="PersonalInfo.Address"></textarea>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="address_check">
+                </div>    
+
+                </div>
+
+            </form>

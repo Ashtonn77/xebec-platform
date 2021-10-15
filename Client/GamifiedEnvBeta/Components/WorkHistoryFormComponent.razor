@@ -1,0 +1,201 @@
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.Forms;
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@using XebecPortal.Client.Shared
+
+<style>
+
+    .main-form {
+
+        height: 85%;
+        max-height: 350px;
+        min-height: 350px;
+        width: 90%;
+        max-width: 650px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    }
+
+   
+
+    .form-group-first {
+        margin-top: 5%;
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+    }
+
+    .form-group-others {
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+    }
+
+    .form-group-text-area {
+        width: 70%;
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+
+    .form-control-style {
+        border: 2px darkgrey solid;
+    }
+
+    .form-control-text-area {
+        border: 2px darkgrey solid;
+        height: 400px;
+        width: 100%;
+    }
+
+   
+
+    .material-icon {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .material-line {
+        font-size: 50px;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        height: 100%;
+        background-color: maroon;
+    }
+
+    .no-material-line {
+        font-size: 50px;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        background-color: white;
+    }
+
+    .material-color {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+        color: purple;
+    }
+
+    .material-none {
+        font-size: 50px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .no-form-icon {
+        color: lightgrey;
+    }
+
+    .form-icon {
+        color: black;
+    }
+
+    .labels-div {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 5px;
+        display: flex;
+        height: 30px;
+    }
+
+    label {
+        margin-top: 5px;
+        color: black;
+        font-family: Calibri;
+        font-size: 15px;
+    }
+
+    .mini-label1 {
+        width: 40%;
+        display: inline-block;
+        margin-right: 9%;
+        margin-left: 1%;
+    }
+
+    .mini-label2 {
+        display: inline-block;
+        width: 40%;
+        margin-left: 4.5%;
+    }
+
+    h2 {
+        text-decoration: none;
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    h3 {
+        font-family: SigmarOne;
+        font-size: 20px;
+    }
+</style>
+
+<form class="main-form">
+
+    <div class="inner-main-form">
+
+        @*<div class="form-check-inline form-group-first">
+                <h3>Work History </h3>
+            </div><br />*@
+
+        <div class="form-check-inline form-group-others">
+            <input type="text" class="form-control form-control-style" id="companyname" placeholder="Company Name" @bind="WorkHistory.CompanyName">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="company_name_check">
+        </div>
+        <div class="form-check-inline form-group-others">
+            <input type="text" class="form-control form-control-style" id="jobtitle" placeholder="Job Title" @bind="WorkHistory.JobTitle">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job_title_check">
+        </div><br>
+        <div class="form-check-inline labels-div">
+            <div class="mini-label1">
+                <label>Start Date</label>
+            </div>
+            <div class="mini-label2">
+                <label>End Date</label>
+            </div>
+        </div>
+
+        <div class="form-group form-check-inline form-group-others">
+            <input type="date" class="form-control form-control-style" id="startdate" @bind="WorkHistory.StartDate">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="start_date_check">
+        </div>
+
+        <div class="form-group form-check-inline form-group-others">
+            <input type="date" class="form-control form-control-style" id="enddate" placeholder="End Date" @bind="WorkHistory.EndDate">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="end_date_check">
+
+        </div>
+
+        <div class="form-group form-check-inline form-group-text-area">
+            <textarea type="text" class="form-control form-control-text-area" rows="5" id="textarea" placeholder="Job Description" @bind="WorkHistory.Description"></textarea>
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="job_description_check">
+        </div><br />
+
+    </div>
+
+</form>
+
+@code{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        WorkHistory.StartDate = DateTime.Now;
+        WorkHistory.EndDate = DateTime.Now;
+    }
+    //This is a model used in the form
+    //Add changes to the fields are automatically updated.
+    public WorkHistory WorkHistory { get; set; } = new WorkHistory();
+}

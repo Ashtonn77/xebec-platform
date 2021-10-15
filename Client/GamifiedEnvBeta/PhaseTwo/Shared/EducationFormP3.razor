@@ -56,13 +56,17 @@
     }
 
     .main-form {
-        height: 83.5%;
-        width: 80%;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-top: 2.5%;
-        background-color: lightgrey;
-        border: black 1px solid;
+        height: 85%;
+        max-height: 350px;
+        width: 90%;
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     }
 
     .div-buttons {
@@ -255,46 +259,42 @@
         margin-left: 4.5%;
     }
 
-    h2 {
-        text-decoration: none;
-        font-family: Arial;
-        font-size: 20px;
-    }
 
-    h3 {
-        font-family: SigmarOne;
-        font-size: 20px;
-    }
 </style>
 
 <form class="main-form">
-    <div class="form-check-inline form-group-first">
-        <h3>Education</h3>
-    </div><br />
-    <div class="form-check-inline form-group-others">
-        <input id="institution" type="text" class="form-control form-control-style" @bind="Education.Insitution" placeholder="Insitution">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="institution_check">
-    </div>
-    <div class="form-check-inline form-group-others">
-        <input id="qualification" type="text" class="form-control form-control-style" @bind="Education.Qualification" placeholder="Qualification">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification_check">
-    </div><br>
-    <div class="form-check-inline labels-div">
-        <div class="mini-label1">
-            <label>Start Date</label>
+
+    <div class="inner-main-form">
+        <div class="form-check-inline form-group-first">
+            <h3>Education</h3>
+        </div><br />
+        <div class="form-check-inline form-group-others">
+            <input id="institution" type="text" class="form-control form-control-style" @bind="Education.Insitution" placeholder="Insitution">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="institution_check">
         </div>
-        <div class="mini-label2">
-            <label>End Date</label>
+        <div class="form-check-inline form-group-others">
+            <input id="qualification" type="text" class="form-control form-control-style" @bind="Education.Qualification" placeholder="Qualification">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="qualification_check">
+        </div><br>
+        <div class="form-check-inline labels-div">
+            <div class="mini-label1">
+                <label>Start Date</label>
+            </div>
+            <div class="mini-label2">
+                <label>End Date</label>
+            </div>
         </div>
-    </div>
-    <div class="form-group form-check-inline form-group-others">
-        <input id="dateStart" type="date" class="form-control" @bind="Education.StartDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="eduStartDate_check">
-    </div>
-    <div class="form-group form-check-inline form-group-others">
-        <input type="date" id="dateEnd" class="form-control" @bind="Education.EndDate">
-        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="eduEndDate_check">
-    </div>
+        <div class="form-group form-check-inline form-group-others">
+            <input id="dateStart" type="date" class="form-control" @bind="Education.StartDate">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="eduStartDate_check">
+        </div>
+        <div class="form-group form-check-inline form-group-others">
+            <input type="date" id="dateEnd" class="form-control" @bind="Education.EndDate">
+            <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="eduEndDate_check">
+        </div>
+
+        </div>
+
 </form>
 
 @code{
