@@ -1,0 +1,14 @@
+@page "/test"
+@inject NavigationManager _navigationManager
+
+<h1>Log in</h1>
+<button class="btn btn-primary" @onclick="GoogleSignIn">Google</button>
+
+
+@code
+{
+    private void GoogleSignIn()
+    {
+        _navigationManager.NavigateTo("api/ThirdPartyUser/GoogleSignIn", true);
+    }
+}

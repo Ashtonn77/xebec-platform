@@ -1,0 +1,63 @@
+<style>
+    .progress-icons {
+        width: 80%;
+        max-width: 750px;
+        height: 80%;
+        max-height: 38px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        @* background-color: orangered; *@
+    }
+
+    .progressbar-container {
+        width: 80%;
+        max-width: 700px;
+        height: 15%;
+        max-height: 8px;
+        margin: auto;
+        background-color: #ddd;
+        border-radius: 20px;
+    }
+
+    .progressbar-progress {
+        width: 0%;
+        height: 100%;
+        border-radius: 20px;
+        transition: width 0.5s ease-out;
+        background-color: #168aad;
+    }
+</style>
+
+<div class="progress-icons">
+
+    <span class="iconify" data-icon="eos-icons:installing" style="color: @PersonalIcon;" data-width="38"
+        data-height="38"></span>
+
+    <span class="iconify" data-icon="eos-icons:atom-electron" style="color: @EducationIcon;" data-width="38"
+        data-height="38"></span>
+
+    <span class="iconify" data-icon="eos-icons:rotating-gear" style="color: @WorkIcon;" data-width="38"
+        data-height="38"></span>
+
+    <span class="iconify" data-icon="eos-icons:typing" style="color: @AdditionalIcon;" data-width="38"
+        data-height="38"></span>
+
+</div>
+
+<div class="progressbar-container">
+
+    <div class="progressbar-progress" id="progress">
+
+    </div>
+
+</div>
+
+@code
+{
+    string PersonalIcon = "green";
+    string EducationIcon = "black";
+    string WorkIcon = "black";
+    string AdditionalIcon = "black";
+}
