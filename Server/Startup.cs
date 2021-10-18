@@ -48,9 +48,12 @@ namespace XebecPortal.Server
             services.AddAuthentication(options => {
 
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options => {
-                options.LoginPath = "/signin";
-                options.LogoutPath = "/signout";
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+            .AddCookie(options => {
+                options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
             })
            .AddGoogle(googleOptions =>
            {
@@ -67,11 +70,8 @@ namespace XebecPortal.Server
                 Linkedinoptions.ClientSecret = linkedinAuthNSection["ClientSecret"];
                 Linkedinoptions.Scope.Add("r_liteprofile");
                 Linkedinoptions.Scope.Add("r_emailaddress");
-            });
-            //
-
-             //for login/register   
-             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -87,6 +87,49 @@ namespace XebecPortal.Server
                 };
 
             });
+
+
+        //     services.AddAuthentication(options => {
+
+        //     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        //     }).AddCookie(options => {
+        //         options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
+        //     })
+        //    .AddGoogle(googleOptions =>
+        //    {
+        //        googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+        //        googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
+        //    })
+        //     .AddLinkedIn(Linkedinoptions =>
+        //     {
+        //         IConfigurationSection linkedinAuthNSection =
+        //         Configuration.GetSection("Authentication:Linkedin");
+
+        //         Linkedinoptions.ClientId = linkedinAuthNSection["ClientId"];
+        //         Linkedinoptions.ClientSecret = linkedinAuthNSection["ClientSecret"];
+        //         Linkedinoptions.Scope.Add("r_liteprofile");
+        //         Linkedinoptions.Scope.Add("r_emailaddress");
+        //     });
+            //
+
+             //for login/register   
+            //  services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            // {
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+
+            //         ValidateAudience = true,
+            //         ValidAudience = "domain.com",
+            //         ValidateIssuer = true,
+            //         ValidIssuer = "domain.com",
+            //         ValidateLifetime = true,
+            //         ValidateIssuerSigningKey = true,
+            //         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("THIS IS THE SECRET KEY"))
+
+            //     };
+
+            // });
 
             services.AddControllersWithViews();
             services.AddRazorPages();

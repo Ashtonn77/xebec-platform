@@ -15,13 +15,40 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     public class ThirdPartyUserController : ControllerBase
     {
 
-
+        /*Begin Google OAuth*/
         [HttpGet("GoogleSignIn")]
         public async Task GoogleSignIn()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                new AuthenticationProperties { RedirectUri = "/profile"});
+                new AuthenticationProperties { RedirectUri = "/profileTest"});
         }
+
+        // [HttpGet("GoogleSignIn")]
+        // public IActionResult GoogleSignIn()
+        // {
+        //     // var properties = new AuthenticationProperties{RedirectUri = Url.Action("GoogleResponse")};
+        //     var properties = new AuthenticationProperties{RedirectUri = "/profileTest"};
+        //     return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        // }
+
+
+        [HttpGet("GoogleResponse")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()
+            .Claims.Select(claim => new {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+            });
+
+            return new JsonResult(claims);
+
+        }
+        /*End Google OAuth*/
 
         //this is the one that works. Use this one and you're golden. The other ones down below aren't that important. However, they might prove useful in your journey.
         [HttpGet("LinkedInSignIn")]
@@ -50,16 +77,15 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, provider);
         }
 
-        [HttpGet("~/signout")]
-        [HttpPost("~/signout")]
-        public IActionResult SignOutCurrentUser()
+        [HttpGet("Logout")]
+        public async Task<IActionResult> Logout()
         {
-            // Instruct the cookies middleware to delete the local cookie created
-            // when the user agent is redirected from the external identity provider
-            // after a successful authentication flow (e.g Google or Facebook).
-            return SignOut(new AuthenticationProperties { RedirectUri = "/profile" },
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return Ok("");
+            
         }
+
         #endregion
     }
 
