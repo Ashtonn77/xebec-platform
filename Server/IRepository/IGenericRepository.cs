@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using XebecPortal.Shared;
 
 namespace Server.IRepository
 {
@@ -17,7 +18,5 @@ namespace Server.IRepository
         Task Delete(int id);
 
         void Update(T Entity);
-
-
     }
 }

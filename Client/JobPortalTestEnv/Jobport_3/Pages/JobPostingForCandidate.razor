@@ -1,0 +1,198 @@
+@page "/jobpostforcandidate"
+@inject IJSRuntime jsr
+@inject HttpClient httpClient
+@using XebecPortal.Client.JobPortalTestEnv.Models
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .wrapper-job {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+    }
+
+    .add-job-container {
+        padding: 20px;
+        width: 90%;
+        margin: auto auto 5% auto;
+        height: 90%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        /*box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;*/
+        /* background-color: #fff;*/
+        border-radius: 5px;
+    }
+
+    .inner-wrapper {
+        width: 100%;
+        max-height: 90%;
+        margin: auto;
+        display: flex;
+        /*background-color: aliceblue;*/
+    }
+
+    .left {
+        width: 45%;
+        height: inherit;
+        padding: 5px;
+        overflow-x: unset;
+        overflow-y: scroll;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+        .left::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .left::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
+
+        .left::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
+
+    .box {
+        width: 90%;
+        height: fit-content;
+        padding: 10px;
+        margin: 5px auto;
+        cursor: pointer;
+    }
+
+    .right {
+        width: 55%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .select-details {
+        width: 90%;
+        height: 70%;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .box,
+    .select-details {
+        border: 1px solid #95A5A6;
+        border-radius: 5px;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .btn-container {
+        width: 90%;
+        height: 25%;
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    ul span {
+        font-weight: bold;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .select-details p span {
+        font-weight: bold;
+    }
+</style>
+
+<!--Entire page as a flexbox-->
+<div class="wrapper-job">
+
+    <!--Heading-->
+    <h1 class="mt-5" style="margin-bottom: -5px;">Find Job</h1>
+
+    <!--Div in the center of the page-->
+    <div class="add-job-container">
+
+        <!--Search bar-->
+        @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
+        <div class="input-group input-group-sm mb-3 justify-content-center">
+            <div class="input-group-prepend" @onclick="NewSearch">
+                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+            </div>
+            <input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Title, Location, Decription, Loca..." value="@SearchTerm" @onchange="@(e => onChange(e))">
+        </div>
+
+        <!--Div containing the functionality-->
+        <div class="inner-wrapper">
+
+            <!--Boxes on the left/summary boxes-->
+            <div class="left">
+
+                @if (DisplayJobs != null && DisplayJobs.Count > 0)
+                {
+                    @foreach (var job in DisplayJobs)
+                    {
+                        <div class="box">
+                            <ul class="list-group" @onclick="() => ViewJob(job)">
+
+                                <li class=" col-12 d-flex justify-content-between">
+                                    <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
+
+                                    <span class="">
+                                        <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
+                                    </span>
+                                </li>
+                                <li class="list-group-item"><span>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @job.Title </li>
+                                <li class="list-group-item"><span>Location: &nbsp;&nbsp;&nbsp;</span> @job.Location </li>
+                            </ul>
+                        </div>
+
+                    }
+                }
+            </div>
+
+            <!--Box on the right/Details box + buttons-->
+            <div class="right">
+                <!--Details box-->
+                <div class="select-details">
+
+                    @if (CurrentJob2 != null)
+                    {
+
+                        <p><span>ID: </span>@CurrentJob2.Id</p>
+                        <p><span>Title: </span>@CurrentJob2.Title</p>
+                        <p><span>Location: </span>@CurrentJob2.Location</p>
+                        <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
+                        <p><span>Description: </span>@CurrentJob2.Description</p>
+                    }
+                </div>
+
+                <!--Search + post job buttons-->
+                @if (IsShown == false)
+                {
+                    <div class="btn-container">
+                        <button hidden="@IsShown" class="btn btn-outline-success btn-sm mr-1" @onclick="Apply">Apply</button>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center">&nbsp; You Have Applied For This Post Already</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

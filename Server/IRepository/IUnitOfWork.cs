@@ -34,6 +34,11 @@ namespace Server.IRepository
         IGenericRepository<WorkHistory> WorkHistory { get; }
         IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers { get; }
 
+        //Added new repository
+        IGenericRepository<JobPlatform> JobPlatforms { get; }
+        IGenericRepository<JobPlatformHelper> JobPlatformHelpers { get; }
+
+
         //Saving to the DB
         Task Save();
 

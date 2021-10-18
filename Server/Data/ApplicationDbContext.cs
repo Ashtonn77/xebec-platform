@@ -39,6 +39,10 @@ namespace Server.Data
         public DbSet<WorkHistory> WorkHistories { get; set; }
         public DbSet<WorkHistoryHelper> WorkHistoryHelpers { get; set; }
 
+        //Added new DB Sets
+        public DbSet<JobPlatform> JobPlatforms { get; set; }
+        public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

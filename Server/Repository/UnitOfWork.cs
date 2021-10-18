@@ -37,6 +37,10 @@ namespace Server.Repository
         private IGenericRepository<WorkHistory> _workHistories;
         private IGenericRepository<WorkHistoryHelper> _WorkHistoryHelpers;
 
+        //Added new repository
+        private IGenericRepository<JobPlatform> _jobPlatforms;
+        private IGenericRepository<JobPlatformHelper> _jobPlatformHelpers;
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -77,6 +81,10 @@ namespace Server.Repository
         public IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers => _WorkHistoryHelpers ??= new GenericRepository<WorkHistoryHelper>(_context);
 
         public IGenericRepository<AppUser> AppUsers => _appusers ??= new GenericRepository<AppUser>(_context);
+
+        public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);
+
+        public IGenericRepository<JobPlatformHelper> JobPlatformHelpers => _jobPlatformHelpers ??= new GenericRepository<JobPlatformHelper>(_context);
 
         public void Dispose()
         {
