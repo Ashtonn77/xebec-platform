@@ -1,3 +1,5 @@
+ @inject HttpClient http
+ 
  <style>
 
       .main-form {
@@ -23,6 +25,7 @@
                     <div class="form-check-inline form-group-others">
                     <input type="text" id="firstname" pattern="" class="form-control form-control-style" @bind="PersonalInfo.FirstName" placeholder="First Name">
                     <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="first_name_check">
+                    
                 </div>
 
                 <div class="form-check-inline form-group-others">
@@ -76,4 +79,17 @@
 
                 </div>
 
+                <button type="button" class="btn btn-success btn-sm" @onclick="Save">Save</button>
+                <p>@message</p>
             </form>
+
+        @code
+        {
+            string message = "";
+            private async Task Save()
+            {
+                await http.PostAsJsonAsync("api/PersonalsTest", PersonalInfo);
+                message = "Saved";
+            }
+
+        }

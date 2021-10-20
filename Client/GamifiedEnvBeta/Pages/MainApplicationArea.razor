@@ -1,6 +1,7 @@
 ﻿@page "/mainapplication"
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
+@inject HttpClient client
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -263,7 +264,7 @@
                 <li>Profile</li>
                 <li>Job Board</li>
                 <li>Analytics Dashboad</li>
-                <li>Logout</li>
+                <li><a href="/testlogout">Logout</a></li>
 
             </ul>
 
@@ -354,6 +355,10 @@
             <button type="button" class="btn btn-outline-primary btn-sm mr-1" @onclick="PageDown">Prev</button>
             <button type="button" class="btn btn-outline-success btn-sm ml-1" id="next" @onclick="PageUp">Next</button>
 
+            <p>@username</p>
+            <p>@role</p>
+            <p>@id</p>
+
         </form>
 
     </div>
@@ -370,6 +375,26 @@
 @code {
 
 
+    /*newly added*/    
+    string username = string.Empty;
+    string role = string.Empty;
+    string id = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            username = userdetails[0];
+            role = userdetails[1].ToLower();
+            id = userdetails[3];            
+        }
+
+    }
+
+    /*newly added*/
+
     int Count = 1;
     int Progress = 0;
     string[] icons = { "personal", "education", "work", "additional" };
@@ -382,7 +407,7 @@
         else
             Progress += 25;
 
-        string icon = icons[Count - 1];
+        string icon = icons[(Count - 1) % 4];
 
         await jsRuntime.InvokeVoidAsync("toggleProgress", Progress, icon);
 

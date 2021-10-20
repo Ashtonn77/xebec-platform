@@ -9,6 +9,10 @@ namespace XebecPortal.Shared.Security
 {
     public class LoginResult
     {
+        /*newly added*/
+        public int Id { get; set; }
+        /*newly added*/
+
         public string Message { get; set; }
 
         public string Email { get; set; }

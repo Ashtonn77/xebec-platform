@@ -79,6 +79,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 			if (user != null)
 				return new LoginResult
 				{
+					Id = user.Id,//<-newly added
 					Message = "Login successful.",
 					JwtBearer = CreateJWT(user),
 					Email = log.Email,

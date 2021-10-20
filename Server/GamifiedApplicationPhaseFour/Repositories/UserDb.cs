@@ -49,7 +49,7 @@ namespace Server.GamifiedApplicationPhaseFour.Repositories
 				await unitOfWork.Save();
 
 				// return user
-				return new AppUser(email, role);
+				return new AppUser(user.Id, email, role);
 
 			}
 			catch
@@ -71,7 +71,7 @@ namespace Server.GamifiedApplicationPhaseFour.Repositories
 				if (!result.PasswordHash.Equals(CreateHash(password)))
 					return null;
 
-				return new AppUser(email, result.Role);
+				return new AppUser(user.Id, email, result.Role);
 			}
             catch (Exception)
             {
