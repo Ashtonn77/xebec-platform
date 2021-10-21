@@ -8,34 +8,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecPortal.Shared.NewGamifiedModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Server.Controllers
+namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonalsTestController : ControllerBase
+    public class AdditionalInformationTestController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public PersonalsTestController(IUnitOfWork unitOfWork)
+        public AdditionalInformationTestController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         } 
 
-        // GET: api/<PersonalInformationController>
+        // GET: api/<AdditionalInformationController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPersonalInformation()
+        public async Task<IActionResult> GetAdditionalInformation()
         {
             try
             {
-                var PersonalInformation = await _unitOfWork.PersonalTestInfos.GetAll();
+                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetAll();
              
-                return Ok(PersonalInformation);
+                return Ok(AdditionalInformation);
 
             }
             catch (Exception e)
@@ -44,16 +43,16 @@ namespace Server.Controllers
             }
         }
 
-        // GET api/<PersonalInformationController>/5
+        // GET api/<AdditionalInformationController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPersonalInformation(int id)
+        public async Task<IActionResult> GetAdditionalInformation(int id)
         {
             try
             {
-                var PersonalInformation = await _unitOfWork.PersonalTestInfos.GetT(q => q.Id == id);
-                return Ok(PersonalInformation);
+                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
+                return Ok(AdditionalInformation);
             }
             catch (Exception e)
             {
@@ -61,12 +60,12 @@ namespace Server.Controllers
             }
         }
 
-        // POST api/<PersonalInformationController>
+        // POST api/<AdditionalInformationController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreatePersonalInformation([FromBody] PersonalTestInfo PersonalInformation)
+        public async Task<IActionResult> CreateAdditionalInformation([FromBody] AdditionalInformationTest AdditionalInformation)
         {
 
             if (!ModelState.IsValid)
@@ -79,10 +78,10 @@ namespace Server.Controllers
             try
             {
 
-                await _unitOfWork.PersonalTestInfos.Insert(PersonalInformation);
+                await _unitOfWork.AdditionalInformationTests.Insert(AdditionalInformation);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetPersonalInformation", new { id = PersonalInformation.Id }, PersonalInformation);
+                return CreatedAtAction("GetAdditionalInformation", new { id = AdditionalInformation.Id }, AdditionalInformation);
 
             }
             catch (Exception e)
@@ -96,9 +95,9 @@ namespace Server.Controllers
         }
 
 
-        // PUT api/<PersonalInformationController>/5
+        // PUT api/<AdditionalInformationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalTestInfo PersonalInformation)
+        public async Task<IActionResult> UpdateAdditionalInformation(int id, [FromBody] AdditionalInformationTest AdditionalInformation)
         {
             if (!ModelState.IsValid)
             {
@@ -107,13 +106,13 @@ namespace Server.Controllers
 
             try
             {
-                var originalPersonalInformation = await _unitOfWork.PersonalTestInfos.GetT(q => q.Id == id);
+                var originalAdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
 
-                if (originalPersonalInformation == null)
+                if (originalAdditionalInformation == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                _unitOfWork.PersonalTestInfos.Update(originalPersonalInformation);
+                _unitOfWork.AdditionalInformationTests.Update(originalAdditionalInformation);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -127,12 +126,12 @@ namespace Server.Controllers
         }
 
 
-        // DELETE api/<PersonalInformationController>/5
+        // DELETE api/<AdditionalInformationController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeletePersonalInformation(int id)
+        public async Task<IActionResult> DeleteAdditionalInformation(int id)
         {
             if (id < 1)
             {
@@ -141,14 +140,14 @@ namespace Server.Controllers
 
             try
             {
-                var PersonalInformation = await _unitOfWork.PersonalTestInfos.GetT(q => q.Id == id);
+                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
 
-                if (PersonalInformation == null)
+                if (AdditionalInformation == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.PersonalTestInfos.Delete(id);
+                await _unitOfWork.AdditionalInformationTests.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
+using XebecPortal.Shared.NewGamifiedModels;
 
 namespace XebecPortal.Client.GamifiedEnvBeta.Components
 {
     public partial class PersonalDetailsComponent
     {
-        public PersonalInformation PersonalInfo { get; set; } = new PersonalInformation();
+        public PersonalTestInfo PersonalInfo { get; set; } = new PersonalTestInfo();
 
         // This handles changes to the Gender drop box.
         [Parameter]

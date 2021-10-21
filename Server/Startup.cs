@@ -21,6 +21,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using XebecPortal.Client.GamifiedEnvBeta.Utils;
 
 namespace XebecPortal.Server
 {
@@ -48,6 +49,9 @@ namespace XebecPortal.Server
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(MapperInitializer));
+
+            /*newly added*/
+            services.AddSingleton<State>();
 
             services.AddTransient<IUserDb, UserDb>();
 

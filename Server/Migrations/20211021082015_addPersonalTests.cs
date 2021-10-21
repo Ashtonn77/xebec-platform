@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace XebecPortal.Server.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class addPersonalTests : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,6 +153,34 @@ namespace XebecPortal.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkHistories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonalTestInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Disability = table.Column<bool>(type: "bit", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ethnicity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppUserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonalTestInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonalTestInfos_AppUser_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AppUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -460,8 +488,8 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "EndDate", "Insitution", "Qualification", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2021, 12, 12, 13, 7, 20, 386, DateTimeKind.Local).AddTicks(7269), "Richmond", "BSc Computer Science", new DateTime(2021, 10, 12, 13, 7, 22, 386, DateTimeKind.Local).AddTicks(4156) },
-                    { 2, new DateTime(2022, 12, 12, 13, 7, 20, 387, DateTimeKind.Local).AddTicks(173), "Hogwarts", "HighSchool Diploma", new DateTime(2021, 10, 12, 13, 9, 20, 387, DateTimeKind.Local).AddTicks(148) }
+                    { 1, new DateTime(2021, 12, 21, 10, 20, 14, 151, DateTimeKind.Local).AddTicks(4952), "Richmond", "BSc Computer Science", new DateTime(2021, 10, 21, 10, 20, 16, 151, DateTimeKind.Local).AddTicks(4549) },
+                    { 2, new DateTime(2022, 12, 21, 10, 20, 14, 151, DateTimeKind.Local).AddTicks(5619), "Hogwarts", "HighSchool Diploma", new DateTime(2021, 10, 21, 10, 22, 14, 151, DateTimeKind.Local).AddTicks(5613) }
                 });
 
             migrationBuilder.InsertData(
@@ -489,8 +517,8 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "Compensation", "CreationDate", "Department", "Description", "DueDate", "Location", "Title" },
                 values: new object[,]
                 {
-                    { 2, "R50000", new DateTime(2021, 10, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(224), "IT", "beep! beep beep!", new DateTime(2021, 11, 12, 13, 7, 20, 377, DateTimeKind.Local).AddTicks(167), "DBN", "Mobile Administrator" },
-                    { 1, "R45000", new DateTime(2021, 10, 12, 13, 7, 20, 376, DateTimeKind.Local).AddTicks(9064), "IT", "blah! blah! blah!", new DateTime(2021, 12, 12, 13, 7, 20, 374, DateTimeKind.Local).AddTicks(7054), "JHB", "Developer" }
+                    { 2, "R50000", new DateTime(2021, 10, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7704), "IT", "beep! beep beep!", new DateTime(2021, 11, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7687), "DBN", "Mobile Administrator" },
+                    { 1, "R45000", new DateTime(2021, 10, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7148), "IT", "blah! blah! blah!", new DateTime(2021, 12, 21, 10, 20, 14, 145, DateTimeKind.Local).AddTicks(3753), "JHB", "Developer" }
                 });
 
             migrationBuilder.InsertData(
@@ -517,8 +545,8 @@ namespace XebecPortal.Server.Migrations
                 columns: new[] { "Id", "CompanyName", "Description", "EndDate", "JobTitle", "StartDate" },
                 values: new object[,]
                 {
-                    { 1, "White Wolf Inc", "Commanded an army to victory", new DateTime(2023, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(3384), "Commander", new DateTime(2021, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(2619) },
-                    { 2, "Westeros Pty Ltd", "Daydreaming on a Sunday afternoon", new DateTime(2024, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6971), "King", new DateTime(2022, 10, 12, 13, 7, 20, 390, DateTimeKind.Local).AddTicks(6938) }
+                    { 1, "White Wolf Inc", "Commanded an army to victory", new DateTime(2023, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(3588), "Commander", new DateTime(2021, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(3195) },
+                    { 2, "Westeros Pty Ltd", "Daydreaming on a Sunday afternoon", new DateTime(2024, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(4633), "King", new DateTime(2022, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(4624) }
                 });
 
             migrationBuilder.InsertData(
@@ -529,7 +557,7 @@ namespace XebecPortal.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Applications",
                 columns: new[] { "Id", "JobId", "TimeApplied", "UserId" },
-                values: new object[] { 1, 1, new DateTime(2021, 10, 12, 13, 9, 20, 381, DateTimeKind.Local).AddTicks(6730), 1 });
+                values: new object[] { 1, 1, new DateTime(2021, 10, 21, 10, 22, 14, 149, DateTimeKind.Local).AddTicks(3156), 1 });
 
             migrationBuilder.InsertData(
                 table: "DocumentHelpers",
@@ -584,17 +612,17 @@ namespace XebecPortal.Server.Migrations
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 1, 1, null, "Good Candidate, has potential to rule all of Westeros", 1, 1, new DateTime(2021, 10, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8147) });
+                values: new object[] { 1, 1, null, "Good Candidate, has potential to rule all of Westeros", 1, 1, new DateTime(2021, 10, 21, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(8719) });
 
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 2, 1, null, "Interview went well, He's really got potential", 2, 1, new DateTime(2021, 10, 14, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8799) });
+                values: new object[] { 2, 1, null, "Interview went well, He's really got potential", 2, 1, new DateTime(2021, 10, 23, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(9112) });
 
             migrationBuilder.InsertData(
                 table: "ApplicationPhasesHelpers",
                 columns: new[] { "Id", "ApplicationId", "ApplicationPhaseId", "Comments", "PhaseId", "StatusId", "TimeMoved" },
-                values: new object[] { 3, 1, null, "He's good, but won't become king", 3, 2, new DateTime(2021, 12, 12, 13, 7, 20, 384, DateTimeKind.Local).AddTicks(8869) });
+                values: new object[] { 3, 1, null, "He's good, but won't become king", 3, 2, new DateTime(2021, 12, 21, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(9163) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalInformations_UserId",
@@ -672,6 +700,11 @@ namespace XebecPortal.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PersonalTestInfos_AppUserId",
+                table: "PersonalTestInfos",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RegisterHelpers_UserId",
                 table: "RegisterHelpers",
                 column: "UserId");
@@ -696,9 +729,6 @@ namespace XebecPortal.Server.Migrations
                 name: "ApplicationPhasesHelpers");
 
             migrationBuilder.DropTable(
-                name: "AppUser");
-
-            migrationBuilder.DropTable(
                 name: "DocumentHelpers");
 
             migrationBuilder.DropTable(
@@ -715,6 +745,9 @@ namespace XebecPortal.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersonalInformations");
+
+            migrationBuilder.DropTable(
+                name: "PersonalTestInfos");
 
             migrationBuilder.DropTable(
                 name: "RegisterHelpers");
@@ -742,6 +775,9 @@ namespace XebecPortal.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "JobTypes");
+
+            migrationBuilder.DropTable(
+                name: "AppUser");
 
             migrationBuilder.DropTable(
                 name: "WorkHistories");

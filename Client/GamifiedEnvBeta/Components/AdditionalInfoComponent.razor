@@ -1,7 +1,7 @@
 ﻿@inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @using XebecPortal.Shared
-@using XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Shared
+@inject State State
 
 <style>
 
@@ -127,6 +127,17 @@
                     }
                 </div>
             </form>
+
+            @if (State.UserEmail == null)
+{
+    <p>Empty</p>
+}
+else
+{
+    <p>@State.UserEmail</p>
+}
+<p>@State.Role</p>
+<p>@State.Id</p>
 
           
 <!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "AdditionalInfoP3.js"'-->

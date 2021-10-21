@@ -3,6 +3,7 @@
 @inject HttpClient httpClient
 @using XebecPortal.Shared.Security
 @inject NavigationManager NavManager
+@inject State State
 
 <style>
 
@@ -577,7 +578,7 @@ form.sign-up-form{
                 LoginMessage = result.Message;
                 isDisabledLogin = false;               
                 if (result.Success)
-                {
+                {                    
                     await jsr.InvokeVoidAsync("localStorage.setItem", "user",
                     $"{result.Email};{result.Role};{result.JwtBearer};{result.Id}").ConfigureAwait(false);
                     NavManager.NavigateTo("/mainapplication");

@@ -2,6 +2,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
+@inject State State
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -355,10 +356,6 @@
             <button type="button" class="btn btn-outline-primary btn-sm mr-1" @onclick="PageDown">Prev</button>
             <button type="button" class="btn btn-outline-success btn-sm ml-1" id="next" @onclick="PageUp">Next</button>
 
-            <p>@username</p>
-            <p>@role</p>
-            <p>@id</p>
-
         </form>
 
     </div>
@@ -376,22 +373,22 @@
 
 
     /*newly added*/    
-    string username = string.Empty;
+    @* string username = string.Empty;
     string role = string.Empty;
-    string id = string.Empty;
-    protected override async Task OnInitializedAsync()
+    string id = string.Empty; *@
+    @* protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
         if (!string.IsNullOrWhiteSpace(userdata))
         {
             string[] userdetails = userdata.Split(';');
-            username = userdetails[0];
-            role = userdetails[1].ToLower();
-            id = userdetails[3];            
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);            
         }
 
-    }
+    } *@
 
     /*newly added*/
 
