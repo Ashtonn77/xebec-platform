@@ -13,13 +13,18 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
     {
         List<JobPlatform> jobPlatform { get; set; } = new List<JobPlatform>();
         List<JobType> jobTypes { get; set; } = new List<JobType>();
-        List<JobTypeHelper> jobTypeHelpers { get; set; } = new List<JobTypeHelper>();
-        List<JobPlatformHelper> platformHelper { get; set; } = new List<JobPlatformHelper>();
+
+        List<int> jobPlatformHelper = new List<int>();
+
+        int[] jobTypeHelper = new int[0];
+
+        private static Action<string> countryAction;
         protected override async Task OnInitializedAsync()
         {
             jobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/JobType");
             jobPlatform = await httpClient.GetFromJsonAsync<List<JobPlatform>>("api/JobPlatform");
             job.CreationDate = DateTime.Now;
+            countryAction = UpdateModelData;
             await base.OnInitializedAsync();
         }
         protected override async void OnAfterRender(bool firstRender)
@@ -48,26 +53,68 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             get;
             set;
         }
-
-        /*The function we trigger when we interact with the job type drop down
-        It simply binds the value from the drop down to the job type field in the model
-        private Task OnJobTypeChanged(ChangeEventArgs e)
-        {
-            job.JobType = e.Value.ToString();
-            return ValueChanged.InvokeAsync(job.JobType);
-        }*/
-
-        /*The function we trigger when we interact with the department drop down
-        It simply binds the value from the drop down to the department field in the model*/
         private Task OnDepartmentChanged(ChangeEventArgs e)
         {
             job.Department = e.Value.ToString();
             return ValueChanged.InvokeAsync(job.Department);
         }
+        private void UpdateModelData(string value)
+        {
+            if(value != "")
+            {
+                int i = 0;
+                string[] numbers = value.Split(',');
+                int[] splitNumbers = new int[numbers.Length];
+                Array.Resize(ref jobTypeHelper, numbers.Length);
 
+                foreach (var items in numbers)
+                {
+                    splitNumbers[i] = int.Parse(items);
+                    i++;
+                }
+                jobTypeHelper = splitNumbers;
+            }
+            else
+            {
+                jobTypeHelper = null;
+            }
+            StateHasChanged();
+        }
+
+        [JSInvokable]
+        public static void UpdateModel(string value)
+        {
+            countryAction.Invoke(value);
+        }
+
+        private void CheckboxClicked(int idPlatform, object checkedValue)
+        {
+            int i = 0;
+            int[] list = new int[4];
+
+            if ((bool)checkedValue)
+            {
+                if (!jobPlatformHelper.Contains(idPlatform))
+                {
+                    jobPlatformHelper.Add(idPlatform);
+                }
+            }
+            else
+            {
+                if (jobPlatformHelper.Contains(idPlatform))
+                {
+                    jobPlatformHelper.Remove(idPlatform);
+                }
+            }
+        }
         private async Task SendData()
         {
-            await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
+            await httpClient.PostAsJsonAsync("api/Job", job);
+            await httpClient.PostAsJsonAsync("api/JobPlatform", jobPlatformHelper);
+            if(jobTypeHelper != null)
+                await httpClient.PostAsJsonAsync("api/JobTypeHelper", jobTypeHelper);
+            //await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
+            await JsRuntime.InvokeVoidAsync("alert", "Successfully Posted A New Job Post");
         }
 
     }

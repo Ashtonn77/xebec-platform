@@ -77,6 +77,8 @@ namespace Server.Controllers
 
             try
             {
+                Job.CreationDate = DateTime.Now;
+                Job.DueDate = DateTime.Now;
 
                 await _unitOfWork.Jobs.Insert(Job);
                 await _unitOfWork.Save();

@@ -4,6 +4,9 @@
 @inject IJSRuntime JsRuntime
 @using System.Net.Http
 
+@code{ 
+    int i = 0;
+}
 <style>
 
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -271,21 +274,25 @@
                                 <option selected disabled>--Select Department--</option>
                                 <option value="Accounting">Accounting</option>
                                 <option value="Legal">Legal</option>
-                                <option value="I.T">I.T</option>
+                                <option value="IT">IT</option>
                             </select>
                         </div>
 
                         <div class="form-group-others">
-                            <select class="custom-select right-input select2Multi" id="inputGroupSelect01" multiple="multiple">
+                            <select class="custom-select right-input select2Multi" id="select2DDB" multiple="multiple">
                                 @foreach (var items in jobTypes)
                                 {
                                     <option value="@items.Id">@items.Type</option>
                                 }
                             </select>
                         </div>
-
+                        
                         <div class="form-group-others">
-
+                            @foreach (var items in jobPlatform)
+                            {
+                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
+                                //<button class="btn btn-success" @onclick="() => Test(items)">Test</button>
+                            }
                             <!--<input type="checkbox" @@bind="platformHelper[0].JobPlatformId"> LinkedIn &nbsp;
                             <input type="checkbox" @@bind="platformHelper[1].JobPlatformId"> Indeed &nbsp;
                             <input type="checkbox" @@bind="platformHelper[2].JobPlatformId"> Twitter  &nbsp;-->

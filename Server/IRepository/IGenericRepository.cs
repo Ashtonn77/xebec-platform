@@ -18,5 +18,7 @@ namespace Server.IRepository
         Task Delete(int id);
 
         void Update(T Entity);
+
+        Task InsertRange(IEnumerable<T> Entities);
     }
 }
