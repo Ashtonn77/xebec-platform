@@ -22,7 +22,7 @@ namespace XebecPortal.Shared.NewGamifiedModels
 
         public string Address { get; set; }
 
-        public bool Disability { get; set; }
+        public string Disability { get; set; }
 
         public string Gender { get; set; }
 

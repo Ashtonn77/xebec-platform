@@ -581,7 +581,7 @@ form.sign-up-form{
                 {                    
                     await jsr.InvokeVoidAsync("localStorage.setItem", "user",
                     $"{result.Email};{result.Role};{result.JwtBearer};{result.Id}").ConfigureAwait(false);
-                    NavManager.NavigateTo("/mainapplication");
+                    NavManager.NavigateTo("/main");
                     
                      @* if (result.Role.ToLower().Equals("candidate"))
                     {

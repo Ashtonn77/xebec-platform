@@ -1,6 +1,7 @@
-﻿@inject IJSRuntime JS
+﻿@inject IJSRuntime jsRuntime
 @inject NavigationManager NavigationManager
 @inject State State
+@inject HttpClient http
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -143,12 +144,12 @@
 
         <div class="inline-inner">
             <label for="companyName">Company Name:</label>
-            <input type="text" id="companyName">
+            <input type="text" id="companyName" @bind="WorkHistory.CompanyName">
         </div>
 
         <div class="inline-inner">
             <label for="jobTitle">Job Title:</label>
-            <input type="text" id="jobTitle">
+            <input type="text" id="jobTitle" @bind="WorkHistory.JobTitle">
         </div>
 
 
@@ -158,12 +159,12 @@
 
         <div class="inline-inner">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate">
+            <input type="date" id="startDate" @bind="WorkHistory.StartDate">
         </div>
 
         <div class="inline-inner">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate">
+            <input type="date" id="endDate" @bind="WorkHistory.EndDate">
         </div>
 
     </div>
@@ -171,23 +172,49 @@
     <div class="inline">
         <div class="inline-inner address-inner">
             <label for="description">Description:</label>
-            <textarea id="description"></textarea>
+            <textarea id="description" @bind="WorkHistory.Description"></textarea>
         </div>
     </div>
 
     <div class="btn-container">
         <button type="button" class="btn btn-primary btn-sm mr-1" @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1">Save</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
         <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
     </div>
 </form>
 
-
+<p>@message</p>
 
 @code {
 
+    private WorkHistoryTest WorkHistory = new WorkHistoryTest();
    [Parameter] public EventCallback<int> Increment { get; set; }
 
    [Parameter] public EventCallback<int> Decrement { get; set; }  
+
+   private string message = string.Empty;    
+
+      protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);            
+        }
+
+        WorkHistory.StartDate = DateTime.Now;
+        WorkHistory.EndDate = DateTime.Now;
+        WorkHistory.AppUserId = State.Id;
+    }
+   
+    private async Task Save()
+    {
+        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory);
+        message = "Saved!";       
+    }    
 
 }

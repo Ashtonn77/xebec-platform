@@ -118,12 +118,12 @@
 
         <div class="inline-inner">
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName">
+            <input type="text" id="firstName" @bind="Personal.FirstName">
         </div>
 
         <div class="inline-inner">
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName">
+            <input type="text" id="lastName" @bind="Personal.LastName">
         </div>
 
 
@@ -133,12 +133,12 @@
 
         <div class="inline-inner">
             <label for="phoneNumber">Phone Number:</label>
-            <input type="text" id="phoneNumber">
+            <input type="text" id="phoneNumber" @bind="Personal.PhoneNumber">
         </div>
 
         <div class="inline-inner">
             <label for="email">Email:</label>
-            <input type="text" id="email">
+            <input type="text" id="email" @bind="Personal.Email">
         </div>
 
     </div>
@@ -147,12 +147,12 @@
 
         <div class="inline-inner">
             <label for="idNumber">I.D Number:</label>
-            <input type="text" id="idNumber">
+            <input type="text" id="idNumber" @bind="Personal.IdNumber">
         </div>
 
         <div class="inline-inner">
             <label for="ethnicity">Ethnicity:</label>
-            <input type="text" id="ethnicity">
+            <input type="text" id="ethnicity" @bind="Personal.Ethnicity">
         </div>
 
     </div>
@@ -162,7 +162,8 @@
         <div class="inline-inner">
 
             <label for="disability">Disabilty:</label>
-            <select id="disability">
+            <select id="disability" @onchange="OnDisabilityChanged">
+                <option value="--">--</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
                 <option value="both">Don't wish to disclose</option>
@@ -173,7 +174,8 @@
         <div class="inline-inner">
 
             <label for="gender">Gender:</label>
-            <select id="gender">
+            <select id="gender" @onchange="OnGenderChanged">
+                <option value="--">--</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="both">Don't wish to disclose</option>
@@ -186,22 +188,77 @@
     <div class="inline">
         <div class="inline-inner address-inner">
             <label for="address">Address:</label>
-            <textarea id="address"></textarea>
+            <textarea id="address" @bind="Personal.Address"></textarea>
         </div>
     </div>
 
     <div class="btn-container">
-        <button type="button" class="btn btn-primary btn-sm mr-1" >Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1">Save</button>
-        <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
+        <button type="button" class="btn btn-primary btn-sm mr-1">Prev</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
+        <button type="button" class="btn btn-primary btn-sm ml-1"
+            @onclick="@(() => Increment.InvokeAsync())">Next</button>
     </div>
-    
+
 </form>
- 
+
+
+<p>@message</p>
+
 @code {
 
     [Parameter] public EventCallback<int> Increment { get; set; }
 
-    
- 
+    private PersonalTestInfo Personal = new PersonalTestInfo();
+
+    private string message = string.Empty;
+
+
+    [Parameter]
+    public EventCallback<string> DisabilityChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<string> GenderChanged
+    {
+        get;
+        set;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);            
+        }
+
+        Personal.AppUserId = State.Id;
+    }
+
+    private Task OnDisabilityChanged(ChangeEventArgs e)
+    {
+        Personal.Disability = e.Value.ToString();
+        return DisabilityChanged.InvokeAsync(Personal.Disability);
+    }
+
+
+    private Task OnGenderChanged(ChangeEventArgs e)
+    {
+        Personal.Gender = e.Value.ToString();
+        return GenderChanged.InvokeAsync(Personal.Gender);
+    }
+
+     private async Task Save()
+    {
+        await http.PostAsJsonAsync("api/PersonalsTest", Personal);
+        message = "Saved!";       
+    }      
+
 }
+

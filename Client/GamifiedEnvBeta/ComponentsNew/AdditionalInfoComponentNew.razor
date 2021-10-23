@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime jsRuntime
 @using XebecPortal.Shared
 @inject State State
 @inject HttpClient http
@@ -120,12 +120,12 @@
 
         <div class="inline-inner">
             <label for="github">GitHub:</label>
-            <input type="text" id="github">
+            <input type="text" id="github" @bind="AdditionalInfo.GitHubLink">
         </div>
 
         <div class="inline-inner">
             <label for="facebook">Facebook:</label>
-            <input type="text" id="facebook">
+            <input type="text" id="facebook" @bind="AdditionalInfo.FacebookLink">
         </div>
 
 
@@ -135,34 +135,66 @@
 
         <div class="inline-inner">
             <label for="linkedin">LinkedIn:</label>
-            <input type="text" id="linkedin">
+            <input type="text" id="linkedin" @bind="AdditionalInfo.LinkedInLink">
         </div>
 
         <div class="inline-inner">
             <label for="website">Website:</label>
-            <input type="text" id="website">
+            <input type="text" id="website" @bind="AdditionalInfo.PersonalWebsiteUrl">
         </div>
 
     </div>
 
     <div class="inline-inner">
         <label for="documents">Documents:</label>
-        <input type="file" id="documents">
+        <input type="file" id="documents" @bind="AdditionalInfo.DocumentUrl">
     </div>
 
     <div class="btn-container">
-        <button type="button" class="btn btn-primary btn-sm mr-1" @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1">Save</button>
-        <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
+        <button type="button" class="btn btn-primary btn-sm mr-1"
+            @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
+        <button type="button" class="btn btn-primary btn-sm ml-1"
+            @onclick="@(() => Increment.InvokeAsync())">Next</button>
     </div>
 
 </form>
 
+<p>@message</p>
 
 @code {
 
+    private AdditionalInformationTest AdditionalInfo = new AdditionalInformationTest();
+
+    private string message = string.Empty;
+
     [Parameter] public EventCallback<int> Increment { get; set; }
 
-    [Parameter] public EventCallback<int> Decrement { get; set; } 
+    [Parameter] public EventCallback<int> Decrement { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);
+        }
+
+        AdditionalInfo.AppUserId = State.Id;
+    }
+
+    private async Task Save()
+    {
         
+        string[] url = AdditionalInfo.DocumentUrl.Split('\\');
+        AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
+        message = "Saved!";
+        await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo);
+
+    }
+
 }
