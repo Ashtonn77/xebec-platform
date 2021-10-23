@@ -56,6 +56,6 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Components
             selectedFiles.Remove(file);
         }
         //Model used by the form
-        public AdditionalInformation AdditionalInformation { get; set; } = new AdditionalInformation();
+        public AdditionalInformationTest AdditionalInformation { get; set; } = new AdditionalInformationTest();
     }
 }

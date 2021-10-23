@@ -1,0 +1,233 @@
+﻿@page "/main"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient client
+@inject State State
+
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    .wrapper {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .nav {
+        height: 8vh;
+        background-color: #fff;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.8rem;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+    .main-body {
+        height: 86vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color:pink;
+    }
+
+    
+    .form-div {
+        height: 80%;
+        width: 90%;
+        margin: 0.4rem auto 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem;
+        background-color:#ebebeb;
+    }
+
+   
+
+    /*FOOTER*/
+    .footer-container {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
+    }
+
+
+
+    /*ANIMATED PROGRESS BAR*/
+     .progress-div {
+        height: 12%;
+        width: 90%;
+        margin: 0 auto;       
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: orangered;
+    }    
+   
+
+</style>
+
+<div class="wrapper">
+
+    <div class="nav">
+
+        <div class="nav-title">
+            <h5>Xebec Platform</h5>
+        </div>
+
+        <div class="nav-icons">
+
+            @* <img src="\img\user.png" alt="user"> *@
+            @* <img class="burger" id="burger" src="\img\menu-icon.png" alt="menu" @onclick="ShowMenu"> *@
+
+        </div>
+
+    </div>
+  
+
+    <div class="main-body">
+
+        <div class="progress-div">
+
+           
+
+        </div>
+
+        <div class="form-div">
+
+          
+            @if(Count == 1)
+            {
+                <PersonalDetailsComponentNew Increment="Increment"></PersonalDetailsComponentNew>
+            }
+            else if(Count == 2)
+            {
+                <EducationDetailsComponentNew Increment="Increment" Decrement="Decrement"></EducationDetailsComponentNew>
+            }
+            else if(Count == 3)
+            {
+                <WorkHistoryComponentNew Increment="Increment" Decrement="Decrement"></WorkHistoryComponentNew>
+            }
+            else if(Count == 4)
+            {
+                <AdditionalInfoComponentNew Increment="Increment" Decrement="Decrement"></AdditionalInfoComponentNew>
+            }
+
+        </div>
+      
+    </div>
+
+    <div class="footer-container">
+
+        <span>Nebula 2021 &reg;</span>
+
+    </div>
+
+</div>
+
+<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "PersonalDetailsP3.js"'-->
+@code {
+    
+     int Count = 1;
+
+    void Increment()
+    {
+        Count++;
+        if(Count > 4)
+            Count = 4;
+    }
+
+    void Decrement()
+    {
+        Count--;
+        if(Count < 1)
+            Count = 1;
+    }
+
+    /*newly added*/    
+    @* string username = string.Empty;
+    string role = string.Empty;
+    string id = string.Empty; *@
+    @* protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);            
+        }
+
+    } *@
+
+    /*newly added*/
+
+    @* int Count = 1;
+    int Progress = 0;
+    string[] icons = { "personal", "education", "work", "additional" };
+
+    private async Task PageUp()
+    {
+        Count++;
+        if (Count > 5)
+            Count = 5;
+        else
+            Progress += 25;
+
+        string icon = icons[(Count - 1) % 4];
+
+        await jsRuntime.InvokeVoidAsync("toggleProgress", Progress, icon);
+
+    }
+
+    private async Task PageDown()
+    {
+        Count--;
+        if (Count < 1)
+            Count = 1;
+        else
+            Progress -= 25;
+
+        string icon = icons[Count - 1];
+
+        await jsRuntime.InvokeVoidAsync("toggleProgress", Progress, icon);
+
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("personalDetails");
+        await jsRuntime.InvokeVoidAsync("initializeVariables");
+        await jsRuntime.InvokeVoidAsync("initializeProgress");
+        base.OnAfterRender(firstRender);
+    }
+
+    private async Task ShowMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("toggleMenu");
+    }
+ *@
+
+}

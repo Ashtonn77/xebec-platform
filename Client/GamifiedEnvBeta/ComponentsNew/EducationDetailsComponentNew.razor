@@ -1,0 +1,148 @@
+﻿@inject HttpClient http
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject State State
+
+<style>
+    @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    /*new*/
+    .input-form {
+        background-color: #fff;
+        padding: 10px;
+        height: 90%;
+        width: 90%;
+        margin: auto;
+        max-width: 600px;
+        max-height: 350px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 5px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+
+    .input-form::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .input-form::-webkit-scrollbar-track {
+        background-color: #EAF2F8;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .input-form::-webkit-scrollbar-thumb {
+        background-color: #95A5A6;
+        border: 3px solid #EAF2F8;
+        border-radius: 20px;
+    }
+
+    .inline {
+        width: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+
+    .inline-inner {
+        width: 45%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 0px;
+    }
+
+    .inline-inner input,
+    select {
+        padding: 3px 5px;
+        border-radius: 5px;
+        border: 0.5px solid #7C7C7C;
+        font-size: 13px;
+    }
+
+    .inline-inner input:focus,
+    select:focus,
+    .address-inner textarea:focus {
+        outline: none !important;
+        border: 1px solid #0077b6;
+        box-shadow: 0 0 10px #719ECE;
+    }
+
+    .btn-container,
+    .form-title {
+        padding: 1rem 0;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+</style>
+
+<form class="input-form">
+
+
+    <div class="form-title">
+        <h4>Education History</h4>
+    </div>
+
+
+    <div class="inline">
+
+        <div class="inline-inner">
+            <label for="institution">Institution:</label>
+            <input type="text" id="institution">
+        </div>
+
+        <div class="inline-inner">
+            <label for="qualification">Qualification:</label>
+            <input type="text" id="qualification">
+        </div>
+
+
+    </div>
+
+    <div class="inline">
+
+        <div class="inline-inner">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="inline-inner">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate">
+        </div>
+
+    </div>
+
+   <div class="btn-container">
+        <button type="button" class="btn btn-primary btn-sm mr-1" @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1">Save</button>
+        <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
+    </div>
+
+</form>
+
+@code {
+
+
+  [Parameter] public EventCallback<int> Increment { get; set; }
+
+  [Parameter] public EventCallback<int> Decrement { get; set; }    
+
+}

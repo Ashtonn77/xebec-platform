@@ -4,6 +4,8 @@
 @inject HttpClient client
 @inject State State
 
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
+
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -191,8 +193,7 @@
     .progress-div {
         height: 10%;
         width: 90%;
-        margin: 0 auto;
-        @*background-color:blue;*@display: flex;
+        margin: 0 auto;       
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -318,7 +319,8 @@
                     <center>
                         <h4 class="mt-2 mb-3">Personal Details</h4>
                     </center>
-                    <PersonalDetailsComponent />
+                   <PersonalDetailsComponent />
+                  
                 }
                 else if (Count == 2)
                 {
@@ -354,7 +356,7 @@
         <form class="div-buttons">
 
             <button type="button" class="btn btn-outline-primary btn-sm mr-1" @onclick="PageDown">Prev</button>
-            <button type="button" class="btn btn-outline-success btn-sm ml-1" id="next" @onclick="PageUp">Next</button>
+            <button type="button" class="btn btn-outline-success btn-sm ml-1" @onclick="PageUp">Next</button>
 
         </form>
 

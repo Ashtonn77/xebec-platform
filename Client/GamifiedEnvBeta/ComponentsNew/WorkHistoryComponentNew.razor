@@ -1,0 +1,193 @@
+﻿@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject State State
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .progress-div {
+        height: 12%;
+        width: 90%;
+        margin: 0 auto;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: orangered;
+    }
+
+    /*FOOTER*/
+    .footer-container {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
+    }
+
+
+    /*new*/
+    .input-form {
+        background-color: #fff;
+        padding: 10px;
+        height: 90%;
+        width: 90%;
+        margin: auto;
+        max-width: 600px;
+        max-height: 300px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 5px;
+        overflow-y: auto;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+
+    .input-form::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .input-form::-webkit-scrollbar-track {
+        background-color: #EAF2F8;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .input-form::-webkit-scrollbar-thumb {
+        background-color: #95A5A6;
+        border: 3px solid #EAF2F8;
+        border-radius: 20px;
+    }
+
+    .inline {
+        width: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+
+    .inline-inner {
+        width: 45%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 0px;
+    }
+
+    .inline-inner input,
+    select {
+        padding: 3px 5px;
+        border-radius: 5px;
+        border: 0.5px solid #7C7C7C;
+        font-size: 13px;
+    }
+
+    .inline-inner input:focus,
+    select:focus,
+    .address-inner textarea:focus {
+        outline: none !important;
+        border: 1px solid #0077b6;
+        box-shadow: 0 0 10px #719ECE;
+    }
+
+    .address-inner {
+        width: 80%;
+    }
+
+    .address-inner textarea {
+        height: 100px;
+        padding: 5px 10px;
+        resize: none;
+        border-radius: 5px;
+        border: 0.5px solid #7C7C7C;
+    }
+
+    .btn-container,
+    .form-title {
+        padding: 1rem 0;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+</style>
+
+<form class="input-form">
+
+
+    <div class="form-title">
+        <h4>Work Experience</h4>
+    </div>
+
+
+    <div class="inline">
+
+        <div class="inline-inner">
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName">
+        </div>
+
+        <div class="inline-inner">
+            <label for="jobTitle">Job Title:</label>
+            <input type="text" id="jobTitle">
+        </div>
+
+
+    </div>
+
+    <div class="inline">
+
+        <div class="inline-inner">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate">
+        </div>
+
+        <div class="inline-inner">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate">
+        </div>
+
+    </div>
+
+    <div class="inline">
+        <div class="inline-inner address-inner">
+            <label for="description">Description:</label>
+            <textarea id="description"></textarea>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button type="button" class="btn btn-primary btn-sm mr-1" @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1">Save</button>
+        <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
+    </div>
+</form>
+
+
+
+@code {
+
+   [Parameter] public EventCallback<int> Increment { get; set; }
+
+   [Parameter] public EventCallback<int> Decrement { get; set; }  
+
+}

@@ -2,37 +2,37 @@
 @inject IJSRuntime JsRuntime
 @using XebecPortal.Shared
 @inject State State
+@inject HttpClient http
 
 <style>
-
     .main-form {
         height: 85%;
         max-height: 250px;
         min-height: 250px;
         width: 90%;
         max-width: 650px;
-        margin: 0 auto;       
+        margin: 0 auto;
         background-color: #e9ecef;
         border-radius: 5px;
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         overflow-y: scroll;
     }
 
-     .main-form::-webkit-scrollbar {
-            width: 12px;
-        }
+    .main-form::-webkit-scrollbar {
+        width: 12px;
+    }
 
-        .main-form::-webkit-scrollbar-track {
-            background-color: #EAF2F8;
-        }
+    .main-form::-webkit-scrollbar-track {
+        background-color: #EAF2F8;
+    }
 
-        .main-form::-webkit-scrollbar-thumb {
-            background-color: #95A5A6;
-            border-radius: 20px;
-            border: 3px solid #EAF2F8;
-        }
+    .main-form::-webkit-scrollbar-thumb {
+        background-color: #95A5A6;
+        border-radius: 20px;
+        border: 3px solid #EAF2F8;
+    }
 
-   
+
     .form-group-first {
         margin-top: 5%;
         width: 40%;
@@ -70,81 +70,82 @@
     .form-icon {
         color: black;
     }
-
-  
-    
 </style>
 
 
-            <form class="main-form">
-                <div class="form-group form-check-inline form-group-first">
-                    <i class="fa fa-github mr-2" style="color: black;"></i>
-                    <input type="text" class="form-control form-control-style" id="github" placeholder="Github Link" @bind="AdditionalInformation.GitHubLink">
-                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="github_check">
-                </div>
-                <div class="form-group form-check-inline form-group-others">
-                    <i class="fa fa-facebook mr-2" style="color: #4267B2;"></i>
-                    <input type="text" class="form-control form-control-style" id="facebook" placeholder="Facebook" @bind="AdditionalInformation.FacebookLink">
-                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="facebook_check">
+<form class="main-form">
+    <div class="form-group form-check-inline form-group-first">
+        <i class="fa fa-github mr-2" style="color: black;"></i>
+        <input type="text" class="form-control form-control-style" id="github" placeholder="Github Link"
+            @bind="AdditionalInformation.GitHubLink">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="github_check">
+    </div>
+    <div class="form-group form-check-inline form-group-others">
+        <i class="fa fa-facebook mr-2" style="color: #4267B2;"></i>
+        <input type="text" class="form-control form-control-style" id="facebook" placeholder="Facebook"
+            @bind="AdditionalInformation.FacebookLink">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="facebook_check">
 
-                </div><br>
-                <div class="form-group form-check-inline form-group-others">
-                    <i class="fa fa-linkedin mr-2" style="color:#0077b5"></i>
-                    <input type="text" class="form-control form-control-style" id="linkedin" placeholder="LinkedIn" @bind="AdditionalInformation.LinkedInLink">
-                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="linkedin_check">
-                </div>
-                <div class="form-group form-check-inline form-group-others">
-                    <i class="fa fa-globe mr-1" style="color:orange;"></i>
-                    <input type="text" class="form-control form-control-style" id="website" placeholder="Website" @bind="AdditionalInformation.PersonalWebsiteUrl">
-                    <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="website_check">
+    </div><br>
+    <div class="form-group form-check-inline form-group-others">
+        <i class="fa fa-linkedin mr-2" style="color:#0077b5"></i>
+        <input type="text" class="form-control form-control-style" id="linkedin" placeholder="LinkedIn"
+            @bind="AdditionalInformation.LinkedInLink">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="linkedin_check">
+    </div>
+    <div class="form-group form-check-inline form-group-others">
+        <i class="fa fa-globe mr-1" style="color:orange;"></i>
+        <input type="text" class="form-control form-control-style" id="website" placeholder="Website"
+            @bind="AdditionalInformation.PersonalWebsiteUrl">
+        <input type="checkbox" class="form-check-input" style="margin-left: 5%;" id="website_check">
 
-                </div><br>
+    </div><br>
 
-                <div class="form-group form-check-inline form-group-text-area">
-                    <BlazorInputFile.InputFile class="dropzone" style="border: none;" id="fileInput" OnChange="@OnInputFileChange" accept="image/png,image/gif,image/jpeg,application/pdf,application/msword" />
-                    <input type="checkbox" class="form-check-input" id="job_description_check">
-                </div><br />
+    <div class="form-group form-check-inline form-group-text-area">
+        <BlazorInputFile.InputFile class="dropzone" style="border: none;" id="fileInput" OnChange="@OnInputFileChange"
+            accept="image/png,image/gif,image/jpeg,application/pdf,application/msword" />
+        <input type="checkbox" class="form-check-input" id="job_description_check">
+    </div><br />
 
-                <div class="form-group form-check-inline form-group-others">
-                    @if (selectedFiles != null && selectedFiles.Count > 0)
+    <div class="form-group form-check-inline form-group-others">
+        @if (selectedFiles != null && selectedFiles.Count > 0)
+        {
+            <div class="drop-zone-button-div">
+                <ul>
+                    @foreach (var file in selectedFiles)
                     {
-                        <div class="drop-zone-button-div">
-                            <ul>
-                                @foreach (var file in selectedFiles)
-                                {
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-lg-6"> @file.Name </div>
-                                            <div class="col-lg-6">
-                                                <button id="removeFile" class="drop-zone-button btn btn-danger btn-sm" type="button" @onclick="@(e => RemoveFile(file))">Remove</button>
-                                            </div>
-                                        </div>
-                                        <br />
-                                    </li>
-                                }
-                            </ul>
-                        </div>
+                        <li>
+                            <div class="row">
+                                <div class="col-lg-6"> @file.Name </div>
+                                <div class="col-lg-6">
+                                    <button id="removeFile" class="drop-zone-button btn btn-danger btn-sm" type="button"
+                                @onclick="@(e => RemoveFile(file))">Remove</button>
+                                </div>
+                            </div>
+                            <br />
+                        </li>
                     }
-                </div>
-            </form>
+                </ul>
+            </div>
+        }
+    </div>
 
-            @if (State.UserEmail == null)
-{
-    <p>Empty</p>
-}
-else
-{
-    <p>@State.UserEmail</p>
-}
-<p>@State.Role</p>
-<p>@State.Id</p>
 
-          
+</form>
+
 <!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "AdditionalInfoP3.js"'-->
-@code{
+@code {
     protected override async void OnAfterRender(bool firstRender)
     {
         await JsRuntime.InvokeVoidAsync("additionalInfo");
         base.OnAfterRender(firstRender);
+        AdditionalInformation.AppUserId = State.Id;
+    }
+
+    string message = string.Empty;
+    private async Task Save()
+    {
+        await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInformation);
+        message = "Saved";
     }
 }

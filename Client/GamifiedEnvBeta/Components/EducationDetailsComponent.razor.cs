@@ -8,7 +8,7 @@ using XebecPortal.Client.GamifiedEnvBeta.PhaseTwo.Shared;
 
 namespace XebecPortal.Client.GamifiedEnvBeta.Components
 {
-    public partial class EducationDetailsComponent
+    public partial class EducationFormComponent
     {
         /*
 * The logic here is the same as the one in WorkHistoryPage.

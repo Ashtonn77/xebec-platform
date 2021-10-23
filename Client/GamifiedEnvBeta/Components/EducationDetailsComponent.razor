@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JS
+﻿@* @inject HttpClient http
+@inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @inject State State
 
@@ -21,7 +22,7 @@
                     <button class="btn btn-primary btn-sm" @onclick="addNewDiv">Add</button>
                 </div><br />
                 @* Displays all form components saved in the the forms list *@
-                @for (int i = 0; i < forms.Count; ++i)
+                @* @for (int i = 0; i < forms.Count; ++i)
                 {
                     @forms[i];
                     <div class="add-button-div" style="margin-top:20px">
@@ -30,23 +31,17 @@
                     </div><br />
 
                 }
-            </center>
-              @if(State.UserEmail == null)
-            {
-                <p>Empty</p>
-            }
-            else
-            {
-                <p>@State.UserEmail</p>
-            }
-            <p>@State.Role</p>
-            <p>@State.Id</p>
+            </center> *@
+
            
-<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "EducationFormP3.js"'-->
+@* 
 @code{
+
+    
     protected override async void OnAfterRender(bool firstRender)
     {
         await JS.InvokeVoidAsync("educationalForm");
         base.OnAfterRender(firstRender);
     }
-}
+
+}  *@

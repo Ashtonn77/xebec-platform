@@ -88,11 +88,11 @@ namespace Server.Repository
 
         public IGenericRepository<PersonalTestInfo> PersonalTestInfos => _personalTestInfos ??= new GenericRepository<PersonalTestInfo>(_context);
 
-        public IGenericRepository<EducationTest> EducationTests => throw new NotImplementedException();
+        public IGenericRepository<EducationTest> EducationTests => _educationTests ??= new GenericRepository<EducationTest>(_context);
 
-        public IGenericRepository<WorkHistoryTest> WorkHistoryTests => throw new NotImplementedException();
+        public IGenericRepository<WorkHistoryTest> WorkHistoryTests => _workHistoryTests ??= new GenericRepository<WorkHistoryTest>(_context);
 
-        public IGenericRepository<AdditionalInformationTest> AdditionalInformationTests => throw new NotImplementedException();
+        public IGenericRepository<AdditionalInformationTest> AdditionalInformationTests => _additionalInformationTests ??= new GenericRepository<AdditionalInformationTest>(_context);
 
         public void Dispose()
         {

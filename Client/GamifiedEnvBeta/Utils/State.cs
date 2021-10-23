@@ -13,6 +13,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public string Role { get; set; }
 
+        public int PageNumber { get; set; } = 1;
+
 
     }
 }

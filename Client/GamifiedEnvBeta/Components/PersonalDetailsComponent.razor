@@ -87,21 +87,7 @@
 
     </div>
 
-    <button type="button" class="btn btn-success btn-sm" @onclick="Save">Save</button>
-    <p>@message</p>
-
 </form>
-
-@if (State.UserEmail == null)
-{
-    <p>Empty</p>
-}
-else
-{
-    <p>@State.UserEmail</p>
-}
-<p>@State.Role</p>
-<p>@State.Id</p>
 
 @code
 {
@@ -120,7 +106,7 @@ else
         PersonalInfo.AppUserId = State.Id;
 
     }
-    string message = "";
+    string message = string.Empty;
     private async Task Save()
     {
         await http.PostAsJsonAsync("api/PersonalsTest", PersonalInfo);

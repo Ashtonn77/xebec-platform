@@ -1,8 +1,9 @@
 
-@using Microsoft.AspNetCore.Components.Forms;
+@inject HttpClient http
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
-@using XebecPortal.Client.Shared
+@using XebecPortal.Shared.NewGamifiedModels
+@inject State State
 
 <style>
 
@@ -84,6 +85,9 @@
             </div>
         </div>
 
+        <button type="button" class="btn btn-success btn-sm" @onclick="Save">Save</button>
+        <p>@message</p>
+
     </div>
 
     </div>
@@ -93,14 +97,20 @@
 
 @code{
 
-
+    string message = string.Empty;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         Education.StartDate = DateTime.Now;
         Education.EndDate = DateTime.Now;
+        Education.AppUserId = State.Id;
     }
     //This is a model used in the form
     //Add changes to the fields are automatically updated.
-    public Education Education { get; set; } = new Education();
+    public EducationTest Education { get; set; } = new EducationTest();
+     private async Task Save()
+    {
+        await http.PostAsJsonAsync("api/EducationTest", Education);
+        message = "Saved";
+    }
 }
