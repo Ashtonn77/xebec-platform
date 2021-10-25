@@ -290,12 +290,8 @@
                         <div class="form-group-others">
                             @foreach (var items in jobPlatform)
                             {
-                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
-                                //<button class="btn btn-success" @onclick="() => Test(items)">Test</button>
+                            <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
                             }
-                            <!--<input type="checkbox" @@bind="platformHelper[0].JobPlatformId"> LinkedIn &nbsp;
-                            <input type="checkbox" @@bind="platformHelper[1].JobPlatformId"> Indeed &nbsp;
-                            <input type="checkbox" @@bind="platformHelper[2].JobPlatformId"> Twitter  &nbsp;-->
                         </div>
                     </div>
                 </div>
@@ -305,14 +301,9 @@
                 </div><br />
 
                 <div class="form-group add-button-div">
-                    <button type="button" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
+                    <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
                 </div><br />
             </form>
-
-            <div class="div-buttons">
-                <button type="button" @onclick="toIndex" class="btn btn-outline-primary btn-sm mr-2">Previous</button>
-                <button type="button" @onclick="toWorkHistory" class="btn btn-outline-success btn-sm ml-2">Next</button>
-            </div>
         </div>
     </div>
 </div>
