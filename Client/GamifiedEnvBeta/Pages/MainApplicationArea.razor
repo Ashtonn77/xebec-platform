@@ -1,0 +1,440 @@
+﻿@page "/mainapplication"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient client
+@inject State State
+
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    .wrapper {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .nav {
+        height: 8vh;
+        background-color: #fff;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.8rem;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+    .main-body {
+        height: 86vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        @*background-color:pink;*@
+    }
+
+
+    .form-div {
+        height: 72%;
+        width: 90%;
+        margin: 0.4rem auto 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow-y: scroll;
+        padding: 0.6rem;
+        @*background-color:green;*@
+    }
+
+    .form-div::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .form-div::-webkit-scrollbar-track {
+        @*background-color:#EAF2F8;*@background-color: #fff;
+    }
+
+    .form-div::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+        @*background-color:#95A5A6;*@border-radius: 20px;
+        @*border:3pxsolid#EAF2F8;*@
+    }
+
+
+    .div-buttons {
+        height: 8%;
+        width: 90%;
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        @*background-color:aqua;*@
+    }
+
+    .form-group-first {
+        margin-top: 5%;
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+    }
+
+    .form-group-others {
+        width: 40%;
+        margin-left: 5%;
+        margin-right: 2.5%;
+        margin-top: 2%;
+    }
+
+    .form-group-text-area {
+        width: 70%;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-top: 2%;
+    }
+
+    .form-control-style {
+        border: 2px darkgrey solid;
+        background-color: white;
+    }
+
+    .form-control-text-area {
+        border: 2px darkgrey solid;
+        height: 400px;
+        width: 100%;
+    }
+
+
+    label {
+        margin-top: 5px;
+        color: black;
+        font-size: 15px;
+    }
+
+    .form-check-div {
+        width: 20px;
+        height: 100%;
+        margin-left: 5px;
+    }
+
+    /*FOOTER*/
+    .footer-container {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
+    }
+
+
+    /*SLIDE OUT MENU*/
+    .slide-out-menu {
+        position: absolute;
+        right: 0;
+        height: 86vh;
+        width: 0px;
+        background-color: #e9ecef;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .slide-out-menu ul li {
+        list-style: none;
+        margin-top: 0.4rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .slide-out-menu ul li:hover {
+        /*transform: scale(108%);*/
+        color: #30e87a;
+    }
+
+    .slider-container {
+        display: none;
+        margin-left: 0.2rem;
+        padding: 0.2rem;
+    }
+
+    .cloak {
+        background-color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        width: 0px;
+        height: 86vh;
+        transition: width 0.7s ease-in-out;
+    }
+
+    .burger {
+        cursor: pointer;
+    }
+
+
+    .scrollable-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    /*ANIMATED PROGRESS BAR*/
+    .progress-div {
+        height: 10%;
+        width: 90%;
+        margin: 0 auto;       
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .progress-icons {
+        width: 80%;
+        max-width: 750px;
+        height: 80%;
+        max-height: 38px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        @*background-color:orangered;*@
+    }
+
+    .progressbar-container {
+        width: 80%;
+        max-width: 700px;
+        height: 15%;
+        max-height: 8px;
+        margin: auto;
+        background-color: #ddd;
+        border-radius: 20px;
+    }
+
+    .progressbar-progress {
+        width: 0%;
+        height: 100%;
+        border-radius: 20px;
+        transition: width 0.5s ease-out;
+        background-color: #168aad;
+    }
+
+    .iconify {
+        color: black;
+    }
+
+</style>
+
+<div class="wrapper">
+
+    <div class="nav">
+
+        <div class="nav-title">
+            <h5>Xebec Platform</h5>
+        </div>
+
+        <div class="nav-icons">
+
+            @* <img src="\img\user.png" alt="user"> *@
+            <img class="burger" id="burger" src="\img\menu-icon.png" alt="menu" @onclick="ShowMenu">
+
+        </div>
+
+    </div>
+
+    <div class="cloak" id="cloak"></div>
+
+    <div class="slide-out-menu" id="slide-out-menu">
+
+        <div class="slider-container" id="slider-container">
+
+            <img src="\img\userLarge.png" alt="">
+
+            <ul>
+
+                <li>Home</li>
+                <li>Profile</li>
+                <li>Job Board</li>
+                <li>Analytics Dashboad</li>
+                @* <li><a href="/testlogout">Logout</a></li> *@
+                <li @onclick="Test">Test</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="main-body">
+
+        <div class="progress-div">
+
+            <div class="progress-icons">
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--eos-icons" width="38" height="38" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" id="personal" data-icon="eos-icons:typing" data-width="38" data-height="38" style="color: green;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" fill="currentColor"></path><circle cx="16" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin=".67" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle><circle cx="12" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin=".33" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle><circle cx="8" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin="0" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle></svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--eos-icons" width="38" height="38" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" id="education" data-icon="eos-icons:atom-electron" data-width="38" data-height="38"><circle cx="12" cy="12" r="2.197" fill="currentColor"></circle><path d="M21.634 6.437c-.709-1.228-2.411-1.732-4.796-1.424c-.302.04-.613.094-.93.158C15.009 2.619 13.608 1 12 1c-1.61 0-3.013 1.624-3.913 4.183c-2.738-.542-4.907-.156-5.722 1.254c-.812 1.407-.07 3.47 1.757 5.563c-1.827 2.094-2.57 4.156-1.757 5.563c.582 1.008 1.85 1.496 3.525 1.496a11.475 11.475 0 0 0 2.197-.243C8.987 21.376 10.39 23 12 23c1.607 0 3.009-1.619 3.909-4.17c.316.063.627.117.93.157a10.182 10.182 0 0 0 1.296.088c1.705 0 2.927-.52 3.5-1.512c.812-1.407.07-3.47-1.757-5.563c1.827-2.094 2.569-4.156 1.756-5.563zm-4.649-.297a9.08 9.08 0 0 1 1.16-.08c1.26 0 2.15.327 2.507.945c.504.874-.067 2.442-1.552 4.168a20.506 20.506 0 0 0-2.302-1.953a19.975 19.975 0 0 0-.547-2.936c.244-.047.5-.114.734-.144zm-3.072 9.174c-.647.373-1.284.703-1.907.993a24.552 24.552 0 0 1-1.92-.993a24.472 24.472 0 0 1-1.819-1.16a23.827 23.827 0 0 1 0-4.309a24.472 24.472 0 0 1 3.73-2.149c.627.292 1.265.615 1.916.99c.649.375 1.255.764 1.82 1.16a23.845 23.845 0 0 1 0 4.308c-.565.396-1.171.785-1.82 1.16zm1.628.335a17.876 17.876 0 0 1-.392 1.824a18.464 18.464 0 0 1-1.76-.583c.363-.187.727-.383 1.092-.594c.365-.21.717-.427 1.06-.647zm-4.924 1.244a18.413 18.413 0 0 1-1.766.581a17.86 17.86 0 0 1-.392-1.825c.344.22.696.437 1.06.647c.365.21.73.407 1.098.597zM7.074 13.25A18.386 18.386 0 0 1 5.675 12a18.389 18.389 0 0 1 1.4-1.25c-.02.41-.033.826-.033 1.25s.012.84.032 1.25zM8.46 8.352a17.867 17.867 0 0 1 .391-1.823a18.222 18.222 0 0 1 1.77.577c-.368.19-.735.387-1.1.598c-.365.21-.717.427-1.06.647zm4.93-1.242a18.488 18.488 0 0 1 1.76-.583a17.876 17.876 0 0 1 .392 1.824A26.075 26.075 0 0 0 13.39 7.11zm3.537 3.64A18.401 18.401 0 0 1 18.324 12a18.388 18.388 0 0 1-1.398 1.25c.02-.41.032-.826.032-1.25s-.012-.84-.032-1.25zM12 2.129c.998 0 2.056 1.234 2.807 3.31a20.802 20.802 0 0 0-2.809 1.011a20.52 20.52 0 0 0-2.807-1.005C9.942 3.365 11 2.129 12 2.129zM3.348 7.005c.351-.608 1.252-.934 2.52-.934a10.262 10.262 0 0 1 1.884.201a19.968 19.968 0 0 0-.55 2.948A20.489 20.489 0 0 0 4.9 11.173C3.414 9.447 2.843 7.88 3.348 7.005zm0 9.99c-.505-.874.066-2.442 1.552-4.168A20.501 20.501 0 0 0 7.2 14.78a19.944 19.944 0 0 0 .552 2.953c-2.247.429-3.898.14-4.405-.738zM12 21.87c-.999 0-2.058-1.237-2.81-3.317A20.448 20.448 0 0 0 12 17.55a20.802 20.802 0 0 0 2.806 1.01c-.75 2.076-1.81 3.31-2.807 3.31zm8.652-4.876c-.46.792-1.793 1.109-3.667.865c-.235-.03-.49-.097-.734-.144a19.976 19.976 0 0 0 .547-2.936a20.504 20.504 0 0 0 2.302-1.953c1.485 1.726 2.056 3.294 1.552 4.168z" fill="currentColor"></path><circle cx="-.5" cy="2" r="1.5" fill="currentColor"><animateMotion dur="2s" repeatCount="indefinite" path="M14.75 14.1471C12.2277 15.6034 9.69019 16.4332 7.6407 16.6145C5.54599 16.7998 4.15833 16.3018 3.62324 15.375C3.08815 14.4482 3.35067 12.9974 4.55852 11.276C5.74031 9.59178 7.72768 7.80915 10.25 6.35289C12.7723 4.89662 15.3098 4.06682 17.3593 3.88549C19.454 3.70016 20.8417 4.1982 21.3768 5.125C21.9118 6.0518 21.6493 7.50256 20.4415 9.22397C19.2597 10.9082 17.2723 12.6909 14.75 14.1471Z"></animateMotion></circle></svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--eos-icons" width="38" height="38" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" id="work" data-icon="eos-icons:rotating-gear" data-width="38" data-height="38"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.488.488 0 0 0 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" fill="currentColor"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 12 12" to="360 12 12" dur="10s" repeatCount="indefinite"></animateTransform></path></svg>
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--eos-icons" width="38" height="38" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" id="additional" data-icon="eos-icons:installing" data-width="38" data-height="38"><path class="st0" d="M4 16h4v4H4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin=".2" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M10 16h4v4h-4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin=".4" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M16 16h4v4h-4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin=".6" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M4 10h4v4H4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin=".8" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M10 10h4v4h-4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin="1" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M16 10h4v4h-4v-4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin="1.2" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M4 4h4v4H4V4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin="1.4" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M10 4h4v4h-4V4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin="1.6" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path><path class="st0" d="M16 4h4v4h-4V4z" fill="currentColor"><animate accumulate="none" additive="replace" attributeName="opacity" begin="1.8" calcMode="linear" dur="3s" fill="remove" keyTimes="0;0.9;1" repeatCount="indefinite" restart="always" values="1;0;0"></animate></path></svg>
+
+
+            </div>
+
+            <div class="progressbar-container">
+
+                <div class="progressbar-progress" id="progress">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-div">
+
+            <div class="scrollable-container">
+
+                @if (Count == 1)
+                {
+                    <center>
+                        <h4 class="mt-2 mb-3">Personal Details</h4>
+                    </center>
+                   <PersonalDetailsComponent />
+                  
+                }
+                else if (Count == 2)
+                {
+                    <center>
+                        <h4 class="mt-2 mb-3">Education History</h4>
+                    </center>
+                    <EducationDetailsComponent />
+                }
+                else if (Count == 3)
+                {
+                    <center>
+                        <h4 class="mt-2 mb-3">Employment History</h4>
+                    </center>
+                    <WorkHistoryComponent />
+                }
+                else if (Count == 4)
+                {
+                    <center>
+                        <h4 class="mt-2 mb-3">Additional Information</h4>
+                    </center>
+                    <AdditionalInfoComponent />
+                }
+                else if (Count == 5)
+                {
+                    <TestComplete />
+                }
+
+
+            </div>
+
+        </div>
+
+        <form class="div-buttons">
+
+            <button type="button" class="btn btn-outline-primary btn-sm mr-1" @onclick="PageDown">Prev</button>
+            <button type="button" class="btn btn-outline-success btn-sm ml-1" @onclick="PageUp">Next</button>
+
+        </form>
+
+    </div>
+
+    <div class="footer-container">
+
+        <span>Nebula 2021 &reg;</span>
+
+    </div>
+
+</div>
+
+<!--The javascript or jquery that's being invoked is in wwwroot in the js folder called "PersonalDetailsP3.js"'-->
+@code {
+
+
+    /*newly added*/    
+    @* string username = string.Empty;
+    string role = string.Empty;
+    string id = string.Empty; *@
+    @* protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);            
+        }
+
+    } *@
+
+    /*newly added*/
+
+    int Count = 1;
+    int Progress = 0;
+    string[] icons = { "personal", "education", "work", "additional" };
+
+    private async Task PageUp()
+    {
+        Count++;
+        if (Count > 5)
+            Count = 5;
+        else
+            Progress += 25;
+
+        string icon = icons[(Count - 1) % 4];
+
+        await jsRuntime.InvokeVoidAsync("toggleProgress", Progress, icon);
+
+    }
+
+    private async Task PageDown()
+    {
+        Count--;
+        if (Count < 1)
+            Count = 1;
+        else
+            Progress -= 25;
+
+        string icon = icons[Count - 1];
+
+        await jsRuntime.InvokeVoidAsync("toggleProgress", Progress, icon);
+
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("personalDetails");
+        await jsRuntime.InvokeVoidAsync("initializeVariables");
+        await jsRuntime.InvokeVoidAsync("initializeProgress");
+        base.OnAfterRender(firstRender);
+    }
+
+    private async Task ShowMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("toggleMenu");
+    }
+
+    private void Test()
+    {
+         NavigationManager.NavigateTo("api/Auth/LogOut", true);
+    }
+
+}

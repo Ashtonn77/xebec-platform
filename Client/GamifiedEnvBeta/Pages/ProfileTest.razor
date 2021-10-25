@@ -1,0 +1,15 @@
+@page "/profileTest"
+@inject NavigationManager _navigationManager
+
+<h1>Successful Login</h1>
+<button class="btn btn-danger" @onclick="Logout">Logout</button>
+
+@code
+{
+    private void Logout()
+    {
+         _navigationManager.NavigateTo("api/ThirdPartyUser/Logout", true);
+    }
+
+
+}
