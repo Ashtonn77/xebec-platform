@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Server.GamifiedApplicationPhaseFour;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
 using Server.GamifiedApplicationPhaseFour.Repositories;
+using XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories;
 
 namespace XebecPortal.Server
 {
@@ -39,8 +40,9 @@ namespace XebecPortal.Server
 
             });
 
-           services.AddTransient<IUnitOfWork, UnitOfWork>();
-           
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IJobTestRepo, JobTestRepo>();
+            services.AddTransient<ICandidateTestRepo, CandidateTestRepo>();
             services.AddAutoMapper(typeof(MapperInitializer));
            
             services.AddTransient<IUserDb, UserDb>();

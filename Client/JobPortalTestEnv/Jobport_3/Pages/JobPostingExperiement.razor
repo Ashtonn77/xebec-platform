@@ -1,6 +1,7 @@
 @page "/jobpostingsexp"
 @inject IJSRuntime jsr
 @inject HttpClient HttpClient
+@inject NavigationManager NavManager
 @using XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
 <style>
@@ -37,7 +38,7 @@
         max-height: 90%;
         margin: auto;
         display: flex;
-       /* background-color: aliceblue;*/
+        /* background-color: aliceblue;*/
     }
 
     .left {
@@ -49,7 +50,7 @@
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         background-color: #fff;
         border-radius: 5px;
-       /* background-color: aquamarine;*/
+        /* background-color: aquamarine;*/
     }
 
         .left::-webkit-scrollbar {
@@ -73,12 +74,14 @@
         margin: 5px auto;
         cursor: pointer;
     }
-    .box:hover{
-        border-color: blue;
-    }
-     .box:hover ~ .box-title {
-        text-decoration:underline;
-    }
+
+        .box:hover {
+            border-color: blue;
+        }
+
+            .box:hover ~ .box-title {
+                text-decoration: underline;
+            }
 
     .right {
         width: 55%;
@@ -86,7 +89,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-      /*  background-color: rosybrown;*/
+        /*  background-color: rosybrown;*/
     }
 
     .select-details {
@@ -105,19 +108,19 @@
         padding: 5px;
     }
 
-    .select-details:-webkit-scrollbar {
-        width: 12px;
-    }
+        .select-details::-webkit-scrollbar {
+            width: 12px;
+        }
 
-    .select-details::-webkit-scrollbar-track {
-        background-color: #EAF2F8;
-    }
+        .select-details::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
 
-    .select-details::-webkit-scrollbar-thumb {
-        background-color: #95A5A6;
-        border-radius: 20px;
-        border: 3px solid #EAF2F8;
-    }
+        .select-details::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
 
     .btn-container {
         width: 90%;
@@ -137,19 +140,31 @@
         list-style: none;
     }
 
-    .list-group{
+    .list-group {
         padding: 5px;
     }
 
     .box-title {
         color: #4697e1;
     }
+
     .box-description {
         color: #808080;
     }
 
     .select-details p span {
         font-weight: bold;
+    }
+
+    .filterSection {
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .filterjob {
+        width: 150px;
+        margin-right: 55px;
     }
 </style>
 
@@ -160,110 +175,124 @@
     <!--Heading-->
     <h1 class="mt-5" style="margin-bottom: -5px;">Job Postings</h1>
 
-    @if (DisplayJobs != null)
+    @if (LstJobs != null)
     {
-    <!--Div in the center of the page-->
-    <div class="add-job-container">
+        <!--Div in the center of the page-->
+        <div class="add-job-container">
 
-        <!--Search bar-->
-        @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
-        <div class="input-group input-group-sm mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+            <!--Search bar-->
+            @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
+            <div class="input-group input-group-sm mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+                </div>
+                <input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Title, Location, Decription, Loca..." @bind="SearchTerm">
+                <span><button class="btn btn-primary" @onclick="RealSearch">Search</button></span>
             </div>
-            <input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Title, Location, Decription, Loca..." @onchange="@(e => onChange(e))" @bind="Filter"
-                   @bind:event="oninput">
-        </div>
-        @if (JobTypes != null)
-        {
-            <select class="form-control" @bind="@JobTypes">
 
-                <option value=""></option>
-                @foreach (var country in JobTypes)
+            <div class="filterSection">
+                @if (JobTypes != null)
                 {
-                    <option value="@country.Id"> @country.Type </option>
+                    
+                    <select class="form-control filterjob" @onchange="@onValChanged">
+                        <option value="0"> Job Type</option>
+                        @foreach (var jobType in JobTypes)
+                        {
+                            <option value="@jobType.Id"> @jobType.Type </option>
+                        }
+
+                    </select>
                 }
-                
-            </select>
-         }
-        
-
-        <!--Div containing the functionality-->
-        <div class="inner-wrapper">
-
-            <!--Boxes on the left/summary boxes-->
-            <div class="left">
-
-                @if (DisplayJobs != null && DisplayJobs.Count > 0)
+                @if (jobFilterApplied)
                 {
-                    @foreach (var job in DisplayJobs)
+                    <span><button class="btn btn-secondary" @onclick="Clear">Clear filter</button></span>
+                }
+            </div>
+            <br />
+
+            <!--Div containing the functionality-->
+            <div class="inner-wrapper">
+
+                <!--Boxes on the left/summary boxes-->
+                <div class="left">
+
+                    @if (LstJobs != null && LstJobs.Count > 0)
                     {
-                        if (!IsVisible(job))
-                            continue;
-                        <div class="box">
-                            <ul class="list-group" @onclick="() => ViewJob(job)">
+                        @foreach (var job in LstJobs)
+                        {
+                            <div class="box">
+                                <ul class="list-group" @onclick="() => ViewJob(job)">
 
-                                @*
-                                <li class=" col-12 d-flex justify-content-between">
-                                    <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
+                                    @*
+                                        <li class=" col-12 d-flex justify-content-between">
+                                            <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
 
-                                    <span class="">
-                                        <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
-                                    </span>
-                                </li>*@
+                                            <span class="">
+                                                <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
+                                            </span>
+                                        </li>*@
 
-                                <h5 class="box-title">@job.Title </h5>
-                                <p><i class="fas fa-map-marker-alt"></i> &nbsp; @job.Location</p>
-                                <p><span> @job.Compensation</span></p>
-                                @if (job.Description.Length > 200)
-                                {
-                                    string shortented = job.Description.Substring(0, 200) + "...";
-                                    <p class="box-description"> @shortented </p>
-                                }
-                                else
-                                {
-                                    <p class="box-description"> @job.Description </p>
-                                }
-                            </ul>
+                                    <h5 class="box-title">@job.Title </h5>
+                                    <p><i class="fas fa-map-marker-alt"></i> &nbsp; @job.Location</p>
+                                    <p><span> @job.Compensation</span></p>
+                                    @if (job.Description.Length > 200)
+                                    {
+                                        string shortented = job.Description.Substring(0, 200) + "...";
+                                        <p class="box-description"> @shortented </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="box-description"> @job.Description </p>
+                                    }
+                                </ul>
+                            </div>
+
+                        }
+                        <p><strong>Total jobs available: @LstJobs.Count</strong></p>
+                    }
+                else
+                {
+                    <p> No Jobs found</p>
+                }
+
+
+
+                </div>
+
+                <!--Box on the right/Details box + buttons-->
+                <div class="right">
+
+                    @if (CurrentJob2 != null && LstJobs.Count > 0)
+                    {
+                        <!--Details box-->
+                        <div class="select-details">
+
+
+                            <h2>@CurrentJob2.Title</h2>
+                            <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
+                            <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
+                             <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
+                            <hr />
+                            <p>@CurrentJob2.Description</p>
+
+
+
                         </div>
-
                     }
-                }
-
-
-
-            </div>
-
-            <!--Box on the right/Details box + buttons-->
-            <div class="right">
-                <!--Details box-->
-                <div class="select-details">
-
-
-                    @if (CurrentJob2 != null)
-                    {
-                        <h2>@CurrentJob2.Title</h2>
-                        <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
-                        <p><span>Compensation: </span>@CurrentJob2.Compensation</p> <hr />
-                        <p>@CurrentJob2.Description</p>
-                    }
-
-
+                    <!--Search + post job buttons-->
+                    <div class="btn-container">
+                        <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
+                        <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
+                    </div>
                 </div>
-                <!--Search + post job buttons-->
-                <div class="btn-container">
-                    <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
-                    <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
-                </div>
+
             </div>
 
         </div>
-
-    </div>
     }
     else
     {
-        <br/> <br /> <br />
+        <br /> <br /> <br />
         <h2>Loading...</h2>
     }
 </div>
@@ -272,54 +301,71 @@
 
 
 @*<div id="id01" class="w3-modal">
-    <div class="w3-modal-content">
+        <div class="w3-modal-content">
 
-        <header class="w3-container" style="background-color: #d8e2dc;">
-            <span onclick="document.getElementById('id01').style.display='none'"
-                  class="w3-button w3-display-topright">&times;</span>
-            <h2>Edit Job</h2>
-        </header>
+            <header class="w3-container" style="background-color: #d8e2dc;">
+                <span onclick="document.getElementById('id01').style.display='none'"
+                      class="w3-button w3-display-topright">&times;</span>
+                <h2>Edit Job</h2>
+            </header>
 
-        <div class="w3-container">
-            <form>
-                <div class="form-group">
-                    <label for="job-title">Job Title</label>
-                    <input type="text" class="form-control" id="job-title" placeholder="@EditJob.Title" @bind-value="EditJob.Title">
-                </div>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </form>
+            <div class="w3-container">
+                <form>
+                    <div class="form-group">
+                        <label for="job-title">Job Title</label>
+                        <input type="text" class="form-control" id="job-title" placeholder="@EditJob.Title" @bind-value="EditJob.Title">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+
+            <footer class="w3-container" style=" background-color: #d8e2dc;">
+                <p class="badge">Click Save to Save and x to dismiss</p>
+            </footer>
+
         </div>
-
-        <footer class="w3-container" style=" background-color: #d8e2dc;">
-            <p class="badge">Click Save to Save and x to dismiss</p>
-        </footer>
-
-    </div>
-</div>*@
+    </div>*@
 @code
     {
+
+    #region Component Lifeycle Methods
 
     //Initialising
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        DisplayJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+        LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
         JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
-        if (DisplayJobs != null)
+        if (LstJobs != null)
         {
-            CurrentJob2 = DisplayJobs[0];
+            CurrentJob2 = LstJobs[0];
         }
     }
+
+    protected override void OnParametersSet()
+    {
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
+        }
+    }
+
+    #endregion
 
     /*New Word */
     public string Filter { get; set; }
 
 
+    #region Mainparts
 
-    public List<Job> DisplayJobs { get; set; }
+    public List<Job> LstJobs { get; set; }
     public Job CurrentJob2 { get; set; } = new Job();
     public List<JobType> JobTypes { get; set; }
-
 
     private void ViewJob(Job JobToView)
     {
@@ -327,34 +373,67 @@
     }
 
 
+    private void ViewCandidates(Job selectedJob)
+    {
+        NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
+    }
+
+
+    #endregion
+
+
+    #region Searching and Filtering
+
+    public string SearchTerm { get; set; } = String.Empty;
+    public string JobFilter { get; set; } = String.Empty;
+    private bool jobFilterApplied = false; //for job type filtering
+    private List<Job> SearchedJobs { get; set; } = new List<Job>();
+
+    private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+    {
+        JobFilter = args.Value.ToString();
+        jobFilterApplied = true;
+        SearchEvent();
+    }
+
+    private void Clear()
+    {
+        jobFilterApplied = false;
+        JobFilter = string.Empty;
+        SearchEvent();
+    }
+
+    private void RealSearch()
+    {
+
+        SearchEvent();
+
+    }
+
+    private async Task<List<Job>> SearchEvent()
+    {
+        SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+        if (SearchedJobs.Count > 0)
+        {
+            CurrentJob2 = SearchedJobs[0];
+        }
+        LstJobs = SearchedJobs;
+        InvokeAsync(StateHasChanged);
+        return LstJobs;
+    }
+
+    #endregion
+
+
+
+
 
 
     private bool isFound = false;
 
-    public string SearchTerm { get; set; } = String.Empty;
 
 
-    public bool IsVisible(Job forecast)
-    {
-        if (string.IsNullOrEmpty(Filter))
-            return true;
 
-        if (forecast.Title.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        if (forecast.Location.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-            return true;
-        return false;
-    }
-
-    private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
-    {
-        SearchTerm = (string)args.Value;
-        if (string.IsNullOrWhiteSpace(SearchTerm))
-        {
-
-        }
-    }
 
     /* Search Function
     private static void Search()
@@ -372,22 +451,16 @@ SearchResults = Jobs; *@
 
 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
-        }
-        if (DisplayJobs != null)
-        {
-            CurrentJob2 = DisplayJobs[0];
-        }
-    }
+
 
     public Job EditJob { get; set; } = new Job();
 
-    // Search variable
-    string searchTerm = string.Empty;
+    // Search variabl
+
+    private void FilterByType()
+    {
+
+    }
 
 
 
