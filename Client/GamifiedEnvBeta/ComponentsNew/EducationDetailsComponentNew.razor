@@ -81,7 +81,7 @@
         box-shadow: 0 0 10px #719ECE;
     }
 
-    .btn-container,
+    
     .form-title {
         padding: 1rem 0;
         width: 90%;
@@ -91,13 +91,23 @@
         align-items: center;
 
     }
+
+    .btn-container
+    {
+        padding: 1rem 0.9rem;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
 
 <form class="input-form">
 
 
     <div class="form-title">
-        <h4>Education History</h4>      
+        <h4>Education History</h4>
     </div>
 
 
@@ -131,11 +141,16 @@
     </div>
 
     <div class="btn-container">
-        <button type="button" class="btn btn-primary btn-sm mr-1"
+        <div class="left">
+            <button type="button" class="btn btn-primary btn-sm mr-1"
             @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
         <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
         <button type="button" class="btn btn-primary btn-sm ml-1"
             @onclick="@(() => Increment.InvokeAsync())">Next</button>
+        </div>
+        <div class="right">
+            <button type="button" class="btn btn-info btn-sm" @onclick="AddNew">Add Another</button>
+        </div>
     </div>
 
 </form>
@@ -144,6 +159,7 @@
 
 @code {
 
+    private bool ToUpdate = false;
     private EducationTest Education = new EducationTest();
     [Parameter] public EventCallback<int> Increment { get; set; }
 
@@ -151,7 +167,7 @@
 
     private string message = string.Empty;
 
-     protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
@@ -160,20 +176,43 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);            
+            State.Id = Int32.Parse(userdetails[3]);
+
+            Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/{State.Id}");
+
         }
 
-        Education.StartDate = DateTime.Now;
-        Education.EndDate = DateTime.Now;
-        Education.AppUserId = State.Id;
+        if (Education.Insitution == null)
+        {
+            Education = new EducationTest();
+            Education.StartDate = DateTime.Now;
+            Education.EndDate = DateTime.Now;
+            Education.AppUserId = State.Id;
+            ToUpdate = false;
+        }
+        else
+        {
+            ToUpdate = true;
+        }
+
+        State.IsSaved = false;
 
     }
 
 
     private async Task Save()
-    {
-        await http.PostAsJsonAsync("api/EducationTest", Education);
+    {        
         message = "Saved!";
+        State.IsSaved = true;
+
+    }
+
+    private void AddNew()
+    {
+        Education = new EducationTest();
+        Education.StartDate = DateTime.Now;
+        Education.EndDate = DateTime.Now;
+        ToUpdate = false;
     }
 
 }

@@ -119,8 +119,7 @@
         border-radius: 5px;
         border: 0.5px solid #7C7C7C;
     }
-
-    .btn-container,
+    
     .form-title {
         padding: 1rem 0;
         width: 90%;
@@ -130,6 +129,17 @@
         align-items: center;
 
     }
+
+    .btn-container
+    {
+        padding: 1rem 0.9rem;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 </style>
 
 <form class="input-form">
@@ -176,18 +186,26 @@
         </div>
     </div>
 
-    <div class="btn-container">
-        <button type="button" class="btn btn-primary btn-sm mr-1" @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
+   <div class="btn-container">
+        <div class="left">
+            <button type="button" class="btn btn-primary btn-sm mr-1"
+            @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
         <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
-        <button type="button" class="btn btn-primary btn-sm ml-1" @onclick="@(() => Increment.InvokeAsync())">Next</button>
+        <button type="button" class="btn btn-primary btn-sm ml-1"
+            @onclick="@(() => Increment.InvokeAsync())">Next</button>
+        </div>
+        <div class="right">
+            <button type="button" class="btn btn-info btn-sm" @onclick="AddNew">Add Another</button>
+        </div>
     </div>
-</form>
 
+</form>
 <p>@message</p>
 
 @code {
 
-    private WorkHistoryTest WorkHistory = new WorkHistoryTest();
+    
+   private WorkHistoryTest WorkHistory = new WorkHistoryTest();
    [Parameter] public EventCallback<int> Increment { get; set; }
 
    [Parameter] public EventCallback<int> Decrement { get; set; }  
@@ -203,18 +221,36 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);            
+            State.Id = Int32.Parse(userdetails[3]);
+
+             WorkHistory = await http.GetFromJsonAsync<WorkHistoryTest>($"api/WorkHistoryTest/{State.Id}");    
+
         }
 
-        WorkHistory.StartDate = DateTime.Now;
-        WorkHistory.EndDate = DateTime.Now;
-        WorkHistory.AppUserId = State.Id;
+        if(WorkHistory.CompanyName == null)
+        {
+            WorkHistory = new WorkHistoryTest();
+            WorkHistory.StartDate = DateTime.Now;
+            WorkHistory.EndDate = DateTime.Now;    
+            WorkHistory.AppUserId = State.Id;
+        }    
+
+        State.IsSaved = false;
     }
    
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory);
-        message = "Saved!";       
+        @* await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); *@
+        message = "Saved!";
+        State.IsSaved = true;
+         
     }    
+
+     private void AddNew()
+    {
+        WorkHistory = new WorkHistoryTest();
+        WorkHistory.StartDate = DateTime.Now;
+        WorkHistory.EndDate = DateTime.Now;    
+    }
 
 }

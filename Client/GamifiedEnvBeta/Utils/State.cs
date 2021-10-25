@@ -15,6 +15,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public int PageNumber { get; set; } = 1;
 
+        public bool IsSaved { get; set; } = false;
+
 
     }
 }

@@ -194,24 +194,23 @@
 
     <div class="btn-container">
         <button type="button" class="btn btn-primary btn-sm mr-1">Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
+        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">@btnText</button>
         <button type="button" class="btn btn-primary btn-sm ml-1"
             @onclick="@(() => Increment.InvokeAsync())">Next</button>
     </div>
 
 </form>
 
-
 <p>@message</p>
 
 @code {
-
+   
+    string btnText = "Save";
     [Parameter] public EventCallback<int> Increment { get; set; }
 
     private PersonalTestInfo Personal = new PersonalTestInfo();
 
     private string message = string.Empty;
-
 
     [Parameter]
     public EventCallback<string> DisabilityChanged
@@ -235,10 +234,19 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);            
-        }
+            State.Id = Int32.Parse(userdetails[3]);
 
-        Personal.AppUserId = State.Id;
+            Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}");
+            
+        }
+       
+        if(Personal.Email == null)
+        {
+            Personal = new PersonalTestInfo();
+            Personal.AppUserId = State.Id;   
+        }
+       
+        State.IsSaved = false;
     }
 
     private Task OnDisabilityChanged(ChangeEventArgs e)
@@ -256,8 +264,10 @@
 
      private async Task Save()
     {
-        await http.PostAsJsonAsync("api/PersonalsTest", Personal);
-        message = "Saved!";       
+        @* await http.PostAsJsonAsync("api/PersonalsTest", Personal); *@
+        message = "Saved!";    
+        State.IsSaved = true;
+               
     }      
 
 }

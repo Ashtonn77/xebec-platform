@@ -55,6 +55,14 @@ namespace XebecPortal.Server
 
             services.AddTransient<IUserDb, UserDb>();
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);//We set Time here 
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            
+            });
+
             services.AddAuthentication(options =>
             {
 
@@ -65,7 +73,7 @@ namespace XebecPortal.Server
             })
             .AddCookie(options =>
             {
-                options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
+                // options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
             })
             .AddLinkedIn(Linkedinoptions =>
             {
@@ -130,7 +138,6 @@ namespace XebecPortal.Server
                     twitterOptions.RetrieveUserDetails = true;
                 });
 
-
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -193,6 +200,7 @@ namespace XebecPortal.Server
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();

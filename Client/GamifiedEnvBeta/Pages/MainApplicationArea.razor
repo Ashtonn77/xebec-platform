@@ -266,7 +266,8 @@
                 <li>Profile</li>
                 <li>Job Board</li>
                 <li>Analytics Dashboad</li>
-                <li><a href="/testlogout">Logout</a></li>
+                @* <li><a href="/testlogout">Logout</a></li> *@
+                <li @onclick="Test">Test</li>
 
             </ul>
 
@@ -280,14 +281,6 @@
 
             <div class="progress-icons">
 
-
-                @*<span class="iconify" id="personal" style="color:green;" data-icon="eos-icons:typing" data-width="38" data-height="38"></span>
-
-                <span class="iconify" id="education" data-icon="eos-icons:atom-electron" data-width="38" data-height="38"></span>
-
-                <span class="iconify" id="work" data-icon="eos-icons:rotating-gear" data-width="38" data-height="38"></span>
-
-                <span class="iconify" id="additional" data-icon="eos-icons:installing" data-width="38" data-height="38"></span>*@
 
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--eos-icons" width="38" height="38" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" id="personal" data-icon="eos-icons:typing" data-width="38" data-height="38" style="color: green;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" fill="currentColor"></path><circle cx="16" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin=".67" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle><circle cx="12" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin=".33" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle><circle cx="8" cy="10" r="0" fill="currentColor"><animate attributeName="r" values="0;1.75;0;0" dur="1.5s" repeatCount="indefinite" begin="0" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" calcMode="spline"></animate></circle></svg>
 
@@ -439,5 +432,9 @@
         await jsRuntime.InvokeVoidAsync("toggleMenu");
     }
 
+    private void Test()
+    {
+         NavigationManager.NavigateTo("api/Auth/LogOut", true);
+    }
 
 }

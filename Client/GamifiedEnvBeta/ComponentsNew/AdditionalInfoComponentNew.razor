@@ -159,10 +159,15 @@
     </div>
 
 </form>
-
 <p>@message</p>
 
 @code {
+
+    /*
+    
+    TODO: replace C:\fakepath\ in document url with path ro where file is stored
+    
+    */
 
     private AdditionalInformationTest AdditionalInfo = new AdditionalInformationTest();
 
@@ -182,18 +187,30 @@
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
+
+             AdditionalInfo = await http.GetFromJsonAsync<AdditionalInformationTest>($"api/AdditionalInformationTest/{State.Id}");
+
         }
 
-        AdditionalInfo.AppUserId = State.Id;
+        if(AdditionalInfo.GitHubLink == null)
+        {
+            AdditionalInfo = new AdditionalInformationTest();
+            AdditionalInfo.AppUserId = State.Id;
+        }    
+
+        AdditionalInfo.DocumentUrl = null;       
+        State.IsSaved = false;
     }
 
     private async Task Save()
     {
         
-        string[] url = AdditionalInfo.DocumentUrl.Split('\\');
+        string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
         AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
-        await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo);
+        @* await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); *@
+        State.IsSaved = true;
+        AdditionalInfo = new AdditionalInformationTest();
 
     }
 

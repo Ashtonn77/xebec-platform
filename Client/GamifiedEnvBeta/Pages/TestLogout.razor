@@ -9,7 +9,8 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await jsr.InvokeVoidAsync("localStorage.removeItem", "user").ConfigureAwait(false);
-        nav.NavigateTo("/loginbeta");
+        await jsr.InvokeVoidAsync("localStorage.removeItem", "user").ConfigureAwait(false);        
+        nav.NavigateTo("api/ThirdPartyUser/LogOut", true);
     }
+    
 }

@@ -17,31 +17,38 @@ function initializeProgress()
 function toggleProgress(x, icon)
 {
     progress.style.width = x + '%';
-
-    if (icon == "personal")
+    
+    if (icon == 1)
     {
         personal.style.color = 'green';
         education.style.color = 'black';
         work.style.color = 'black';
         additional.style.color = 'black';
     }
-    else if (icon == "education") {
+    else if (icon == 2) {
         personal.style.color = 'black';
         education.style.color = 'green';
         work.style.color = 'black';
         additional.style.color = 'black';
     }
-    else if (icon == "work") {
+    else if (icon == 3) {
         personal.style.color = 'black';
         education.style.color = 'black';
         work.style.color = 'green';
         additional.style.color = 'black';
     }
-    else if (icon == "additional") {
+    else if (icon == 4) {
         personal.style.color = 'black';
         education.style.color = 'black';
         work.style.color = 'black';
         additional.style.color = 'green';
+    }
+    else
+    {
+        personal.style.color = 'black';
+        education.style.color = 'black';
+        work.style.color = 'black';
+        additional.style.color = 'black';
     }   
 
 }

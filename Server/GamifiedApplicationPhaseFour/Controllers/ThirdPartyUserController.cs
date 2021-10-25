@@ -120,7 +120,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         [HttpGet("GoogleSignIn")]
         public IActionResult GoogleSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = "/main" }, "Google");
         }
 
         [HttpGet("TwitterSignIn")]
@@ -134,6 +134,24 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         public IActionResult LinkedInSignIn()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
+        }
+
+        [HttpGet("LogOut")]
+        public async Task LogOut()
+        {
+            {
+                var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
+                foreach (var cookie in siteCookies)
+                {
+                    Response.Cookies.Delete(cookie.Key); 
+                }
+            }
+
+            await HttpContext.SignOutAsync();
+            HttpContext.Response.Redirect("/loginbeta");
+            HttpContext.Session.Clear();          
+          
+            
         }
 
     }
