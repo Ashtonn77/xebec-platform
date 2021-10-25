@@ -290,7 +290,11 @@
                         <div class="form-group-others">
                             @foreach (var items in jobPlatform)
                             {
+<<<<<<< Updated upstream
                             <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
+=======
+                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
+>>>>>>> Stashed changes
                             }
                         </div>
                     </div>
