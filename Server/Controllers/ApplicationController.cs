@@ -33,9 +33,8 @@ namespace Server.Controllers
             try
             {
                 var Applications = await _unitOfWork.Applications.GetAll();
-             
-                return Ok(Applications);
 
+                return Ok(Applications);
             }
             catch (Exception e)
             {
@@ -65,35 +64,33 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] Application Application)
+        public async Task<IActionResult> CreateApplication([FromBody] JobTest jobTest)
         {
+            Application application = new Application();
 
             if (!ModelState.IsValid)
             {
-
                 return BadRequest(ModelState);
             }
 
-
             try
             {
-
-                await _unitOfWork.Applications.Insert(Application);
+                application.JobId = jobTest.Id;
+                application.UserId = 2;
+                application.TimeApplied= DateTime.Now;
+                await _unitOfWork.Applications.Insert(application);
+                //await _unitOfWork.Applications.Insert(Application);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetApplication", new { id = Application.Id }, Application);
-
+                //return CreatedAtAction("GetApplication", new { id = Application.Id }, Application);
+                return NoContent();
             }
             catch (Exception e)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     e.InnerException);
             }
-
-
         }
-
 
         // PUT api/<ApplicationsController>/5
         [HttpPut("{id}")]
@@ -116,15 +113,12 @@ namespace Server.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
         }
-
 
         // DELETE api/<ApplicationsController>/5
         [HttpDelete("{id}")]
@@ -151,14 +145,11 @@ namespace Server.Controllers
                 await _unitOfWork.Save();
 
                 return NoContent();
-
-
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
         }
     }
 }

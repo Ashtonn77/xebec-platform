@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using XebecPortal.Shared;
 
 namespace Server.IRepository
 {
@@ -18,6 +19,6 @@ namespace Server.IRepository
 
         void Update(T Entity);
 
-
+        Task InsertRange(IEnumerable<T> Entities);
     }
 }

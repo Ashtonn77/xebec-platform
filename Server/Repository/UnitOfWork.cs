@@ -38,12 +38,18 @@ namespace Server.Repository
         private IGenericRepository<WorkHistory> _workHistories;
         private IGenericRepository<WorkHistoryHelper> _WorkHistoryHelpers;
 
+<<<<<<< HEAD
         /*newly added*/
         private IGenericRepository<PersonalTestInfo> _personalTestInfos;
         private IGenericRepository<EducationTest> _educationTests;
         private IGenericRepository<WorkHistoryTest> _workHistoryTests;
         private IGenericRepository<AdditionalInformationTest> _additionalInformationTests;
         /*newly added*/
+=======
+        //Added new repository
+        private IGenericRepository<JobPlatform> _jobPlatforms;
+        private IGenericRepository<JobPlatformHelper> _jobPlatformHelpers;
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -86,6 +92,7 @@ namespace Server.Repository
 
         public IGenericRepository<AppUser> AppUsers => _appusers ??= new GenericRepository<AppUser>(_context);
 
+<<<<<<< HEAD
         public IGenericRepository<PersonalTestInfo> PersonalTestInfos => _personalTestInfos ??= new GenericRepository<PersonalTestInfo>(_context);
 
         public IGenericRepository<EducationTest> EducationTests => _educationTests ??= new GenericRepository<EducationTest>(_context);
@@ -93,6 +100,11 @@ namespace Server.Repository
         public IGenericRepository<WorkHistoryTest> WorkHistoryTests => _workHistoryTests ??= new GenericRepository<WorkHistoryTest>(_context);
 
         public IGenericRepository<AdditionalInformationTest> AdditionalInformationTests => _additionalInformationTests ??= new GenericRepository<AdditionalInformationTest>(_context);
+=======
+        public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);
+
+        public IGenericRepository<JobPlatformHelper> JobPlatformHelpers => _jobPlatformHelpers ??= new GenericRepository<JobPlatformHelper>(_context);
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         public void Dispose()
         {

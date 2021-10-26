@@ -11,7 +11,7 @@ namespace Server.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly ApplicationDbContext _context;
+        protected readonly ApplicationDbContext _context;
         private readonly DbSet<T> _db;
 
         public GenericRepository(ApplicationDbContext context)
@@ -48,6 +48,11 @@ namespace Server.Repository
         public async Task Insert(T entity)
         {
             await _db.AddAsync(entity);
+        }
+
+        public async Task InsertRange(IEnumerable<T> Entities)
+        {
+            await _db.AddRangeAsync(Entities);
         }
 
         public void Update(T entity)
