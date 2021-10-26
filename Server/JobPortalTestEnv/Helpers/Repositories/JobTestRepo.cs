@@ -26,7 +26,21 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             }
             if (!string.IsNullOrEmpty(jobtypeQuery))
             {
-                int sdf = int.Parse(jobtypeQuery);
+                int sdf = 0;
+                switch (jobtypeQuery)
+                {
+                    case "Full-time":
+                        sdf = 1;
+                        break;
+                    case "Part-time":
+                        sdf = 2;
+                        break;
+                    case "Internship":
+                        sdf = 3;
+                        break;
+                    default:
+                        break;
+                }
                 if (sdf >= 1 && sdf <= 3)
                 {
                     var werQuery = from photo in query

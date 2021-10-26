@@ -159,12 +159,33 @@
     .filterSection {
         display: flex;
         flex-direction: row;
-        
     }
 
     .filterjob {
         width: 150px;
         margin-right: 55px;
+    }
+
+    .filterpill {
+        background-color: #ddd;
+        border: none;
+        color: black;
+        padding: 4px 6px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        border-radius: 12px;
+    }
+
+    .filterClose {
+        cursor: pointer;
+        border-radius: 11px;
+        height: 50%;
+    }
+
+    .filterClose:hover {
+         background-color: #C4C4C4;
     }
 </style>
 
@@ -193,19 +214,24 @@
             <div class="filterSection">
                 @if (JobTypes != null)
                 {
-                    
+
                     <select class="form-control filterjob" @onchange="@onValChanged">
-                        <option value="0"> Job Type</option>
+                        <option value=""  disabled selected> Job Type</option>
                         @foreach (var jobType in JobTypes)
                         {
-                            <option value="@jobType.Id"> @jobType.Type </option>
+                            <option value="@jobType.Type"> @jobType.Type </option>
                         }
 
                     </select>
                 }
+            </div>
+            <div>
                 @if (jobFilterApplied)
                 {
-                    <span><button class="btn btn-secondary" @onclick="Clear">Clear filter</button></span>
+                    <div class="filterpill">
+                        <span>@JobFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="Clear" /></span>
+                    </div>
                 }
             </div>
             <br />
@@ -250,10 +276,10 @@
                         }
                         <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                     }
-                else
-                {
-                    <p> No Jobs found</p>
-                }
+                    else
+                    {
+                        <p> No Jobs found</p>
+                    }
 
 
 
@@ -271,7 +297,7 @@
                             <h2>@CurrentJob2.Title</h2>
                             <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                             <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
-                             <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
+                            <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
                             <hr />
                             <p>@CurrentJob2.Description</p>
 
@@ -387,6 +413,7 @@
     public string SearchTerm { get; set; } = String.Empty;
     public string JobFilter { get; set; } = String.Empty;
     private bool jobFilterApplied = false; //for job type filtering
+    private string jobTypeQueryId = "";
     private List<Job> SearchedJobs { get; set; } = new List<Job>();
 
     private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
