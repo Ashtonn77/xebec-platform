@@ -6,6 +6,13 @@
 @inject NavigationManager NavigationManager
 
 <style>
+
+    * {
+        font-family: 'Manrope', sans-serif;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
     .dash-container {
         background-color: white;
         height: 100vh;
@@ -13,93 +20,164 @@
     }
 
     .header {
-        height: 5vh;
+        height: 10vh;
         width: 100%;
-        background-color: lightgrey;
+        background-color: #a9a5a4;
         justify-content: center;
         align-items: center;
         display: flex;
     }
 
     .left-header {
+        height: 100%;
         width: 68%;
         margin-left: 2%;
         text-align: left;
-        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Text Styling*/
+        font-family: 'Courier New', monospace;
+        font-size: 8vw;
+        color: #160b06;
+        text-shadow: 1px 0 #888888;
+        letter-spacing: 1px;
+        font-weight: bold;
     }
 
     .right-header {
-        width: 28%;
+        width: 32%;
+        height: 100%;
         margin-right: 2%;
         text-align: right;
         color: black;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        /*Hurmbrger Styling*/
+        text-shadow: 1px 0 #888888;
+        font-size: 3vw;
+        cursor: pointer;
     }
 
     .main {
         width: 100%;
-        height: 95vh;
+        height: 90vh;
+        padding: 2%;
+        display: flex;
+        justify-content: center;
+        background-color: #51484f;
     }
 
     .report {
-        width: 96%;
+        width: 100%;
         height: 100%;
         margin-right: 2%;
         margin-left: 2%;
     }
-    .dash-nav{
+
+    .dash-nav {
         position: absolute;
         z-index: 1;
-        background-color: black;
-        height: 95vh;
-        width: 10%;
+        right: 0;
+        background-color: #3c363e;
+        height: 90vh;
+        width: 30vw;
         margin-left: 90%;
     }
-    .dash-nav-main{
+
+    .dash-nav-main {
         height: 100%;
         width: 100%;
         text-align: center;
     }
-    li{
-        color: lightgrey;
-        padding-top: 30px;
-        padding-bottom: 5px;
-        height: 80px;
-        border: solid 1px darkgrey;
-        justify-content: center;
-        justify-items: center;
-        align-content:center;
-        align-items: center;
-        font-size: 12px;
-        cursor: pointer;
-    }
+
     .report-heading {
         width: 100%;
-        height: 5%;
-        text-align: left;
-        color: black;
+        text-align: center;
+        color: #e8eae7;
+        font-size: 15px;
+        font-weight: 700;
+        text-shadow: 1px 0 #888888;
     }
 
     .report-container {
         width: 100%;
-        height: 95%;
-        background-color: white;
+        height: 90%;
     }
 
+    iframe {
+        border-radius: 15px;
+        height: 100%;
+        width: 100%;
+    }
+
+
+
+
+
+    /*SideBar*/
+    .sidenav {
+        height: 100%;
+        width: @nevWidth;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.2s;
+        padding-top: 60px;
+    }
+
+        .sidenav li {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+            .sidenav li:hover {
+                color: #f1f1f1;
+            }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            left: 25px;
+            font-size: 36px;
+        }
 </style>
 
 
 <div class="dash-container">
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <li @onclick="@us1Action">Department Analysis</li>
+            <li @onclick="@us2Action">Rate of Registration</li>
+            <li @onclick="@us3Action">Site Traffic</li>
+            <li @onclick="@us4Action">Time to Fill</li>
+            <li @onclick="@us5Action">Time to Hire</li>
+        </ul>
+    </div>
+
+
     <div class="header">
         <div class="left-header">
-            <h1 style="font-size: 15px;">Xebec Analytics Dashboard</h1>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <h1>Xebec Analytics Dashboard</h1>
         </div>
         <div class="right-header">
-            <i @onclick="@NavAction" class="fas fa-bars" style="font-size: 20px; cursor:pointer;"></i>
+            <i @onclick="@NavAction" class="fas fa-bars"></i>
         </div>
     </div>
     <div hidden="@NavShow" class="dash-nav">
         <div class="dash-nav-main">
             <ul style="list-style-type:none; padding-left:0;">
+                <li>&times;close</li>
                 <li @onclick="@us1Action">Department Analysis</li>
                 <li @onclick="@us2Action">Rate of Registration</li>
                 <li @onclick="@us3Action">Site Traffic</li>
@@ -113,42 +191,42 @@
     <div class="main">
         <div hidden="@us1" class="report">
             <div class="report-heading">
-                <h2 style="font-size: 15px; margin-top: 2.5px; font-weight: bold; writing-mode: horizontal-tb; ">Department Analytics</h2>
+                <h2>Department Analytics</h2>
             </div>
             <div class="report-container">
-                <iframe style="width: 100%; height: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
             </div>
         </div>
         <div hidden="@us2" class="report">
             <div class="report-heading">
-                <h2 style="font-size: 15px; margin-top: 2.5px; font-weight: bold; writing-mode: horizontal-tb; ">Rate of Registration</h2>
+                <h2 s>Rate of Registration</h2>
             </div>
             <div class="report-container">
-                <iframe style="width: 100%; height: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=c4c17db7-63b9-4fcb-adb1-de650005a7b8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                <iframe src="https://app.powerbi.com/reportEmbed?reportId=c4c17db7-63b9-4fcb-adb1-de650005a7b8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
             </div>
         </div>
         <div hidden="@us3" class="report">
             <div class="report-heading">
-                <h2 style="font-size: 15px; margin-top: 2.5px; font-weight: bold; writing-mode: horizontal-tb; ">Site Traffic</h2>
+                <h2 s>Site Traffic</h2>
             </div>
             <div class="report-container">
-                <iframe style="width: 100%; height: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=79d75a8a-b476-4e93-8354-12ebf8d76d8b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                <iframe src="https://app.powerbi.com/reportEmbed?reportId=79d75a8a-b476-4e93-8354-12ebf8d76d8b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
             </div>
         </div>
         <div hidden="@us4" class="report">
             <div class="report-heading">
-                <h2 style="font-size: 15px; margin-top: 2.5px; font-weight: bold; writing-mode: horizontal-tb; ">Time to Fill</h2>
+                <h2 s>Time to Fill</h2>
             </div>
             <div class="report-container">
-                <iframe style="width: 100%; height: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=df92bb9b-beaf-44ac-8808-f8802b436252&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                <iframe src="https://app.powerbi.com/reportEmbed?reportId=df92bb9b-beaf-44ac-8808-f8802b436252&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
             </div>
         </div>
         <div hidden="@us5" class="report">
             <div class="report-heading">
-                <h2 style="font-size: 15px; margin-top: 2.5px; font-weight: bold; writing-mode: horizontal-tb; ">Time to Hire</h2>
+                <h2 s>Time to Hire</h2>
             </div>
             <div class="report-container">
-                <iframe style="width: 100%; height: 100%;" src="https://app.powerbi.com/reportEmbed?reportId=cd4808b0-193d-4eb3-a3ff-55b057769cd7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+                <iframe src="https://app.powerbi.com/reportEmbed?reportId=cd4808b0-193d-4eb3-a3ff-55b057769cd7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
             </div>
         </div>
 
@@ -156,8 +234,29 @@
     </div>
 
 </div>
+
+@functions{
+    private string nevWidth = "0";
+
+    private void OpenNev()
+    {
+        nevWidth = "fit-content";
+    }
+
+    private void CloseNev()
+    {
+        nevWidth = "0";
+    }
+}
+
 @code {
 
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        us1Action();
+    }
     private bool NavShow { get; set; } = true;
     private bool us1 { get; set; } = true;
     private bool us2 { get; set; } = true;
