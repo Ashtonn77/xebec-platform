@@ -3,11 +3,29 @@
 @inject HttpClient httpClient
 @using XebecPortal.Shared.Security
 @inject NavigationManager NavManager
+@inject State State
 
 <style>
 
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+    border-radius: 55px;
+    padding-left: 0.4rem;
+}
 
-    .container-main{
+.invalid {
+    outline: 1px solid red;
+    border-radius: 55px;
+}
+
+.validation-message {
+    color: red;
+    list-style: none;
+    text-decoration: none;
+}
+
+
+  .container-main{
     position: relative;
     width: 100%;
     min-height: 100vh;
@@ -155,6 +173,7 @@ form.sign-up-form{
     font-size: 1.1rem;
     border-radius: 50%;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .social-icon:hover{
@@ -401,11 +420,14 @@ form.sign-up-form{
             <EditForm Model="user" OnValidSubmit="OnValidLogin" action="" class="sign-in-form">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
+
+                <p>@LoginMessage</p>
+
                 <h2 class="title">Sign In</h2>
 
                 <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <InputText @bind-Value="user.Email" placeholder="Username/Email"></InputText>
+                    <i class="fas fa-envelope"></i>
+                    <InputText @bind-Value="user.Email" placeholder="Email"></InputText>
                 </div>
 
                 <div class="input-field">
@@ -413,21 +435,21 @@ form.sign-up-form{
                     <InputText @bind-Value="user.Password" type="password" placeholder="Password"></InputText>
                 </div>
 
-                <input type="submit" value="Login" class="btn solid">
+                <input type="submit" value="Login" class="btn solid" disabled="@isDisabledLogin">
 
                 <p class="social-text">Or sign in with social media</p>
                 <div class="social-media">
 
                     <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-github" @onclick="GitHubSignIn"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="TwitterSignIn">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="GoogleSignIn">
                         <i class="fab fa-google"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="LinkedInSignIn">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
 
@@ -439,17 +461,14 @@ form.sign-up-form{
             <EditForm Model="reg" OnValidSubmit="OnValidReg" action="" class="sign-up-form">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
+
+                <p>@RegisterMessage</p>              
+
                 <h2 class="title">Sign Up</h2>
-
-                @* 
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Username">
-                </div> *@
-
+             
                 <div class="input-field">
                     <i class="fas fa-envelope"></i>
-                     <InputText @bind-Value="reg.Email" placeholder="Username/Email"></InputText>
+                     <InputText @bind-Value="reg.Email" placeholder="Email"></InputText>
                 </div>
 
                 <div class="input-field">
@@ -462,21 +481,21 @@ form.sign-up-form{
                     <InputText @bind-Value="reg.ConfirmPassword" type="password" placeholder="Confirm Password"></InputText>
                 </div>
 
-                <input type="submit" value="Register" class="btn solid">
+                <input type="submit" value="Register" class="btn solid" disabled="@isDisabledRegsiter">
 
                 <p class="social-text">Or sign up with social media</p>
                 <div class="social-media">
 
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
+                    <a href="#" class="social-icon" @onclick="GitHubSignIn">
+                        <i class="fab fa-github"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="TwitterSignIn">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="GoogleSignIn">
                         <i class="fab fa-google"></i>
                     </a>
-                    <a href="#" class="social-icon">
+                    <a href="#" class="social-icon" @onclick="LinkedInSignIn">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
 
@@ -522,29 +541,109 @@ form.sign-up-form{
 
 @code{
 
+    /*login specific*/
+    LoginModel user = new LoginModel();
+    bool IsSuccessful = false;
+    bool isDisabledLogin = false;
+    string LoginMessage = string.Empty;
+
+
+
+    /*register specific*/
+    RegisterModel reg = new RegisterModel();    
+    string RegisterMessage = string.Empty;
+    string RegisterLogin = string.Empty;
+    bool isDisabledRegsiter = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
             await jsr.InvokeVoidAsync("initializeLogin");
 
-        reg.Role = "Candiadte";    
+        reg.Role = "Candidate";    
     }
 
     //login
-    LoginModel user = new LoginModel();
+  
     private async Task OnValidLogin()
     {
        
+        isDisabledLogin = true;
+        using (var msg = await httpClient.PostAsJsonAsync<LoginModel>("/api/auth/login", user,
+        System.Threading.CancellationToken.None))
+        {
+            if (msg.IsSuccessStatusCode)
+            {
+                LoginResult result = await msg.Content.ReadFromJsonAsync<LoginResult>();
+                LoginMessage = result.Message;
+                isDisabledLogin = false;               
+                if (result.Success)
+                {                    
+                    await jsr.InvokeVoidAsync("localStorage.setItem", "user",
+                    $"{result.Email};{result.Role};{result.JwtBearer};{result.Id}").ConfigureAwait(false);
+                    NavManager.NavigateTo("/main");
+                    
+                     @* if (result.Role.ToLower().Equals("candidate"))
+                    {
+                        IsSuccessful = true;
+                        NavManager.NavigateTo("/notice");
+                    }
+                    else
+                    {
+                        IsSuccessful = true;
+                        NavManager.NavigateTo("/admin_");
+                    } *@
+                    
+                }
+            }
+        }
+
     }
 
 
     //register
-    RegisterModel reg = new RegisterModel();
-
-   
     private async Task OnValidReg()
     {
+        //TODO: Check for duplicate emails in db first before registering new account
         
+            isDisabledRegsiter = true;
+            using (var msg = await httpClient.PostAsJsonAsync<RegisterModel>("/api/auth/register", reg, System.Threading.CancellationToken.None))
+            {
+                if (msg.IsSuccessStatusCode)
+                {
+                    LoginResult result = await msg.Content.ReadFromJsonAsync<LoginResult>();
+                    RegisterMessage = result.Message;
+                    if (result.Success)
+                    {
+                        RegisterMessage += " Please Sign In to continue.";
+                        @* RegisterLogin = "Click here to LOGIN."; *@
+                    }
+                    else
+                        isDisabledRegsiter = false;
+                }
+            }        
+
+    }
+
+    /*OAuth*/
+    private void GoogleSignIn()
+    {
+        NavManager.NavigateTo("api/ThirdPartyUser/GoogleSignIn", true);
+    }
+
+    private void GitHubSignIn()
+    {
+        NavManager.NavigateTo("api/ThirdPartyUser/GitHubSignIn", true);
+    }
+
+    private void TwitterSignIn()
+    {
+        NavManager.NavigateTo("api/ThirdPartyUser/TwitterSignIn", true);
+    }
+
+    private void LinkedInSignIn()
+    {
+        NavManager.NavigateTo("api/ThirdPartyUser/LinkedInSignIn", true);
     }
 
 }

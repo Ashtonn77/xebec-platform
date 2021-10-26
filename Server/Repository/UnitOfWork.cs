@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Server.Data;
 using Server.IRepository;
+using XebecPortal.Shared.NewGamifiedModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -36,6 +37,13 @@ namespace Server.Repository
         private IGenericRepository<User> _users;
         private IGenericRepository<WorkHistory> _workHistories;
         private IGenericRepository<WorkHistoryHelper> _WorkHistoryHelpers;
+
+        /*newly added*/
+        private IGenericRepository<PersonalTestInfo> _personalTestInfos;
+        private IGenericRepository<EducationTest> _educationTests;
+        private IGenericRepository<WorkHistoryTest> _workHistoryTests;
+        private IGenericRepository<AdditionalInformationTest> _additionalInformationTests;
+        /*newly added*/
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -77,6 +85,14 @@ namespace Server.Repository
         public IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers => _WorkHistoryHelpers ??= new GenericRepository<WorkHistoryHelper>(_context);
 
         public IGenericRepository<AppUser> AppUsers => _appusers ??= new GenericRepository<AppUser>(_context);
+
+        public IGenericRepository<PersonalTestInfo> PersonalTestInfos => _personalTestInfos ??= new GenericRepository<PersonalTestInfo>(_context);
+
+        public IGenericRepository<EducationTest> EducationTests => _educationTests ??= new GenericRepository<EducationTest>(_context);
+
+        public IGenericRepository<WorkHistoryTest> WorkHistoryTests => _workHistoryTests ??= new GenericRepository<WorkHistoryTest>(_context);
+
+        public IGenericRepository<AdditionalInformationTest> AdditionalInformationTests => _additionalInformationTests ??= new GenericRepository<AdditionalInformationTest>(_context);
 
         public void Dispose()
         {

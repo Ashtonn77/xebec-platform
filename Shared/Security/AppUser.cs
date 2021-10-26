@@ -17,8 +17,9 @@ namespace XebecPortal.Shared.Security
 
         public string PasswordHash { get; set; }
 
-        public AppUser(string email, string role)
+        public AppUser(int id, string email, string role)
         {
+            this.Id = id;
             this.Email = email;
             this.Role = role;
         }

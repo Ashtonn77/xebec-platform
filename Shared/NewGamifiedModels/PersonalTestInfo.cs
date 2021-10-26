@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Shared.Security;
 
-namespace XebecPortal.Shared
+namespace XebecPortal.Shared.NewGamifiedModels
 {
-    public class PersonalInformation
+    public class PersonalTestInfo
     {
         public int Id { get; set; }
 
@@ -21,15 +22,16 @@ namespace XebecPortal.Shared
 
         public string Address { get; set; }
 
-        public bool Disability { get; set; }
+        public string Disability { get; set; }
 
         public string Gender { get; set; }
 
         public string Ethnicity { get; set; }
-        //foreign key
-        public int UserId { get; set; }
 
-        public User User { get; set; }
+        //foreign key
+        public int AppUserId { get; set; }
+
+        public AppUser AppUser { get; set; }
 
     }
 }

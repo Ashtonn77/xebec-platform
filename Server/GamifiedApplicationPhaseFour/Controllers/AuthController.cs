@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -79,6 +80,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 			if (user != null)
 				return new LoginResult
 				{
+					Id = user.Id,//<-newly added
 					Message = "Login successful.",
 					JwtBearer = CreateJWT(user),
 					Email = log.Email,
@@ -89,6 +91,9 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 			return new LoginResult { Message = "User/password not found.", Success = false };
 
 		}
+
+
+		
 
 	}
 }

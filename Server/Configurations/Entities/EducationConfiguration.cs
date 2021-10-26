@@ -23,6 +23,7 @@ namespace Server.Configurations.Entities
                      EndDate = DateTime.Now.AddMonths(2),
                      Qualification = "BSc Computer Science"
 
+
                 },
                 new Education
                 {
@@ -31,6 +32,7 @@ namespace Server.Configurations.Entities
                     StartDate = DateTime.Now.AddMinutes(2),
                     EndDate = DateTime.Now.AddMonths(14),
                     Qualification = "HighSchool Diploma"
+                    
                 }
             );
         }

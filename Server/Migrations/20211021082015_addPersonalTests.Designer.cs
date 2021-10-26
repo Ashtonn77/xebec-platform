@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Data;
 
 namespace XebecPortal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211021082015_addPersonalTests")]
+    partial class addPersonalTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,41 +60,6 @@ namespace XebecPortal.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("XebecPortal.Shared.AdditionalInformationTest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DocumentName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DocumentUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacebookLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GitHubLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkedInLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalWebsiteUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("AdditionalInformationTests");
-                });
-
             modelBuilder.Entity("XebecPortal.Shared.Application", b =>
                 {
                     b.Property<int>("Id")
@@ -122,7 +89,7 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             JobId = 1,
-                            TimeApplied = new DateTime(2021, 10, 23, 16, 0, 37, 207, DateTimeKind.Local).AddTicks(4185),
+                            TimeApplied = new DateTime(2021, 10, 21, 10, 22, 14, 149, DateTimeKind.Local).AddTicks(3156),
                             UserId = 1
                         });
                 });
@@ -210,7 +177,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Good Candidate, has potential to rule all of Westeros",
                             PhaseId = 1,
                             StatusId = 1,
-                            TimeMoved = new DateTime(2021, 10, 23, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(7905)
+                            TimeMoved = new DateTime(2021, 10, 21, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(8719)
                         },
                         new
                         {
@@ -219,7 +186,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Interview went well, He's really got potential",
                             PhaseId = 2,
                             StatusId = 1,
-                            TimeMoved = new DateTime(2021, 10, 25, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(8735)
+                            TimeMoved = new DateTime(2021, 10, 23, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(9112)
                         },
                         new
                         {
@@ -228,7 +195,7 @@ namespace XebecPortal.Server.Migrations
                             Comments = "He's good, but won't become king",
                             PhaseId = 3,
                             StatusId = 2,
-                            TimeMoved = new DateTime(2021, 12, 23, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(8806)
+                            TimeMoved = new DateTime(2021, 12, 21, 10, 20, 14, 150, DateTimeKind.Local).AddTicks(9163)
                         });
                 });
 
@@ -327,18 +294,18 @@ namespace XebecPortal.Server.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2021, 12, 23, 15, 58, 37, 213, DateTimeKind.Local).AddTicks(495),
+                            EndDate = new DateTime(2021, 12, 21, 10, 20, 14, 151, DateTimeKind.Local).AddTicks(4952),
                             Insitution = "Richmond",
                             Qualification = "BSc Computer Science",
-                            StartDate = new DateTime(2021, 10, 23, 15, 58, 39, 212, DateTimeKind.Local).AddTicks(9760)
+                            StartDate = new DateTime(2021, 10, 21, 10, 20, 16, 151, DateTimeKind.Local).AddTicks(4549)
                         },
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2022, 12, 23, 15, 58, 37, 213, DateTimeKind.Local).AddTicks(1701),
+                            EndDate = new DateTime(2022, 12, 21, 10, 20, 14, 151, DateTimeKind.Local).AddTicks(5619),
                             Insitution = "Hogwarts",
                             Qualification = "HighSchool Diploma",
-                            StartDate = new DateTime(2021, 10, 23, 16, 0, 37, 213, DateTimeKind.Local).AddTicks(1692)
+                            StartDate = new DateTime(2021, 10, 21, 10, 22, 14, 151, DateTimeKind.Local).AddTicks(5613)
                         });
                 });
 
@@ -415,10 +382,10 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             Compensation = "R45000",
-                            CreationDate = new DateTime(2021, 10, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(6669),
+                            CreationDate = new DateTime(2021, 10, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7148),
                             Department = "IT",
                             Description = "blah! blah! blah!",
-                            DueDate = new DateTime(2021, 12, 23, 15, 58, 37, 201, DateTimeKind.Local).AddTicks(943),
+                            DueDate = new DateTime(2021, 12, 21, 10, 20, 14, 145, DateTimeKind.Local).AddTicks(3753),
                             Location = "JHB",
                             Title = "Developer"
                         },
@@ -426,10 +393,10 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 2,
                             Compensation = "R50000",
-                            CreationDate = new DateTime(2021, 10, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(7371),
+                            CreationDate = new DateTime(2021, 10, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7704),
                             Department = "IT",
                             Description = "beep! beep beep!",
-                            DueDate = new DateTime(2021, 11, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(7352),
+                            DueDate = new DateTime(2021, 11, 21, 10, 20, 14, 146, DateTimeKind.Local).AddTicks(7687),
                             Location = "DBN",
                             Title = "Mobile Administrator"
                         });
@@ -594,35 +561,6 @@ namespace XebecPortal.Server.Migrations
                     b.ToTable("LoginHelpers");
                 });
 
-            modelBuilder.Entity("XebecPortal.Shared.NewGamifiedModels.EducationTest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Insitution")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Qualification")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("EducationTests");
-                });
-
             modelBuilder.Entity("XebecPortal.Shared.NewGamifiedModels.PersonalTestInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -636,8 +574,8 @@ namespace XebecPortal.Server.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Disability")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Disability")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -868,18 +806,18 @@ namespace XebecPortal.Server.Migrations
                             Id = 1,
                             CompanyName = "White Wolf Inc",
                             Description = "Commanded an army to victory",
-                            EndDate = new DateTime(2023, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(6305),
+                            EndDate = new DateTime(2023, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(3588),
                             JobTitle = "Commander",
-                            StartDate = new DateTime(2021, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(4312)
+                            StartDate = new DateTime(2021, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(3195)
                         },
                         new
                         {
                             Id = 2,
                             CompanyName = "Westeros Pty Ltd",
                             Description = "Daydreaming on a Sunday afternoon",
-                            EndDate = new DateTime(2024, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(8345),
+                            EndDate = new DateTime(2024, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(4633),
                             JobTitle = "King",
-                            StartDate = new DateTime(2022, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(8331)
+                            StartDate = new DateTime(2022, 10, 21, 10, 20, 14, 153, DateTimeKind.Local).AddTicks(4624)
                         });
                 });
 
@@ -919,38 +857,6 @@ namespace XebecPortal.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("XebecPortal.Shared.WorkHistoryTest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("JobTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("WorkHistoryTests");
-                });
-
             modelBuilder.Entity("XebecPortal.Shared.AdditionalInformation", b =>
                 {
                     b.HasOne("XebecPortal.Shared.User", "User")
@@ -960,17 +866,6 @@ namespace XebecPortal.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("XebecPortal.Shared.AdditionalInformationTest", b =>
-                {
-                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.Application", b =>
@@ -1096,17 +991,6 @@ namespace XebecPortal.Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("XebecPortal.Shared.NewGamifiedModels.EducationTest", b =>
-                {
-                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("XebecPortal.Shared.NewGamifiedModels.PersonalTestInfo", b =>
                 {
                     b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
@@ -1157,17 +1041,6 @@ namespace XebecPortal.Server.Migrations
                     b.Navigation("User");
 
                     b.Navigation("WorkHistory");
-                });
-
-            modelBuilder.Entity("XebecPortal.Shared.WorkHistoryTest", b =>
-                {
-                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

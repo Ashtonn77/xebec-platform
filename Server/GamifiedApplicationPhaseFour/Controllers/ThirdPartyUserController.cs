@@ -15,20 +15,49 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     public class ThirdPartyUserController : ControllerBase
     {
 
+        /*Begin Google OAuth*/
+        // [HttpGet("GoogleSignIn")]
+        // public async Task GoogleSignIn()
+        // {
+        //     await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+        //         new AuthenticationProperties { RedirectUri = "/profileTest" });
+        // }
 
-        [HttpGet("GoogleSignIn")]
-        public async Task GoogleSignIn()
+        // [HttpGet("GoogleSignIn")]
+        // public IActionResult GoogleSignIn()
+        // {
+        //     // var properties = new AuthenticationProperties{RedirectUri = Url.Action("GoogleResponse")};
+        //     var properties = new AuthenticationProperties{RedirectUri = "/profileTest"};
+        //     return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        // }
+
+
+        [HttpGet("GoogleResponse")]
+        public async Task<IActionResult> GoogleResponse()
         {
-            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-                new AuthenticationProperties { RedirectUri = "/profile"});
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+            return new JsonResult(claims);
+
         }
+        /*End Google OAuth*/
 
         //this is the one that works. Use this one and you're golden. The other ones down below aren't that important. However, they might prove useful in your journey.
-        [HttpGet("LinkedInSignIn")]
-        public async Task LinkedInSignIn()
-        {
-            await HttpContext.ChallengeAsync("LinkedIn", properties: new AuthenticationProperties { RedirectUri = "/profile" });
-        }
+        // [HttpGet("LinkedInSignIn")]
+        // public async Task LinkedInSignIn()
+        // {
+        //     await HttpContext.ChallengeAsync("LinkedIn", properties: new AuthenticationProperties { RedirectUri = "/profile" });
+        // }
 
         #region Other linkedin oauth stuff
         //[HttpGet("~/signin")]
@@ -44,24 +73,87 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 return BadRequest();
             }
 
+
             // Instruct the middleware corresponding to the requested external identity
             // provider to redirect the user agent to its own authorization endpoint.
             // Note: the authenticationScheme parameter must match the value configured in Startup.cs
             return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, provider);
         }
 
-        [HttpGet("~/signout")]
-        [HttpPost("~/signout")]
-        public IActionResult SignOutCurrentUser()
-        {
-            // Instruct the cookies middleware to delete the local cookie created
-            // when the user agent is redirected from the external identity provider
-            // after a successful authentication flow (e.g Google or Facebook).
-            return SignOut(new AuthenticationProperties { RedirectUri = "/profile" },
-                CookieAuthenticationDefaults.AuthenticationScheme);
-        }
-        #endregion
-    }
+        // [HttpGet("Logout")]
+        // public async Task<IActionResult> Logout()
+        // {
+        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
+        //     return Ok("");
+
+        // }
+
+        // [HttpGet("Logout")]
+        // public async Task Logout()
+        // {
+        //     Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
+        // }
+        // public async Task MyCustomSignOut(string redirectUri)
+        // {
+        //     // inject the HttpContextAccessor to get "context"
+        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //     var prop = new AuthenticationProperties()
+        //     {
+        //         RedirectUri = redirectUri
+        //     };
+        //     // after signout this will redirect to your provided target
+        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, prop);
+        // }
+
+
+        #endregion
+
+
+        /*GitHub OAuth*/
+        [HttpGet("GitHubSignIn")]
+        public IActionResult GitHubSignIn()
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
+        }
+
+        [HttpGet("GoogleSignIn")]
+        public IActionResult GoogleSignIn()
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = "/main" }, "Google");
+        }
+
+        [HttpGet("TwitterSignIn")]
+        public IActionResult TwitterSignIn()
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Twitter");
+        }
+
+        
+        [HttpGet("LinkedInSignIn")]
+        public IActionResult LinkedInSignIn()
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
+        }
+
+        [HttpGet("LogOut")]
+        public async Task LogOut()
+        {
+            {
+                var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
+                foreach (var cookie in siteCookies)
+                {
+                    Response.Cookies.Delete(cookie.Key); 
+                }
+            }
+
+            await HttpContext.SignOutAsync();
+            HttpContext.Response.Redirect("/loginbeta");
+            HttpContext.Session.Clear();          
+          
+            
+        }
+
+    }
 
 }

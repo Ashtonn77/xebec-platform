@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Shared.NewGamifiedModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -33,6 +34,17 @@ namespace Server.IRepository
         IGenericRepository<User> Users { get; }
         IGenericRepository<WorkHistory> WorkHistory { get; }
         IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers { get; }
+
+
+        /*newly added*/
+        IGenericRepository<PersonalTestInfo> PersonalTestInfos { get; }
+
+        IGenericRepository<EducationTest> EducationTests { get; }
+
+        IGenericRepository<WorkHistoryTest> WorkHistoryTests { get; }
+
+        IGenericRepository<AdditionalInformationTest> AdditionalInformationTests { get; }
+         /*newly added*/
 
         //Saving to the DB
         Task Save();
