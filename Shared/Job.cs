@@ -21,7 +21,7 @@ namespace XebecPortal.Shared
         public string Compensation { get; set; }
 
         public DateTime DueDate { get; set; }
-
+        //public string JobType { get; set; }
         public DateTime CreationDate { get; set; }
 
     }

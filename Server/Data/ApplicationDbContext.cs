@@ -40,12 +40,19 @@ namespace Server.Data
         public DbSet<WorkHistory> WorkHistories { get; set; }
         public DbSet<WorkHistoryHelper> WorkHistoryHelpers { get; set; }
 
+<<<<<<< HEAD
         /*newly added*/
         public DbSet<PersonalTestInfo> PersonalTestInfos { get; set; }
         public DbSet<EducationTest> EducationTests { get; set; }
         public DbSet<WorkHistoryTest> WorkHistoryTests { get; set; }
         public DbSet<AdditionalInformationTest> AdditionalInformationTests { get; set; }
         /*newly added*/
+=======
+        //Added new DB Sets
+        public DbSet<JobPlatform> JobPlatforms { get; set; }
+        public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }
+
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

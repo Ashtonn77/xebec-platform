@@ -65,8 +65,9 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobTypeHelper([FromBody] JobTypeHelper JobTypeHelper)
+        public async Task<IActionResult> CreateJobTypeHelper(int[] listOfId)
         {
+            List<JobTypeHelper> jobTypeHelper = new List<JobTypeHelper>();
 
             if (!ModelState.IsValid)
             {
@@ -77,11 +78,22 @@ namespace Server.Controllers
 
             try
             {
+                var jobs = _unitOfWork.Jobs.GetAll();
+                var job = jobs.Result.LastOrDefault();
+                foreach (var items in listOfId)
+                {
+                    jobTypeHelper.Add(new JobTypeHelper
+                    {
+                        JobID = job.Id,
+                        JobTypeID = items
+                    });
+                }
 
-                await _unitOfWork.JobTypeHelpers.Insert(JobTypeHelper);
+                await _unitOfWork.JobTypeHelpers.InsertRange(jobTypeHelper);
+
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetJobTypeHelper", new { id = JobTypeHelper.Id }, JobTypeHelper);
+                return NoContent();
 
             }
             catch (Exception e)

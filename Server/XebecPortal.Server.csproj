@@ -18,7 +18,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+<<<<<<< HEAD
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+=======
+    <PackageReference Include="X.PagedList" Version="8.1.0" />
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
   </ItemGroup>
 
   <ItemGroup>

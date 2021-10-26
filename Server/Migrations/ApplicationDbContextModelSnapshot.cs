@@ -122,7 +122,11 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             JobId = 1,
+<<<<<<< HEAD
                             TimeApplied = new DateTime(2021, 10, 23, 16, 0, 37, 207, DateTimeKind.Local).AddTicks(4185),
+=======
+                            TimeApplied = new DateTime(2021, 10, 18, 10, 11, 10, 572, DateTimeKind.Local).AddTicks(5523),
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                             UserId = 1
                         });
                 });
@@ -210,7 +214,11 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Good Candidate, has potential to rule all of Westeros",
                             PhaseId = 1,
                             StatusId = 1,
+<<<<<<< HEAD
                             TimeMoved = new DateTime(2021, 10, 23, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(7905)
+=======
+                            TimeMoved = new DateTime(2021, 10, 18, 10, 9, 10, 576, DateTimeKind.Local).AddTicks(1892)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         },
                         new
                         {
@@ -219,7 +227,11 @@ namespace XebecPortal.Server.Migrations
                             Comments = "Interview went well, He's really got potential",
                             PhaseId = 2,
                             StatusId = 1,
+<<<<<<< HEAD
                             TimeMoved = new DateTime(2021, 10, 25, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(8735)
+=======
+                            TimeMoved = new DateTime(2021, 10, 20, 10, 9, 10, 576, DateTimeKind.Local).AddTicks(2511)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         },
                         new
                         {
@@ -228,7 +240,11 @@ namespace XebecPortal.Server.Migrations
                             Comments = "He's good, but won't become king",
                             PhaseId = 3,
                             StatusId = 2,
+<<<<<<< HEAD
                             TimeMoved = new DateTime(2021, 12, 23, 15, 58, 37, 211, DateTimeKind.Local).AddTicks(8806)
+=======
+                            TimeMoved = new DateTime(2021, 12, 18, 10, 9, 10, 576, DateTimeKind.Local).AddTicks(2587)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         });
                 });
 
@@ -327,18 +343,32 @@ namespace XebecPortal.Server.Migrations
                         new
                         {
                             Id = 1,
+<<<<<<< HEAD
                             EndDate = new DateTime(2021, 12, 23, 15, 58, 37, 213, DateTimeKind.Local).AddTicks(495),
                             Insitution = "Richmond",
                             Qualification = "BSc Computer Science",
                             StartDate = new DateTime(2021, 10, 23, 15, 58, 39, 212, DateTimeKind.Local).AddTicks(9760)
+=======
+                            EndDate = new DateTime(2021, 12, 18, 10, 9, 10, 577, DateTimeKind.Local).AddTicks(7637),
+                            Insitution = "Richmond",
+                            Qualification = "BSc Computer Science",
+                            StartDate = new DateTime(2021, 10, 18, 10, 9, 12, 577, DateTimeKind.Local).AddTicks(6801)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         },
                         new
                         {
                             Id = 2,
+<<<<<<< HEAD
                             EndDate = new DateTime(2022, 12, 23, 15, 58, 37, 213, DateTimeKind.Local).AddTicks(1701),
                             Insitution = "Hogwarts",
                             Qualification = "HighSchool Diploma",
                             StartDate = new DateTime(2021, 10, 23, 16, 0, 37, 213, DateTimeKind.Local).AddTicks(1692)
+=======
+                            EndDate = new DateTime(2022, 12, 18, 10, 9, 10, 577, DateTimeKind.Local).AddTicks(9471),
+                            Insitution = "Hogwarts",
+                            Qualification = "HighSchool Diploma",
+                            StartDate = new DateTime(2021, 10, 18, 10, 11, 10, 577, DateTimeKind.Local).AddTicks(9457)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         });
                 });
 
@@ -415,10 +445,17 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 1,
                             Compensation = "R45000",
+<<<<<<< HEAD
                             CreationDate = new DateTime(2021, 10, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(6669),
                             Department = "IT",
                             Description = "blah! blah! blah!",
                             DueDate = new DateTime(2021, 12, 23, 15, 58, 37, 201, DateTimeKind.Local).AddTicks(943),
+=======
+                            CreationDate = new DateTime(2021, 10, 18, 10, 9, 10, 566, DateTimeKind.Local).AddTicks(818),
+                            Department = "IT",
+                            Description = "blah! blah! blah!",
+                            DueDate = new DateTime(2021, 12, 18, 10, 9, 10, 564, DateTimeKind.Local).AddTicks(1387),
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                             Location = "JHB",
                             Title = "Developer"
                         },
@@ -426,10 +463,17 @@ namespace XebecPortal.Server.Migrations
                         {
                             Id = 2,
                             Compensation = "R50000",
+<<<<<<< HEAD
                             CreationDate = new DateTime(2021, 10, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(7371),
                             Department = "IT",
                             Description = "beep! beep beep!",
                             DueDate = new DateTime(2021, 11, 23, 15, 58, 37, 202, DateTimeKind.Local).AddTicks(7352),
+=======
+                            CreationDate = new DateTime(2021, 10, 18, 10, 9, 10, 566, DateTimeKind.Local).AddTicks(1718),
+                            Department = "IT",
+                            Description = "beep! beep beep!",
+                            DueDate = new DateTime(2021, 11, 18, 10, 9, 10, 566, DateTimeKind.Local).AddTicks(1684),
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                             Location = "DBN",
                             Title = "Mobile Administrator"
                         });
@@ -447,7 +491,7 @@ namespace XebecPortal.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobPlatform");
+                    b.ToTable("JobPlatforms");
 
                     b.HasData(
                         new
@@ -486,7 +530,7 @@ namespace XebecPortal.Server.Migrations
 
                     b.HasIndex("JobPlatformId");
 
-                    b.ToTable("JobPlatformHelper");
+                    b.ToTable("JobPlatformHelpers");
 
                     b.HasData(
                         new
@@ -868,18 +912,30 @@ namespace XebecPortal.Server.Migrations
                             Id = 1,
                             CompanyName = "White Wolf Inc",
                             Description = "Commanded an army to victory",
+<<<<<<< HEAD
                             EndDate = new DateTime(2023, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(6305),
                             JobTitle = "Commander",
                             StartDate = new DateTime(2021, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(4312)
+=======
+                            EndDate = new DateTime(2023, 10, 18, 10, 9, 10, 582, DateTimeKind.Local).AddTicks(5945),
+                            JobTitle = "Commander",
+                            StartDate = new DateTime(2021, 10, 18, 10, 9, 10, 582, DateTimeKind.Local).AddTicks(5159)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         },
                         new
                         {
                             Id = 2,
                             CompanyName = "Westeros Pty Ltd",
                             Description = "Daydreaming on a Sunday afternoon",
+<<<<<<< HEAD
                             EndDate = new DateTime(2024, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(8345),
                             JobTitle = "King",
                             StartDate = new DateTime(2022, 10, 23, 15, 58, 37, 216, DateTimeKind.Local).AddTicks(8331)
+=======
+                            EndDate = new DateTime(2024, 10, 18, 10, 9, 10, 582, DateTimeKind.Local).AddTicks(8191),
+                            JobTitle = "King",
+                            StartDate = new DateTime(2022, 10, 18, 10, 9, 10, 582, DateTimeKind.Local).AddTicks(8170)
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
                         });
                 });
 

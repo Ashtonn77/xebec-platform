@@ -1,0 +1,311 @@
+@page "/jobpostingsexp"
+@inject IJSRuntime jsr
+@inject HttpClient HttpClient
+@inject NavigationManager NavManager
+@using XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .wrapper-job {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+    }
+
+    .add-job-container {
+        padding: 20px;
+        width: 80%;
+        margin: auto auto 5% auto;
+        height: 90%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        /*box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;*/
+        /* background-color: #fff;*/
+        border-radius: 5px;
+    }
+
+    .inner-wrapper {
+        width: 100%;
+        max-height: 90%;
+        margin: auto;
+        display: flex;
+        /* background-color: aliceblue;*/
+    }
+
+    .left {
+        width: 45%;
+        height: inherit;
+        padding: 5px;
+        overflow-x: unset;
+        overflow-y: auto;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        background-color: #fff;
+        border-radius: 5px;
+        /* background-color: aquamarine;*/
+    }
+
+        .left::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .left::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
+
+        .left::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
+
+    .box {
+        width: 90%;
+        height: fit-content;
+        padding: 10px;
+        margin: 5px auto;
+        cursor: pointer;
+    }
+
+        .box:hover {
+            border-color: blue;
+        }
+
+            .box:hover ~ .box-title {
+                text-decoration: underline;
+            }
+
+    .right {
+        width: 55%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        /*  background-color: rosybrown;*/
+    }
+
+    .select-details {
+        width: 90%;
+        height: 85%;
+        margin: auto;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .box,
+    .select-details {
+        border: 1px solid #95A5A6;
+        border-radius: 5px;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+        .select-details::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .select-details::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
+
+        .select-details::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
+
+    .btn-container {
+        width: 90%;
+        height: 10%;
+        margin: auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+
+    ul span {
+        font-weight: bold;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .list-group {
+        padding: 5px;
+    }
+
+    .box-title {
+        color: #4697e1;
+    }
+
+    .box-description {
+        color: #808080;
+    }
+
+    .select-details p span {
+        font-weight: bold;
+    }
+
+    .filterSection {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .filterjob {
+        width: 150px;
+        margin-right: 55px;
+    }
+
+    .filterpill {
+        background-color: #ddd;
+        border: none;
+        color: black;
+        padding: 4px 6px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        border-radius: 12px;
+    }
+
+    .filterClose {
+        cursor: pointer;
+        border-radius: 11px;
+        height: 50%;
+    }
+
+    .filterClose:hover {
+         background-color: #C4C4C4;
+    }
+</style>
+
+
+<!--Entire page as a flexbox-->
+<div class="wrapper-job">
+
+    <!--Heading-->
+    <h1 class="mt-5" style="margin-bottom: -5px;">Job Postings</h1>
+
+    @if (LstJobs != null)
+    {
+        <!--Div in the center of the page-->
+        <div class="add-job-container">
+
+            <!--Search bar-->
+            @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
+            <div class="input-group input-group-sm mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+                </div>
+                <input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Title, Location, Decription, Loca..." @bind="SearchTerm">
+                <span><button class="btn btn-primary" @onclick="RealSearch">Search</button></span>
+            </div>
+
+            <div class="filterSection">
+                @if (JobTypes != null)
+                {
+
+                    <select class="form-control filterjob" @onchange="@onValChanged">
+                        <option value=""  disabled selected> Job Type</option>
+                        @foreach (var jobType in JobTypes)
+                        {
+                            <option value="@jobType.Type"> @jobType.Type </option>
+                        }
+
+                    </select>
+                }
+            </div>
+            <div>
+                @if (jobFilterApplied)
+                {
+                    <div class="filterpill">
+                        <span>@JobFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="Clear" /></span>
+                    </div>
+                }
+            </div>
+            <br />
+
+            <!--Div containing the functionality-->
+            <div class="inner-wrapper">
+
+                <!--Boxes on the left/summary boxes-->
+                <div class="left">
+
+                    @if (LstJobs != null && LstJobs.Count > 0)
+                    {
+                        @foreach (var job in LstJobs)
+                        {
+                            <div class="box">
+                                <ul class="list-group" @onclick="() => ViewJob(job)">
+
+
+                                    <h5 class="box-title">@job.Title </h5>
+                                    <p><i class="fas fa-map-marker-alt"></i> &nbsp; @job.Location</p>
+                                    <p><span> @job.Compensation</span></p>
+                                    @if (job.Description.Length > 200)
+                                    {
+                                        string shortented = job.Description.Substring(0, 200) + "...";
+                                        <p class="box-description"> @shortented </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="box-description"> @job.Description </p>
+                                    }
+                                </ul>
+                            </div>
+
+                        }
+                        <p><strong>Total jobs available: @LstJobs.Count</strong></p>
+                    }
+                    else
+                    {
+                        <p> No Jobs found</p>
+                    }
+
+
+
+                </div>
+
+                <!--Box on the right/Details box + buttons-->
+                <div class="right">
+
+                    @if (CurrentJob2 != null && LstJobs.Count > 0)
+                    {
+                        <!--Details box-->
+                        <div class="select-details">
+                            <h2>@CurrentJob2.Title</h2>
+                            <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
+                            <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
+                            <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
+                            <hr />
+                            <p>@CurrentJob2.Description</p>
+                        </div>
+                    }
+                    <!--Search + post job buttons-->
+                    <div class="btn-container">
+                        <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
+                        <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <br /> <br /> <br />
+        <h2>Loading...</h2>
+    }
+</div>

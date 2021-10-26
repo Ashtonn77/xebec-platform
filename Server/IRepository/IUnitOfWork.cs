@@ -35,6 +35,7 @@ namespace Server.IRepository
         IGenericRepository<WorkHistory> WorkHistory { get; }
         IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers { get; }
 
+<<<<<<< HEAD
 
         /*newly added*/
         IGenericRepository<PersonalTestInfo> PersonalTestInfos { get; }
@@ -45,6 +46,12 @@ namespace Server.IRepository
 
         IGenericRepository<AdditionalInformationTest> AdditionalInformationTests { get; }
          /*newly added*/
+=======
+        //Added new repository
+        IGenericRepository<JobPlatform> JobPlatforms { get; }
+        IGenericRepository<JobPlatformHelper> JobPlatformHelpers { get; }
+
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         //Saving to the DB
         Task Save();

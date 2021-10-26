@@ -16,12 +16,16 @@ using Microsoft.IdentityModel.Tokens;
 using Server.GamifiedApplicationPhaseFour;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
 using Server.GamifiedApplicationPhaseFour.Repositories;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using XebecPortal.Client.GamifiedEnvBeta.Utils;
+=======
+using XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories;
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
 namespace XebecPortal.Server
 {
@@ -47,7 +51,12 @@ namespace XebecPortal.Server
             });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+<<<<<<< HEAD
 
+=======
+            services.AddTransient<IJobTestRepo, JobTestRepo>();
+            services.AddTransient<ICandidateTestRepo, CandidateTestRepo>();
+>>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
             services.AddAutoMapper(typeof(MapperInitializer));
 
             /*newly added*/
