@@ -16,6 +16,12 @@ using Microsoft.IdentityModel.Tokens;
 using Server.GamifiedApplicationPhaseFour;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
 using Server.GamifiedApplicationPhaseFour.Repositories;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using XebecPortal.Client.GamifiedEnvBeta.Utils;
 
 namespace XebecPortal.Server
 {
@@ -33,31 +39,42 @@ namespace XebecPortal.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ApplicationDbContext>(options => {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
 
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"));
 
             });
 
-           services.AddTransient<IUnitOfWork, UnitOfWork>();
-           
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             services.AddAutoMapper(typeof(MapperInitializer));
-           
+
+            /*newly added*/
+            services.AddSingleton<State>();
+
             services.AddTransient<IUserDb, UserDb>();
 
-            services.AddAuthentication(options => {
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);//We set Time here 
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            
+            });
 
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options => {
-                options.LoginPath = "/signin";
-                options.LogoutPath = "/signout";
+            services.AddAuthentication(options =>
+            {
+
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
             })
-           .AddGoogle(googleOptions =>
-           {
-               googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-               googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-
-           })
+            .AddCookie(options =>
+            {
+                // options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
+            })
             .AddLinkedIn(Linkedinoptions =>
             {
                 IConfigurationSection linkedinAuthNSection =
@@ -67,11 +84,8 @@ namespace XebecPortal.Server
                 Linkedinoptions.ClientSecret = linkedinAuthNSection["ClientSecret"];
                 Linkedinoptions.Scope.Add("r_liteprofile");
                 Linkedinoptions.Scope.Add("r_emailaddress");
-            });
-            //
-
-             //for login/register   
-             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -86,22 +100,93 @@ namespace XebecPortal.Server
 
                 };
 
-            });
+            })
+            // Add GitHub authentication
+            .AddGitHub("Github", options =>
+            {
+                options.ClientId = Configuration["Authentication:GitHub:ClientId"]; // client id from registering github app
+                options.ClientSecret = Configuration["Authentication:GitHub:ClientSecret"]; ; // client secret from registering github app
+                options.Scope.Add("user:email"); // add additional scope to obtain email address
+                options.Events = new OAuthEvents
+                {
+                    OnCreatingTicket = OnCreatingGitHubTicket()
+                }; // Event to capture when the authentication ticket is being created
+            })
+            // Add Google Authentication
+            .AddGoogle("Google", options =>
+                {
+                    options.ClientId = Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                    options.UserInformationEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
+                    options.ClaimActions.Clear();
+                    options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                    options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+                    options.ClaimActions.MapJsonKey(ClaimTypes.GivenName, "given_name");
+                    options.ClaimActions.MapJsonKey(ClaimTypes.Surname, "family_name");
+                    options.ClaimActions.MapJsonKey("urn:google:profile", "link");
+                    options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
+                    options.Events = new OAuthEvents
+                    {
+                        OnCreatingTicket = OnCreatingGoogleTicket()
+                    }; // Event to capture when the authentication ticket is being created
+                })
+                //twiiter
+                .AddTwitter(twitterOptions =>
+                {
+                    twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
+                    twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                    twitterOptions.RetrieveUserDetails = true;
+                });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-              services.AddCors(o =>
-            {
-                o.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
+            services.AddCors(o =>
+          {
+              o.AddPolicy("AllowAll", builder =>
+              {
+                  builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+              });
+          });
 
         }
+
+        /*Begin get data from oauth*/
+        private static Func<OAuthCreatingTicketContext, Task> OnCreatingGitHubTicket()
+        {
+            return async context =>
+            {
+                var fullName = context.Identity.FindFirst("urn:github:name").Value;
+                var email = context.Identity.FindFirst(ClaimTypes.Email).Value;
+
+                //Todo: Add logic here to save info into database
+
+                // this Task.FromResult is purely to make the code compile as it requires a Task result
+                await Task.FromResult(true);
+            };
+        }
+
+        private static Func<OAuthCreatingTicketContext, Task> OnCreatingGoogleTicket()
+        {
+            return async context =>
+            {
+                var firstName = context.Identity.FindFirst(ClaimTypes.GivenName).Value;
+                var lastName = context.Identity.FindFirst(ClaimTypes.Surname)?.Value;
+                var email = context.Identity.FindFirst(ClaimTypes.Email).Value;
+              
+                //Todo: Add logic here to save info into database
+
+                /*Testing*/                
+                
+
+                /*End Testing*/
+                // this Task.FromResult is purely to make the code compile as it requires a Task result
+                await Task.FromResult(true);
+            };
+        }
+        /*End get data from oauth*/
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -118,13 +203,18 @@ namespace XebecPortal.Server
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseCors("AllowAll");
 
-            app.UseAuthentication();    
+            /*new addition*/
+            app.UseCookiePolicy();
+            /*end new addition*/
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

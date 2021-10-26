@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Server.Configurations.Entities;
+using XebecPortal.Shared.NewGamifiedModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -39,6 +40,12 @@ namespace Server.Data
         public DbSet<WorkHistory> WorkHistories { get; set; }
         public DbSet<WorkHistoryHelper> WorkHistoryHelpers { get; set; }
 
+        /*newly added*/
+        public DbSet<PersonalTestInfo> PersonalTestInfos { get; set; }
+        public DbSet<EducationTest> EducationTests { get; set; }
+        public DbSet<WorkHistoryTest> WorkHistoryTests { get; set; }
+        public DbSet<AdditionalInformationTest> AdditionalInformationTests { get; set; }
+        /*newly added*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,6 +78,7 @@ namespace Server.Data
 
             modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
             modelBuilder.ApplyConfiguration(new JobPlatformHelperConfiguration());
+
 
         }
 

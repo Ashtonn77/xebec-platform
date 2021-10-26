@@ -17,5 +17,7 @@ namespace XebecPortal.Shared
         public int EducationId { get; set; }
 
         public Education Education { get; set; }
+
     }
+    
 }
