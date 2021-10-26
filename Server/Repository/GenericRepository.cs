@@ -50,6 +50,11 @@ namespace Server.Repository
             await _db.AddAsync(entity);
         }
 
+        public async Task InsertRange(IEnumerable<T> Entities)
+        {
+            await _db.AddRangeAsync(Entities);
+        }
+
         public void Update(T entity)
         {
             _db.Attach(entity);

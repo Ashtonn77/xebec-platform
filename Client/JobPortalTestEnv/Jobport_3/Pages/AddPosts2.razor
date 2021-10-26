@@ -4,6 +4,9 @@
 @inject IJSRuntime JsRuntime
 @using System.Net.Http
 
+@code{ 
+    int i = 0;
+}
 <style>
 
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -271,24 +274,28 @@
                                 <option selected disabled>--Select Department--</option>
                                 <option value="Accounting">Accounting</option>
                                 <option value="Legal">Legal</option>
-                                <option value="I.T">I.T</option>
+                                <option value="IT">IT</option>
                             </select>
                         </div>
 
                         <div class="form-group-others">
-                            <select class="custom-select right-input select2Multi" id="inputGroupSelect01" multiple="multiple">
+                            <select class="custom-select right-input select2Multi" id="select2DDB" multiple="multiple">
                                 @foreach (var items in jobTypes)
                                 {
                                     <option value="@items.Id">@items.Type</option>
                                 }
                             </select>
                         </div>
-
+                        
                         <div class="form-group-others">
-
-                            <!--<input type="checkbox" @@bind="platformHelper[0].JobPlatformId"> LinkedIn &nbsp;
-                            <input type="checkbox" @@bind="platformHelper[1].JobPlatformId"> Indeed &nbsp;
-                            <input type="checkbox" @@bind="platformHelper[2].JobPlatformId"> Twitter  &nbsp;-->
+                            @foreach (var items in jobPlatform)
+                            {
+<<<<<<< Updated upstream
+                            <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
+=======
+                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
+>>>>>>> Stashed changes
+                            }
                         </div>
                     </div>
                 </div>
@@ -298,14 +305,9 @@
                 </div><br />
 
                 <div class="form-group add-button-div">
-                    <button type="button" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
+                    <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
                 </div><br />
             </form>
-
-            <div class="div-buttons">
-                <button type="button" @onclick="toIndex" class="btn btn-outline-primary btn-sm mr-2">Previous</button>
-                <button type="button" @onclick="toWorkHistory" class="btn btn-outline-success btn-sm ml-2">Next</button>
-            </div>
         </div>
     </div>
 </div>

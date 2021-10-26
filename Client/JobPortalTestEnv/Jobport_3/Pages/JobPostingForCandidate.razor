@@ -21,7 +21,7 @@
 
     .add-job-container {
         padding: 20px;
-        width: 90%;
+        width: 80%;
         margin: auto auto 5% auto;
         height: 90%;
         display: flex;
@@ -37,7 +37,7 @@
         max-height: 90%;
         margin: auto;
         display: flex;
-        /*background-color: aliceblue;*/
+        /* background-color: aliceblue;*/
     }
 
     .left {
@@ -45,10 +45,11 @@
         height: inherit;
         padding: 5px;
         overflow-x: unset;
-        overflow-y: scroll;
+        overflow-y: auto;
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         background-color: #fff;
         border-radius: 5px;
+        /* background-color: aquamarine;*/
     }
 
         .left::-webkit-scrollbar {
@@ -73,19 +74,29 @@
         cursor: pointer;
     }
 
+        .box:hover {
+            border-color: blue;
+        }
+
+            .box:hover ~ .box-title {
+                text-decoration: underline;
+            }
+
     .right {
         width: 55%;
         height: inherit;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+        /*  background-color: rosybrown;*/
     }
 
     .select-details {
         width: 90%;
-        height: 70%;
+        height: 85%;
         margin: auto;
         padding: 10px;
+        overflow-y: auto;
     }
 
     .box,
@@ -96,9 +107,23 @@
         padding: 5px;
     }
 
+        .select-details::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .select-details::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
+
+        .select-details::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
+
     .btn-container {
         width: 90%;
-        height: 25%;
+        height: 10%;
         margin: auto;
         display: flex;
         justify-content: flex-end;
@@ -113,8 +138,30 @@
         list-style: none;
     }
 
+    .list-group {
+        padding: 5px;
+    }
+
+    .box-title {
+        color: #4697e1;
+    }
+
+    .box-description {
+        color: #808080;
+    }
+
     .select-details p span {
         font-weight: bold;
+    }
+
+    .filterSection {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .filterjob {
+        width: 150px;
+        margin-right: 55px;
     }
 </style>
 
@@ -149,15 +196,21 @@
                         <div class="box">
                             <ul class="list-group" @onclick="() => ViewJob(job)">
 
-                                <li class=" col-12 d-flex justify-content-between">
-                                    <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
-
-                                    <span class="">
-                                        <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
-                                    </span>
+                                <li> <p> <i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </p> </li>
+                                <li> <p> <h5 class="box-title">@job.Title</h5> </p> </li>
+                                <li> <p> <i class="fas fa-map-marker-alt" aria-hidden="true"> </i> &nbsp; @job.Location </p> </li>
+                                <li> <p> <span> @job.Compensation</span> </p> </li>
+                                <li>
+                                    @if (job.Description.Length > 200)
+                                    {
+                                        string shortented = job.Description.Substring(0, 200) + "...";
+                                        <p class="box-description"> @shortented </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="box-description"> @job.Description </p>
+                                    }
                                 </li>
-                                <li class="list-group-item"><span>Title: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> @job.Title </li>
-                                <li class="list-group-item"><span>Location: &nbsp;&nbsp;&nbsp;</span> @job.Location </li>
                             </ul>
                         </div>
 
@@ -172,12 +225,11 @@
 
                     @if (CurrentJob2 != null)
                     {
-
-                        <p><span>ID: </span>@CurrentJob2.Id</p>
-                        <p><span>Title: </span>@CurrentJob2.Title</p>
-                        <p><span>Location: </span>@CurrentJob2.Location</p>
-                        <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
-                        <p><span>Description: </span>@CurrentJob2.Description</p>
+                        <p><h2>@CurrentJob2.Title</h2></p>
+                        <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
+                        <p>@CurrentJob2.Compensation</p>
+                        <hr />
+                        <p>@CurrentJob2.Description</p>
                     }
                 </div>
 

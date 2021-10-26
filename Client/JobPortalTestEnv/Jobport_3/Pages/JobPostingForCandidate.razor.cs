@@ -34,11 +34,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
                 }
             }
 
-            if (applications.Count(x => x.JobId == CurrentJob2.Id && x.UserId == 2) >= 1)
-                IsShown = true;
-            else
-                IsShown = false;
-
         }
 
         public Job EditJob { get; set; } = new Job();
