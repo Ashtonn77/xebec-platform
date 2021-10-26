@@ -101,6 +101,30 @@
         flex-direction: row;
         padding-left:50px;
     }
+    .filterpill {
+        background-color: #ddd;
+        border: none;
+        color: black;
+        padding: 4px 6px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        border-radius: 12px;
+    }
+    .filterClose{
+        cursor: pointer;
+        border-radius:11px;
+        height: 50%;
+    }
+        .filterClose:hover {
+            background-color: #C4C4C4;
+        }
+
+        .filterEthinic{
+            height:75%;
+            width: 65%;
+        }
 </style>
 
 
@@ -127,33 +151,47 @@
             <div class="filterSection">
 
                 <select class="form-control filterEthinic" @onchange="@onValChanged">
-                    <option value="0"> Filter Race</option>
+                    <option value="0" disabled selected> Filter Race</option>
                     <option value="Black">Black</option>
                     <option value="White">White</option>
                     <option value="Indian">Indian</option>
                     <option value="Coloured">Coloured</option>
                 </select>
-                @if (EthnicFilterApplied)
-                {
-                    <span><button class="btn btn-secondary" @onclick="ClearEthnic">Clear Race</button></span>
-                }
+               
                 <select class="form-control filterGender" @onchange="@onValChanged">
-                    <option value="0"> Filter By Gender</option>
+                    <option value="0" disabled selected> Filter By Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
-                @if (GenderFilterApplied)
-                {
-                    <span><button class="btn btn-secondary" @onclick="ClearGender">Clear Gender</button></span>
-                }
+               
                 <select class="form-control filterDisability" @onchange="@onValChanged">
-                    <option value="0"> Filter By Disability</option>
+                    <option value="0" disabled selected> Filter By Disability</option>
                     <option value="disabled">disabled</option>
                     <option value="abled">Not Disabled</option>
                 </select>
+
+            </div>
+            <div>
+                @if (EthnicFilterApplied)
+                {
+                    <div class="filterpill">
+                        <span>@EthnicFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearEthnic" /></span>
+                    </div>
+                }
+                @if (GenderFilterApplied)
+                {
+                    <div class="filterpill">
+                        <span>@GenderFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearGender" /></span>
+                    </div>
+                }
                 @if (DisabilityFilterApplied)
                 {
-                    <span><button class="btn btn-secondary" @onclick="ClearDisability">Clear Disability</button></span>
+                    <div class="filterpill">
+                        <span>@DisabilityFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearDisability" /></span>
+                    </div>
                 }
             </div>
             <!--Div containing the functionality-->
@@ -179,7 +217,7 @@
                                     {
                                         <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
                                             <td scope="row">@(num++)</td>
-                                            <td scope="row">@candidate.FirstName| @candidate.LastName</td>
+                                            <td scope="row">@candidate.FirstName @candidate.LastName</td>
                                             <td scope="row">CEO Interview</td>
                                             <td scope="row" class="">
                                                 <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
@@ -207,7 +245,7 @@
                                         @if (RealUserPersonalInfo != null)
                                         {
                                             <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                            <h5 class="mb-0">@RealUserPersonalInfo.FirstName | @RealUserPersonalInfo.LastName</h5>
+                                            <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
                                             <hr />
                                             <span class="small text-uppercase text-muted">Gender</span>
                                             <p>@RealUserPersonalInfo.Gender</p>
@@ -245,8 +283,8 @@
     private User RealUser { get; set; }
     private List<PersonalInformation> RealCandidatesInfo { get; set; }
     private PersonalInformation RealUserPersonalInfo { get; set; }
-    private List<WorkHistory>? RealUserExperience { get; set; }
-    private List<Education>? RealUserEducation { get; set; }
+    private List<WorkHistory> RealUserExperience { get; set; }
+    private List<Education> RealUserEducation { get; set; }
 
     [Parameter]
     public string JobId { get; set; }

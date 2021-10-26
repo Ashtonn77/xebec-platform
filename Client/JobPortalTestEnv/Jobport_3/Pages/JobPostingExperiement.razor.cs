@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
 
@@ -8,58 +11,93 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 {
     public partial class JobPostingExperiement
     {
-         List<Job> Jobs = new List<Job>
 
-{
+        #region Component Lifeycle Methods
 
-            new Job
+        //Initialising
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+            JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
+            if (LstJobs != null)
             {
-                Id = 1,
-                Title = "Manager",
-                Description = "blah blah blah blah blah",
-                Location = "Durban",
-                Compensation = "R15000"
-
-
-
-            },
-
-
-             new Job
+                CurrentJob2 = LstJobs[0];
+            }
+        }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
             {
-                Id = 2,
-                Title = "Intern",
-                Description = "blah blah blah blah blah",
-                Location = "Cape Town",
-                Compensation = "R10000"
-            },
+                await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
+            }
+        }
 
-                new Job
-            {
-                Id = 3,
-                Title = "Director",
-                Description = "blah blah blah blah blah",
-                Location = "Sandton",
-                Compensation = "R40000",
+        #endregion
 
-            },
-              new Job
-            {
-                Id = 4,
-                Title = "Intern",
-                Description = "blah blah blah blah blah",
-                Location = "Durban",
-                Compensation = "R50000"
-            },
-              new Job
-            {
-                Id = 5,
-                Title = "Manager",
-                Description = "blah blah blah blah blah",
-                Location = "Cape Town",
-                Compensation = "R100000"
-            },
 
-    };
+        #region Mainparts
+
+        public List<Job> LstJobs { get; set; }
+        public Job CurrentJob2 { get; set; } = new Job();
+        public List<JobType> JobTypes { get; set; }
+
+        private void ViewJob(Job JobToView)
+        {
+            CurrentJob2 = JobToView;
+        }
+
+
+        private void ViewCandidates(Job selectedJob)
+        {
+            NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
+        }
+
+
+        #endregion
+
+
+        #region Searching and Filtering
+
+        public string SearchTerm { get; set; } = String.Empty;
+        public string JobFilter { get; set; } = String.Empty;
+        private bool jobFilterApplied = false;
+        private List<Job> SearchedJobs { get; set; } = new List<Job>();
+
+        private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
+        {
+            JobFilter = args.Value.ToString();
+            jobFilterApplied = true;
+            SearchEvent();
+        }
+
+        private void Clear()
+        {
+            jobFilterApplied = false;
+            JobFilter = string.Empty;
+            SearchEvent();
+        }
+
+        private void RealSearch()
+        {
+
+            SearchEvent();
+
+        }
+
+        private async Task<List<Job>> SearchEvent()
+        {
+            SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+            if (SearchedJobs.Count > 0)
+            {
+                CurrentJob2 = SearchedJobs[0];
+            }
+            LstJobs = SearchedJobs;
+            InvokeAsync(StateHasChanged);
+            return LstJobs;
+        }
+
+        #endregion
+
     }
 }

@@ -159,12 +159,33 @@
     .filterSection {
         display: flex;
         flex-direction: row;
-        
     }
 
     .filterjob {
         width: 150px;
         margin-right: 55px;
+    }
+
+    .filterpill {
+        background-color: #ddd;
+        border: none;
+        color: black;
+        padding: 4px 6px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        border-radius: 12px;
+    }
+
+    .filterClose {
+        cursor: pointer;
+        border-radius: 11px;
+        height: 50%;
+    }
+
+    .filterClose:hover {
+         background-color: #C4C4C4;
     }
 </style>
 
@@ -193,19 +214,24 @@
             <div class="filterSection">
                 @if (JobTypes != null)
                 {
-                    
+
                     <select class="form-control filterjob" @onchange="@onValChanged">
-                        <option value="0"> Job Type</option>
+                        <option value=""  disabled selected> Job Type</option>
                         @foreach (var jobType in JobTypes)
                         {
-                            <option value="@jobType.Id"> @jobType.Type </option>
+                            <option value="@jobType.Type"> @jobType.Type </option>
                         }
 
                     </select>
                 }
+            </div>
+            <div>
                 @if (jobFilterApplied)
                 {
-                    <span><button class="btn btn-secondary" @onclick="Clear">Clear filter</button></span>
+                    <div class="filterpill">
+                        <span>@JobFilter</span>
+                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="Clear" /></span>
+                    </div>
                 }
             </div>
             <br />
@@ -223,14 +249,6 @@
                             <div class="box">
                                 <ul class="list-group" @onclick="() => ViewJob(job)">
 
-                                    @*
-                                        <li class=" col-12 d-flex justify-content-between">
-                                            <span class=""><i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </span>
-
-                                            <span class="">
-                                                <i class="fa fa-pencil" aria-hidden="true" style="font-size:25px;color:mediumpurple" onclick="document.getElementById('id01').style.display='block'"></i>
-                                            </span>
-                                        </li>*@
 
                                     <h5 class="box-title">@job.Title </h5>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @job.Location</p>
@@ -250,10 +268,10 @@
                         }
                         <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                     }
-                else
-                {
-                    <p> No Jobs found</p>
-                }
+                    else
+                    {
+                        <p> No Jobs found</p>
+                    }
 
 
 
@@ -269,7 +287,7 @@
                             <h2>@CurrentJob2.Title</h2>
                             <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                             <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
-                             <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
+                            <button class="btn btn-primary" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
                             <hr />
                             <p>@CurrentJob2.Description</p>
                         </div>
@@ -291,213 +309,3 @@
         <h2>Loading...</h2>
     }
 </div>
-
-
-
-
-@*<div id="id01" class="w3-modal">
-        <div class="w3-modal-content">
-
-            <header class="w3-container" style="background-color: #d8e2dc;">
-                <span onclick="document.getElementById('id01').style.display='none'"
-                      class="w3-button w3-display-topright">&times;</span>
-                <h2>Edit Job</h2>
-            </header>
-
-            <div class="w3-container">
-                <form>
-                    <div class="form-group">
-                        <label for="job-title">Job Title</label>
-                        <input type="text" class="form-control" id="job-title" placeholder="@EditJob.Title" @bind-value="EditJob.Title">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form>
-            </div>
-
-            <footer class="w3-container" style=" background-color: #d8e2dc;">
-                <p class="badge">Click Save to Save and x to dismiss</p>
-            </footer>
-
-        </div>
-    </div>*@
-@code
-    {
-
-    #region Component Lifeycle Methods
-
-    //Initialising
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
-        JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
-        if (LstJobs != null)
-        {
-            CurrentJob2 = LstJobs[0];
-        }
-    }
-
-    protected override void OnParametersSet()
-    {
-
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
-        }
-    }
-
-    #endregion
-
-    /*New Word */
-    public string Filter { get; set; }
-
-
-    #region Mainparts
-
-    public List<Job> LstJobs { get; set; }
-    public Job CurrentJob2 { get; set; } = new Job();
-    public List<JobType> JobTypes { get; set; }
-
-    private void ViewJob(Job JobToView)
-    {
-        CurrentJob2 = JobToView;
-    }
-
-
-    private void ViewCandidates(Job selectedJob)
-    {
-        NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
-    }
-
-
-    #endregion
-
-
-    #region Searching and Filtering
-
-    public string SearchTerm { get; set; } = String.Empty;
-    public string JobFilter { get; set; } = String.Empty;
-    private bool jobFilterApplied = false; //for job type filtering
-    private List<Job> SearchedJobs { get; set; } = new List<Job>();
-
-    private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
-    {
-        JobFilter = args.Value.ToString();
-        jobFilterApplied = true;
-        SearchEvent();
-    }
-
-    private void Clear()
-    {
-        jobFilterApplied = false;
-        JobFilter = string.Empty;
-        SearchEvent();
-    }
-
-    private void RealSearch()
-    {
-
-        SearchEvent();
-
-    }
-
-    private async Task<List<Job>> SearchEvent()
-    {
-        SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
-        if (SearchedJobs.Count > 0)
-        {
-            CurrentJob2 = SearchedJobs[0];
-        }
-        LstJobs = SearchedJobs;
-        InvokeAsync(StateHasChanged);
-        return LstJobs;
-    }
-
-    #endregion
-
-
-
-
-
-
-    private bool isFound = false;
-
-
-
-
-
-    /* Search Function
-    private static void Search()
-    {
-        SearchResults = Jobs.FindAll(q => q.Title.ToLower().Equals(searchTerm.ToLower()));
-
-        //this is for when the search bar is empty
-@* if(SearchResults == null || SearchResults.Count <= 0)
-SearchResults = Jobs; *@
-
-}*/
-
-
-    bool IsClicked = false;
-
-
-
-
-
-    public Job EditJob { get; set; } = new Job();
-
-    // Search variabl
-
-    private void FilterByType()
-    {
-
-    }
-
-
-
-
-    //public void NewSearch()
-    //{
-
-    //    string lookingFor = SearchTerm.ToLower();
-    //    List<Job> TempJObs = Jobs.FindAll(q => (q.Title.ToLower().Contains(lookingFor) || q.Location.ToLower().Contains(lookingFor)));
-
-    //    if (TempJObs.Count < 1)
-    //    {
-    //        //Look under Discription
-    //        TempJObs = Jobs.FindAll(q => q.Description.ToLower().Contains(lookingFor) || q.Compensation.ToString().ToLower().Contains(lookingFor));
-    //    }
-
-    //    //if found
-    //    if (TempJObs.Count > 0)
-    //    {
-    //        DisplayJobs = TempJObs;
-    //    }
-    //    else
-    //    {
-    //        //Display alert item no found
-    //        //Todo
-    //    }
-
-    //}
-
-
-
-    //private int ReturnedJobId = 0;
-
-    //private Job CurrentJob = null;
-
-    ////Method for when a summary box is clicked. Uses the JobPostingTest.js in the js folder inside the wwwroot.
-    //private async Task On()
-    //{
-    //    IsClicked = true;
-    //    ReturnedJobId = Int32.Parse(await jsr.InvokeAsync<string>("show")); //Calls the show function from the javascript file.
-
-    //    CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId);
-
-    //}
-}

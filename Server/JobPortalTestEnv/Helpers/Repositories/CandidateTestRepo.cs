@@ -81,7 +81,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             if (!string.IsNullOrEmpty(GenderFilter))
             {
                 query = from user in query
-                               join person in _context.PersonalInformations.Where(e => e.Gender.Contains(GenderFilter))
+                               join person in _context.PersonalInformations.Where(e => e.Gender.Equals(GenderFilter))
                                    on user.Id equals person.UserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
