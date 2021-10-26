@@ -17,6 +17,6 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public bool IsSaved { get; set; } = false;
 
-
     }
+
 }

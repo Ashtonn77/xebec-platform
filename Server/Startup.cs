@@ -175,10 +175,13 @@ namespace XebecPortal.Server
                 var firstName = context.Identity.FindFirst(ClaimTypes.GivenName).Value;
                 var lastName = context.Identity.FindFirst(ClaimTypes.Surname)?.Value;
                 var email = context.Identity.FindFirst(ClaimTypes.Email).Value;
-
-
+              
                 //Todo: Add logic here to save info into database
 
+                /*Testing*/                
+                
+
+                /*End Testing*/
                 // this Task.FromResult is purely to make the code compile as it requires a Task result
                 await Task.FromResult(true);
             };

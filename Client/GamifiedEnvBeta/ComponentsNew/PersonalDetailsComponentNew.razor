@@ -106,6 +106,13 @@
     }
 </style>
 
+@if(State.UserEmail == null)
+{
+    <UnauthorizedComponent/>
+}
+else
+{
+
 <form class="input-form">
 
 
@@ -200,6 +207,7 @@
     </div>
 
 </form>
+}
 
 <p>@message</p>
 

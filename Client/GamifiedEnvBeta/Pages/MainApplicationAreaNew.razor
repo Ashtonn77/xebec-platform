@@ -38,7 +38,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: pink;
+        @* background-color: pink; *@
     }
 
 
@@ -82,7 +82,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: orangered;
+        @* background-color: orangered; *@
     }
 
     .progress-icons {
@@ -149,18 +149,18 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" @onclick="CloseMenu">&times;</a>
-        <a href="#" class="mb-2">@State.UserEmail</a>
+        <a href="/profile" class="mb-2">@State.UserEmail</a>
         <a href="#">Home</a>        
         <a href="#">Analytical Dashboard</a>
         <a href="#">Job Board</a>
-         <a href="/testlogout">Logout</a> 
-        @* <a href="#" @onclick="Test">Test</a> *@
+        <a href="/testlogout">Logout</a> 
+        
     </div>
 
     <div class="nav">        
 
         <div class="nav-title">
-            <h5>Xebec Platform</h5>
+            <h5>Xebec Platform</h5>            
         </div>
 
         <div class="nav-icons">
@@ -385,9 +385,6 @@
     }
 
 
-      private void Test()
-    {
-         NavigationManager.NavigateTo("api/Auth/LogOut", true);
-    }
+  
 
 }

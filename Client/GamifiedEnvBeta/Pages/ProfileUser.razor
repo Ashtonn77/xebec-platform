@@ -1,320 +1,115 @@
 @page "/profile"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient client
+@inject State State
+
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
 
 <style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
-    .container {
-        width: 100%;
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    .wrapper {
         height: 100vh;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        background-color: #5CCADA ;     }
-
-    .side-card {
-        width: 30%;
-        height: 80%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #EAEAEA;
-        border-style: solid;
-        border-width: 5px;
-        border-color: #D5D5D5;
-        box-shadow: 5px 10px 8px #888888;
+        width: 100%;
+        overflow: hidden;
     }
 
-    .picture {
-        width: 90%;
-        height: 40%;
+    .nav {
+        height: 8vh;
+        background-color: #fff;
+        width: 100%;
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.8rem;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+    .main-body {
+        height: 86vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
-        background-color: #EAEAEA;
-        margin-top: 30px;
-    }
-
-    .description {
-        width: 90%;
-        height: 40%;
-        display: flex;
-        flex-direction: column;
-        background-color: #EAEAEA;
-        margin-top: 20px;
-    }
-
-    .right {
-        width: 70%;
-        height: 80%;
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        background-color: #EAEAEA;
-        margin-left: 20px;
-        border-style: solid;
-        border-width: 5px;
-        border-color: #D5D5D5;
-        box-shadow: 5px 10px 8px #888888;
+        @* background-color: pink; *@
     }
 
-    .about { 
-         
-        width : 90% ; 
-        height : 40% ; 
-        display : flex ; 
-        flex-direction : row ; 
-        background-color : white ; 
-        margin-top : 30px; 
 
-
-    }
-    
-    .experience {
-        width: 90%;
-        height: 40%;
-        display: flex;
-        flex-direction : row ; 
-        background-color: white;
-        margin-top: 30px;
-    }
-
-    .name {
+    /*FOOTER*/
+    .footer-container {
         width: 100%;
-        height: 10%;
+        height: 6vh;
         display: flex;
-        background-color: white;
         align-items: center;
-        margin-left: 2px;
-        padding: 10px;
+        justify-content: flex-end;
     }
 
-    .details {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
-        margin-left: 2px;
-        padding : 10px ;
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
     }
 
-    .experiencedetails {
-        width: 50%;
+    .sidenav {
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        margin-left: 5px;
-        background-color: white;
-        
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: all 0.5s ease-in-out;
     }
 
-    .experience-heading {
-        width: 50%;
-        height: 10%;
-        display: flex;
-        background-color: white;
-        margin-left: 5px;
-      
-    }
-    .experience-description {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
-        padding: 10px;
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
     }
 
-    .education {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color : white ;
+    .sidenav a:hover {
+        color: #f1f1f1;
     }
 
-    .education-description {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
-        padding: 10px;
+    @@media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
     }
-
-    .left-about {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        padding : 10px ;
-    }
-
-    .right-about {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-       
-    }
-
-
-
-    .about-description {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
-    }
-
-    .about-details {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        margin-left: 5px;
-    
-    }
-
-    .about-details-right {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        margin-left: 5px;
-        margin-top : 20px; 
-    }
-
-    .experience-text { 
-        color : dodgerblue ; 
-    }
-  
-
 </style>
 
+<div class="wrapper">
 
-
-<div class="container">
-
-    <div class="side-card">
-
-        <div class="picture">
-
-            <img src="\img\profile.png" alt="profile" width= "250" height="230" />
-
-        </div>
-
-        <div class="description">
-
-            <div class="name">
-
-                <span><strong>Jane Doe</strong></span>
-
-            </div>
-
-            <div class="details">
-                <p>
-                    Owner at Her Company Inc. <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt.
-
-                </p>
-
-
-            </div>
-
-
-        </div>
-
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" @onclick="CloseMenu">&times;</a>
+        <a href="/profile" class="mb-2">@State.UserEmail</a>
+        <a href="#">Home</a>        
+        <a href="#">Analytical Dashboard</a>
+        <a href="#">Job Board</a>
+        <a href="/testlogout">Logout</a> 
+        
     </div>
 
-    <div class="right">
+    <div class="nav">        
 
-        <div class="about">
-
-            <div class="left-about">
-
-                <div class="experience-heading">
-                    <span><strong>About: </strong></span>
-                </div>
-
-                <div class="about-description">
-
-                    <div class="about-details">
-
-                        <p><strong>First Name:</strong> Jane</p>
-                        <p><strong>Gender:</strong> Female</p>
-                        <p><strong>Email:</strong> jane@example.com</p>
-
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-            <div class="right-about">
-
-
-                <div class="about-description">
-
-                    <div class="about-details-right">
-
-                        <p><strong>Last Name:</strong> Doe</p>
-                        <p><strong>Contact Number:</strong> 0842140296</p>
-                        <p><strong>Location:</strong> Durban</p>
-
-
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
+        <div class="nav-title">
+            <h5>Xebec Platform</h5>
         </div>
-       
-        <div class="experience">
 
-            <div class="experiencedetails">
+        <div class="nav-icons">
 
-                <div class="experience-heading">
-                    <span><strong>Experience: </strong></span>
-                </div>
-
-                <div class="experience-description">
-
-                    <p>
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now
-                    </p>
-                </div>
-
-            </div>
-
-            <div class="education">
-                <div class="experience-heading">
-                    <span><strong>Education: </strong></span>
-                </div>
-                <div class="education-description">
-                    <p>
-                        <span class="experience-text"> Masters Degree in Oxford</span><br />
-                        March 2020 - Now <br />
-                       <span class="experience-text">Bachelors Degreen in LPU </span> <br />
-                        March 2020 - Now <br />
-                    </p>
-                   
-                </div>
-
-            </div>
-
+          
+            <span style="font-size:30px;cursor:pointer" @onclick="ShowMenu">&#9776;</span>
 
         </div>
 
@@ -322,7 +117,34 @@
     </div>
 
 
+    <div class="main-body">
 
+<UserProfileComponent/>
 
+  </div>
+
+    <div class="footer-container">
+
+        <span>Nebula 2021 &reg;</span>
+
+    </div>
 
 </div>
+
+@code
+{
+     protected override async void OnAfterRender(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("initializeNav");       
+        base.OnAfterRender(firstRender);
+    }
+    private async Task ShowMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("openNav");
+    }
+
+    private async Task CloseMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("closeNav");
+    }
+}
