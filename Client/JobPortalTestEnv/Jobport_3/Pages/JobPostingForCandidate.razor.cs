@@ -13,27 +13,30 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
     {
         //Show and Hide Element
         private bool IsShown { get; set; } = false;
-        // Search variable
-        private static string searchTerm = string.Empty;
 
         private List<Application> applications = new List<Application>();
         private static List<Job> Jobs = new List<Job>();
+        public List<JobType> JobTypes { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Jobs = await httpClient.GetFromJsonAsync<List<Job>>("api/Job");
-
+            JobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
             await base.OnInitializedAsync();
 
             if (Jobs != null)
             {
                 DisplayJobs = Jobs;
-                if (Jobs.Count > 0)
-                {
-                    CurrentJob2 = Jobs[0];
-                }
+                CurrentJob2 = Jobs[0];
             }
 
+        }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
+            }
         }
 
         public Job EditJob { get; set; } = new Job();
@@ -55,42 +58,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         }
 
         private static List<Job> SearchResults = Jobs;
-
-        private static bool isFound = false;
-
-        public string SearchTerm { get; set; } = String.Empty;
-
-        public void NewSearch()
-        {
-            string lookingFor = SearchTerm.ToLower();
-            List<Job> TempJObs = Jobs.FindAll(q => (q.Title.ToLower().Contains(lookingFor) || q.Location.ToLower().Contains(lookingFor)));
-
-            if (TempJObs.Count < 1)
-            {
-                //Look under Discription
-                TempJObs = Jobs.FindAll(q => q.Description.ToLower().Contains(lookingFor) || q.Compensation.ToString().ToLower().Contains(lookingFor));
-            }
-
-            //if found
-            if (TempJObs.Count > 0)
-            {
-                DisplayJobs = TempJObs;
-            }
-            else
-            {
-                //Display alert item no found
-                //Todo
-            }
-        }
-
-        private void onChange(ChangeEventArgs args)
-        {
-            SearchTerm = (string)args.Value;
-            if (string.IsNullOrWhiteSpace(SearchTerm))
-            {
-                DisplayJobs = Jobs;
-            }
-        }
 
         // Apply Function
         private async Task Apply()
@@ -115,12 +82,49 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId);
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+       
+
+
+        #region Searching and Filtering
+
+        private string SearchTerm { get; set; } = String.Empty;
+        public string JobFilter { get; set; } = String.Empty;
+        private bool jobFilterApplied = false;
+        private List<Job> SearchedJobs { get; set; } = new List<Job>();
+
+        private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
-            if (firstRender)
-            {
-                await jsr.InvokeVoidAsync("initialize"); //Calls the initialize function from the javascript file.
-            }
+            JobFilter = args.Value.ToString();
+            jobFilterApplied = true;
+            SearchEvent();
         }
+
+        private void Clear()
+        {
+            jobFilterApplied = false;
+            JobFilter = string.Empty;
+            SearchEvent();
+        }
+
+        private void RealSearch()
+        {
+
+            SearchEvent();
+
+        }
+
+        private async Task<List<Job>> SearchEvent()
+        {
+            SearchedJobs = await httpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+            if (SearchedJobs.Count > 0)
+            {
+                CurrentJob2 = SearchedJobs[0];
+            }
+            DisplayJobs = SearchedJobs;
+            InvokeAsync(StateHasChanged);
+            return Jobs;
+        }
+
+        #endregion
     }
 }
