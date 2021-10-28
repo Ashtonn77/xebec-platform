@@ -24,9 +24,9 @@ namespace Server.Repository
         private IGenericRepository<ApplicationPhase> _appPhases;
         private IGenericRepository<ApplicationPhaseHelper> _appPhaseHelper;
         private IGenericRepository<Document> _document;
-        private IGenericRepository<DocumentHelper> _documentHelpers;
+      
         private IGenericRepository<Education> _education;
-        private IGenericRepository<EducationHelper> _educationHelpers;
+  
         private IGenericRepository<Job> _jobs;
         private IGenericRepository<JobType> _jobtypes;
         private IGenericRepository<JobTypeHelper> _jobTypeHelpers;
@@ -34,22 +34,19 @@ namespace Server.Repository
         private IGenericRepository<PersonalInformation> _personalInfo;
         private IGenericRepository<RegisterHelper> _RegisterHelpers;
         private IGenericRepository<Status> _statuses;
-        private IGenericRepository<User> _users;
+        
         private IGenericRepository<WorkHistory> _workHistories;
-        private IGenericRepository<WorkHistoryHelper> _WorkHistoryHelpers;
 
-<<<<<<< HEAD
         /*newly added*/
         private IGenericRepository<PersonalTestInfo> _personalTestInfos;
         private IGenericRepository<EducationTest> _educationTests;
         private IGenericRepository<WorkHistoryTest> _workHistoryTests;
         private IGenericRepository<AdditionalInformationTest> _additionalInformationTests;
         /*newly added*/
-=======
+
         //Added new repository
         private IGenericRepository<JobPlatform> _jobPlatforms;
         private IGenericRepository<JobPlatformHelper> _jobPlatformHelpers;
->>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -66,11 +63,9 @@ namespace Server.Repository
 
         public IGenericRepository<Document> Documents => _document ??= new GenericRepository<Document>(_context);
 
-        public IGenericRepository<DocumentHelper> DocumentHelper => _documentHelpers ??= new GenericRepository<DocumentHelper>(_context);
-
+  
         public IGenericRepository<Education> Education => _education ??= new GenericRepository<Education>(_context);
 
-        public IGenericRepository<EducationHelper> EducationHelpers => _educationHelpers ??= new GenericRepository<EducationHelper>(_context);
 
         public IGenericRepository<Job> Jobs => _jobs ??= new GenericRepository<Job>(_context);
 
@@ -85,14 +80,11 @@ namespace Server.Repository
         public IGenericRepository<RegisterHelper> RegisterHelpers => _RegisterHelpers ??= new GenericRepository<RegisterHelper>(_context);
 
         public IGenericRepository<Status> Statuses => _statuses ??= new GenericRepository<Status>(_context);
-        public IGenericRepository<User> Users => _users ??= new GenericRepository<User>(_context);
         public IGenericRepository<WorkHistory> WorkHistory => _workHistories ??= new GenericRepository<WorkHistory>(_context);
-
-        public IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers => _WorkHistoryHelpers ??= new GenericRepository<WorkHistoryHelper>(_context);
 
         public IGenericRepository<AppUser> AppUsers => _appusers ??= new GenericRepository<AppUser>(_context);
 
-<<<<<<< HEAD
+
         public IGenericRepository<PersonalTestInfo> PersonalTestInfos => _personalTestInfos ??= new GenericRepository<PersonalTestInfo>(_context);
 
         public IGenericRepository<EducationTest> EducationTests => _educationTests ??= new GenericRepository<EducationTest>(_context);
@@ -100,11 +92,10 @@ namespace Server.Repository
         public IGenericRepository<WorkHistoryTest> WorkHistoryTests => _workHistoryTests ??= new GenericRepository<WorkHistoryTest>(_context);
 
         public IGenericRepository<AdditionalInformationTest> AdditionalInformationTests => _additionalInformationTests ??= new GenericRepository<AdditionalInformationTest>(_context);
-=======
+
         public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);
 
         public IGenericRepository<JobPlatformHelper> JobPlatformHelpers => _jobPlatformHelpers ??= new GenericRepository<JobPlatformHelper>(_context);
->>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         public void Dispose()
         {

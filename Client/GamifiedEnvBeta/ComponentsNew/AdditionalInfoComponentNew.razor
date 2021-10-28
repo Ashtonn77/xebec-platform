@@ -188,15 +188,19 @@
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-             AdditionalInfo = await http.GetFromJsonAsync<AdditionalInformationTest>($"api/AdditionalInformationTest/{State.Id}");
+             
+
+            try
+            {
+                AdditionalInfo = await http.GetFromJsonAsync<AdditionalInformationTest>($"api/AdditionalInformationTest/{State.Id}");
+            }   
+            catch(Exception ex)
+            {
+                AdditionalInfo = new AdditionalInformationTest();
+                AdditionalInfo.AppUserId = State.Id;
+            }  
 
         }
-
-        if(AdditionalInfo.GitHubLink == null)
-        {
-            AdditionalInfo = new AdditionalInformationTest();
-            AdditionalInfo.AppUserId = State.Id;
-        }    
 
         AdditionalInfo.DocumentUrl = null;       
         State.IsSaved = false;

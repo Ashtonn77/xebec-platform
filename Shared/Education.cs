@@ -1,4 +1,5 @@
 ﻿using System;
+using XebecPortal.Shared.Security;
 
 namespace XebecPortal.Shared
 {
@@ -13,6 +14,11 @@ namespace XebecPortal.Shared
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+         public int AppUserId { get; set; }
+
+        public AppUser AppUser { get; set; }
+
 
         
     }

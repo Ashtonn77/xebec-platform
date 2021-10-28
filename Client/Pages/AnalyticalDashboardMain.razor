@@ -1,0 +1,353 @@
+@page "/testdashboard"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient client
+@inject State State
+
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    .wrapper {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .nav {
+        height: 8vh;
+        background-color: #6c85a3;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.8rem;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+    .main-body {
+        height: 86vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        @* background-color: pink; *@
+    }
+
+
+
+    /*FOOTER*/
+    .footer-container {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+         background-color: #6c85a3;
+         color: #fff;
+    }
+
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #6c85a3;
+        overflow-x: hidden;
+        transition: 0.5s;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 15px;
+        color: #fff;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #333;
+    }
+
+
+    @@media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+
+
+    /*dashboard component*/
+
+     .dash-container {
+        background-color: white;
+        height: 90%;
+        width: 90%;
+        margin: auto;
+        overflow-y: auto;
+        @* border: 0.5px solid #ced4da;         *@
+    }
+
+    .header {
+        height: 15%;
+        width: 100%;
+        padding: 1.2rem 0 0 0;
+        background-color: #b4c0d0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        
+    }
+    
+    .header h5
+    {
+        font-weight: bold;
+    }
+
+    .header p{
+        font-size: 14px;
+        font-style: italic;        
+    }
+
+    .main {
+        width: 100%;
+        height: 84%;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #6c85a3;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .report {
+        width: 90%;
+        height: 95%;
+        margin: auto;
+    }
+
+    @* .report-heading {
+        width: 100%;
+        text-align: center;
+        color: #e8eae7;
+        font-size: 15px;
+        font-weight: 700;
+        text-shadow: 1px 0 #888888;
+    } *@
+
+    .report-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    iframe {
+        border-radius: 5px;
+        height: 100%;
+        width: 100%;
+    }
+
+</style>
+
+<div class="wrapper">
+
+    <div id="testNav" class="sidenav">
+
+        <a href="javascript:void(0)" class="closebtn" style="font-size: 36px;"  @onclick="CloseMenu">&times;</a>
+        <a href="/profile" class="mb-2">@State.UserEmail</a>
+        <a href="#">Home</a>        
+        <a href="#">Analytical Dashboard</a>
+        <a href="#">Job Board</a>
+        <a href="/testlogout">Logout</a> 
+
+        <hr style="width:90%; margin:0 auto"/>
+
+        <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
+        <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
+        <a href="javascript:void(0)" @onclick="@us3Action">Site Traffic</a>
+        <a href="javascript:void(0)" @onclick="@us4Action">Time to Fill</a>
+        <a href="javascript:void(0)" @onclick="@us5Action">Time to Hire</a>
+
+    </div>
+
+    <div class="nav">        
+
+        <div class="nav-title">
+            <h5 style="color:#fff;">Xebec Platform</h5>            
+        </div>
+
+        <div class="nav-icons">
+
+
+            <span style="font-size:30px;cursor:pointer; color:#fff" @onclick="ShowMenu">&#9776;</span>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="main-body">
+
+
+        <div class="dash-container">
+
+
+
+            <div class="header">
+                <h5>Xebec Analytics Dashboard</h5>  
+                <p>@topic</p>      
+            </div>
+
+            <div class="main">
+                <div hidden="@us1" class="report">                 
+                    <div class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+                <div hidden="@us2" class="report">
+                
+                    <div class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=c4c17db7-63b9-4fcb-adb1-de650005a7b8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+                <div hidden="@us3" class="report">
+                  
+                    <div class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=79d75a8a-b476-4e93-8354-12ebf8d76d8b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+                <div hidden="@us4" class="report">
+                  
+                    <div class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=df92bb9b-beaf-44ac-8808-f8802b436252&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+                <div hidden="@us5" class="report">
+                    
+                    <div class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=cd4808b0-193d-4eb3-a3ff-55b057769cd7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+                    </div>
+                </div>
+
+
+        </div>
+
+</div>
+
+
+    </div>
+
+    <div class="footer-container">
+
+        <span>Nebula 2021 &reg;</span>
+
+    </div>
+
+</div>
+
+@code {
+
+    string topic = "Analytics Department";
+
+    protected override void OnInitialized()
+        {
+        base.OnInitialized();
+        us1Action();
+    } 
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
+        }
+
+    }
+
+    private async Task ShowMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("openNav");
+    }
+
+    private async Task CloseMenu()
+    {
+        await jsRuntime.InvokeVoidAsync("closeNav");
+    }
+
+    private bool us1 { get; set; } = true;
+        private bool us2 { get; set; } = true;
+        private bool us3 { get; set; } = true;
+        private bool us4 { get; set; } = true;
+        private bool us5 { get; set; } = true;
+
+        private void us1Action()
+        {
+            topic = "Analytics Department";
+            us2 = true;
+            us3 = true;
+            us4 = true;
+            us5 = true;
+            us1 = !us1;
+        }
+
+        private void us2Action()
+        {
+            topic = "Rate of Registration";
+            us1 = true;
+            us3 = true;
+            us4 = true;
+            us5 = true;
+            us2 = !us2;
+        }
+
+        private void us3Action()
+        {
+            topic = "Site Traffic";
+            us1 = true;
+            us2 = true;
+            us4 = true;
+            us5 = true;
+            us3 = !us3;
+        }
+
+        private void us4Action()
+        {
+            topic = "Time to Fill";
+            us1 = true;
+            us3 = true;
+            us2 = true;
+            us5 = true;
+            us4 = !us4;
+        }
+
+        private void us5Action()
+        {
+            topic = "Time to Hire";
+            us1 = true;
+            us3 = true;
+            us4 = true;
+            us2 = true;
+            us5 = !us5;
+        } 
+
+}

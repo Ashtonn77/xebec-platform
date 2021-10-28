@@ -2,6 +2,7 @@
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @using XebecPortal.Client.JobPortalTestEnv.Models
+@using XebecPortal.Shared.Security
 
 
 <style>
@@ -138,128 +139,129 @@
 
     @if (RealCandidatesInfo != null)
     {
-        <!--Div in the center of the page-->
-        <div class="add-job-container">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+            <!--Div in the center of the page-->
+            <div class="add-job-container">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." @bind="SearchTerm">
+                    <span><button class="btn btn-primary" @onclick="RealSearch">Search</button></span>
                 </div>
-                <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." @bind="SearchTerm">
-                <span><button class="btn btn-primary" @onclick="RealSearch">Search</button></span>
-            </div>
 
-            <div class="filterSection">
+                <div class="filterSection">
 
-                <select class="form-control filterEthinic" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter Race</option>
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Indian">Indian</option>
-                    <option value="Coloured">Coloured</option>
-                </select>
-               
-                <select class="form-control filterGender" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter By Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-               
-                <select class="form-control filterDisability" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter By Disability</option>
-                    <option value="disabled">disabled</option>
-                    <option value="abled">Not Disabled</option>
-                </select>
+                    <select class="form-control filterEthinic" @onchange="@onValChanged">
+                        <option value="0" disabled selected> Filter Race</option>
+                        <option value="Black">Black</option>
+                        <option value="White">White</option>
+                        <option value="Indian">Indian</option>
+                        <option value="Coloured">Coloured</option>
+                    </select>
 
-            </div>
-            <div>
+                    <select class="form-control filterGender" @onchange="@onValChanged">
+                        <option value="0" disabled selected> Filter By Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+
+                    <select class="form-control filterDisability" @onchange="@onValChanged">
+                        <option value="0" disabled selected> Filter By Disability</option>
+                        <option value="disabled">disabled</option>
+                        <option value="abled">Not Disabled</option>
+                    </select>
+
+                </div>
+                <div>
                 @if (EthnicFilterApplied)
                 {
-                    <div class="filterpill">
-                        <span>@EthnicFilter</span>
-                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearEthnic" /></span>
-                    </div>
+                            <div class="filterpill">
+                                <span>@EthnicFilter</span>
+                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearEthnic" /></span>
+                            </div>
                 }
                 @if (GenderFilterApplied)
                 {
-                    <div class="filterpill">
-                        <span>@GenderFilter</span>
-                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearGender" /></span>
-                    </div>
+                            <div class="filterpill">
+                                <span>@GenderFilter</span>
+                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearGender" /></span>
+                            </div>
                 }
                 @if (DisabilityFilterApplied)
                 {
-                    <div class="filterpill">
-                        <span>@DisabilityFilter</span>
-                        <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearDisability" /></span>
-                    </div>
+                            <div class="filterpill">
+                                <span>@DisabilityFilter</span>
+                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearDisability" /></span>
+                            </div>
                 }
-            </div>
-            <!--Div containing the functionality-->
+                </div>
+                <!--Div containing the functionality-->
             <div class="inner-wrapper m-0">
 
-                <!--Boxes on the left/summary boxes-->
+                    <!--Boxes on the left/summary boxes-->
                 <div class="left m-2">
-                    <div class="">
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Full Name</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Change status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Change status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 @if (RealCandidatesInfo.Count > 0)
                                 {
                                     int num = 1;
                                     @foreach (var candidate in RealCandidatesInfo)
                                     {
-                                        <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
-                                            <td scope="row">@(num++)</td>
-                                            <td scope="row">@candidate.FirstName @candidate.LastName</td>
-                                            <td scope="row">CEO Interview</td>
-                                            <td scope="row" class="">
-                                                <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
-                                            </td>
-                                        </tr>
+                                                    <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
+                                                        <td scope="row">@(num++)</td>
+                                                        <td scope="row">@candidate.FirstName @candidate.LastName</td>
+                                                        <td scope="row">CEO Interview</td>
+                                                        <td scope="row" class="">
+                                                            <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
+                                                        </td>
+                                                    </tr>
                                     }
                                 }
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                <!--Box on the right/Details box + buttons-->
+                    <!--Box on the right/Details box + buttons-->
                 <div class="right  col-6 m-2">
 
-                    <!--Details box-->
+                        <!--Details box-->
                     <div class="profile rounded shadow-sm ">
-                        <div class="container col-12">
-                            <div class="row text-center">
+                            <div class="container col-12">
+                                <div class="row text-center">
 
-                                <div class="col-xl-12 col-sm-12 mb-1">
-                                    <div class="py-5 px-4 select-details">
+                                    <div class="col-xl-12 col-sm-12 mb-1">
+                                        <div class="py-5 px-4 select-details">
                                         @if (RealUserPersonalInfo != null)
                                         {
-                                            <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                            <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
-                                            <hr />
-                                            <span class="small text-uppercase text-muted">Gender</span>
-                                            <p>@RealUserPersonalInfo.Gender</p>
-                                            <hr>
-                                            <span class="small text-uppercase text-muted">Contact Info</span>
-                                            <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
-                                            <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
-                                            <hr>
-                                            <div>
-                                                <ProgressBarComp />
-                                            </div>
-                                            <span class="small text-uppercase text-muted">More Info</span>
-                                            <p>@CurrentCandidate.ExtraInfo</p>
+                                                    <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                                    <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
+                                                    <hr />
+                                                    <span class="small text-uppercase text-muted">Gender</span>
+                                                    <p>@RealUserPersonalInfo.Gender</p>
+                                                    <hr>
+                                                    <span class="small text-uppercase text-muted">Contact Info</span>
+                                                    <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
+                                                    <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
+                                                    <hr>
+                                                    <div>
+                                                        <ProgressBarComp />
+                                                    </div>
+                                                    <span class="small text-uppercase text-muted">More Info</span>
+                                                    <p>@CurrentCandidate.ExtraInfo</p>
                                         }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -267,20 +269,19 @@
                     </div>
                 </div>
             </div>
-        </div>
     }
     else
     {
-        <br /> <br /> <br />
-        <h2>Loading...</h2>
+            <br /> <br /> <br />
+            <h2>Loading...</h2>
     }
 </div>
 
 @code {
 
-    private List<User> RealCandidates { get; set; } = new List<User>();
+    private List<AppUser> RealCandidates { get; set; } = new List<AppUser>();
 
-    private User RealUser { get; set; }
+    private AppUser RealUser { get; set; }
     private List<PersonalInformation> RealCandidatesInfo { get; set; }
     private PersonalInformation RealUserPersonalInfo { get; set; }
     private List<WorkHistory> RealUserExperience { get; set; }
@@ -294,7 +295,18 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        RealCandidates = await httpClient.GetFromJsonAsync<List<User>>($"api/CandidateTest/?JobId={JobId}");
+
+
+        try
+        {
+            RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={JobId}");
+        }
+        catch (Exception ex)
+        {
+            RealCandidates = new List<AppUser>();
+        }
+
+
         if (RealCandidates.Count > 0)
         {
             Console.WriteLine("we made it here");
@@ -412,7 +424,17 @@
 
     private async Task<List<PersonalInformation>> SearchEvent()
     {
-        RealCandidates = await httpClient.GetFromJsonAsync<List<User>>($"api/CandidateTest/?JobId={int.Parse(JobId)}");
+
+
+        try
+        {
+            RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={int.Parse(JobId)}");
+        }
+        catch (Exception ex)
+        {
+            RealCandidates = new List<AppUser>();
+        }
+
         if (RealCandidates.Count > 0)
         {
             SearchedCandidates = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}&SearchQuery={SearchTerm}&ethnicityFiler={EthnicFilter}&GenderFilter={GenderFilter}&disabilityFilter={DisabilityFilter}");
@@ -430,15 +452,6 @@
     #endregion
 
 
-
-
-
-
-
-
-
-
-
     //==============================================================================================================================================================
 
 
@@ -452,86 +465,47 @@
 {
 
 
-        new CandidateTest
-        {
-            Id = 1,
-            Name = "Johnathan Snow",
-            JobAppliedFor = "Developer",
-            YearsOfExp = 2,
-            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+    new CandidateTest
+    {
+        Id = 1,
+        Name = "Johnathan Snow",
+        JobAppliedFor = "Developer",
+        YearsOfExp = 2,
+        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
 
-        },
+    },
 
-        new CandidateTest
-        {
-            Id = 2,
-            Name = "Edward Stark",
-            JobAppliedFor = "Lawyer",
-            YearsOfExp = 8,
-            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+    new CandidateTest
+    {
+        Id = 2,
+        Name = "Edward Stark",
+        JobAppliedFor = "Lawyer",
+        YearsOfExp = 8,
+        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
 
-        },
+    },
 
-        new CandidateTest
-        {
-            Id = 3,
-            Name = "Peter Parker",
-            JobAppliedFor = "Developer",
-            YearsOfExp = 1,
-            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+    new CandidateTest
+    {
+        Id = 3,
+        Name = "Peter Parker",
+        JobAppliedFor = "Developer",
+        YearsOfExp = 1,
+        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
 
-        },
+    },
 
-        new CandidateTest
-        {
-            Id = 4,
-            Name = "Bruce Banner",
-            JobAppliedFor = "Cloud Engineer",
-            YearsOfExp = 5,
-            ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
+    new CandidateTest
+    {
+        Id = 4,
+        Name = "Bruce Banner",
+        JobAppliedFor = "Cloud Engineer",
+        YearsOfExp = 5,
+        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
 
-        }
+    }
 
     };
-
-    //public string SearchTerm { get; set; } = String.Empty;
-    //public bool Found { get; set; } = true;
-    //public void NewSearch()
-    //{
-    //    //Find term occurance in the Candidate List model properties
-    //    //q => (q.JobAppliedFor.ToLower().Equals(searchTerm.ToLower()) || q.Name.ToLower().Equals(searchTerm.ToLower())
-    //    string lookingFor = SearchTerm.ToLower();
-    //    List<CandidateTest> TempCandi = Candidates.FindAll(q => (q.JobAppliedFor.ToLower().Contains(lookingFor) || q.Name.ToLower().Contains(lookingFor)));
-
-    //    if (TempCandi.Count < 1)
-    //    {
-    //        //Look under more more info
-    //        TempCandi = Candidates.FindAll(q => q.ExtraInfo.ToLower().Contains(lookingFor));
-    //    }
-
-    //    //if found
-    //    if (TempCandi.Count > 0)
-    //    {
-    //        DisplayItems = TempCandi;
-    //    }
-    //    else
-    //    {
-    //        //Display alert item no found
-    //        //Todo
-    //    }
-
-    //}
-    //private void onChange(Microsoft.AspNetCore.Components.ChangeEventArgs args)
-    //{
-    //    SearchTerm = (string)args.Value;
-    //    if (string.IsNullOrWhiteSpace(SearchTerm))
-    //    {
-    //        DisplayItems = Candidates;
-    //    }
-    //}
-
-    //// Search variable
-
 
 
 }

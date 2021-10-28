@@ -18,12 +18,25 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
-            JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
-            if (LstJobs != null)
+
+            try
             {
-                CurrentJob2 = LstJobs[0];
+                LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+                JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
+
+                  if (LstJobs != null)
+                  {
+                        CurrentJob2 = LstJobs[0];
+                  }
+
             }
+            catch (Exception ex)
+            {
+                LstJobs = new List<Job>();
+                JobTypes = new List<JobType>();
+            }
+
+          
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -87,7 +100,18 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private async Task<List<Job>> SearchEvent()
         {
-            SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+
+
+
+            try
+            {
+                SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+            }
+            catch (Exception ex)
+            {
+                SearchedJobs = new List<Job>();
+            }
+
             if (SearchedJobs.Count > 0)
             {
                 CurrentJob2 = SearchedJobs[0];

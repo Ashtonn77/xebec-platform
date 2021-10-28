@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
+using XebecPortal.Shared.Security;
 
 namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
 {
-    public class CandidateTestRepo : GenericRepository<User>, ICandidateTestRepo
+    public class CandidateTestRepo : GenericRepository<AppUser>, ICandidateTestRepo
     {
         public CandidateTestRepo(ApplicationDbContext context) : base(context)
         {
@@ -23,24 +24,24 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             //IQueryable<PersonalInformation> queryFinal = _context.PersonalInformations.
             //    FromSqlRaw("SELECT * from PersonalInformations Where UserId IN (SELECT UserId FROM Applications where JobId = @jobId)", job);
 
-            queryFinal = from users in _context.Users
+            queryFinal = from users in _context.AppUser
                     join applications in _context.Applications.Where(a => a.JobId == JobId)
-                        on users.Id equals applications.UserId
+                        on users.Id equals applications.AppUserId
                     join info in _context.PersonalInformations
-                     on users.Id equals info.UserId
+                     on users.Id equals info.AppUserId
                     select info;
 
             return await queryFinal.AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<User>> GetApplicantIds(int JobId)
+        public async Task<List<AppUser>> GetApplicantIds(int JobId)
         {
-            IQueryable<User> queryFinal;
+            IQueryable<AppUser> queryFinal;
           
 
-            queryFinal = from users in _context.Users
+            queryFinal = from users in _context.AppUser
                          join applications in _context.Applications.Where(a => a.JobId == JobId)
-                             on users.Id equals applications.UserId
+                             on users.Id equals applications.AppUserId
                          select users;
 
             return await queryFinal.AsNoTracking().ToListAsync();
@@ -55,9 +56,9 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             IQueryable<Education> queryEd = _context.Educations;
 
             //GetApplications for sepecific job
-            IQueryable<User> query = from users in _context.Users
+            IQueryable<AppUser> query = from users in _context.AppUser
                                      join applications in _context.Applications.Where(a => a.JobId == JobId)
-                                         on users.Id equals applications.UserId
+                                         on users.Id equals applications.AppUserId
                                      select users;
             //Search name and surname
             if (!string.IsNullOrEmpty(SearchQuery))
@@ -65,7 +66,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
                 query = from user in query
                                join personalinfo in _context.PersonalInformations.
                                Where(p => p.FirstName.Contains(SearchQuery) || p.LastName.Contains(SearchQuery))
-                                   on user.Id equals personalinfo.UserId
+                                   on user.Id equals personalinfo.AppUserId
                                select user;
             }
             //filter by ethnicity
@@ -73,7 +74,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             {
                     query = from user in query
                                    join person in _context.PersonalInformations.Where(e => e.Ethnicity.Contains(ethnicityFiler))
-                                       on user.Id equals person.UserId
+                                       on user.Id equals person.AppUserId
                                    select user;
                     //Searches for job titles, compensation and locations based on what user entered
             }
@@ -82,7 +83,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             {
                 query = from user in query
                                join person in _context.PersonalInformations.Where(e => e.Gender.Equals(GenderFilter))
-                                   on user.Id equals person.UserId
+                                   on user.Id equals person.AppUserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
             }
@@ -92,13 +93,13 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
                 bool isDisabled = disabilityFilter.Contains("disabled");
                 query = from user in query
                                join person in _context.PersonalInformations.Where(e => e.Disability == isDisabled)
-                                   on user.Id equals person.UserId
+                                   on user.Id equals person.AppUserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
             }
             queryPI = from users in query
                       join applications in queryPI
-                          on users.Id equals applications.UserId
+                          on users.Id equals applications.AppUserId
                       select applications;
             //Searches for job titles, compensation and locations based on what user entered
             return await queryPI.AsNoTracking().ToListAsync();

@@ -20,12 +20,13 @@
         height: 90%;
         width: 90%;
         margin: auto;
-        max-width: 600px;
+        max-width: 800px;
         max-height: 600px;
         display: flex;
         flex-direction: column;
         border-radius: 5px;
         overflow-y: auto;
+        background-color: #b4c0d0;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     }
 
@@ -106,13 +107,13 @@
     }
 </style>
 
-@if(State.UserEmail == null)
+@* @if(State.UserEmail == null)
 {
     <UnauthorizedComponent/>
 }
 else
 {
-
+} *@
 <form class="input-form">
 
 
@@ -207,9 +208,10 @@ else
     </div>
 
 </form>
-}
 
-<p>@message</p>
+@* 
+<p>@State.Id</p>
+<p>@message</p> *@
 
 @code {
    
@@ -244,14 +246,17 @@ else
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-            Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}");
-            
-        }
-       
-        if(Personal.Email == null)
-        {
-            Personal = new PersonalTestInfo();
-            Personal.AppUserId = State.Id;   
+           try
+           {
+                Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}");     
+           }
+           catch(Exception ex)
+           {
+               Personal = new PersonalTestInfo();
+               Personal.AppUserId = State.Id;  
+           }
+
+     
         }
        
         State.IsSaved = false;

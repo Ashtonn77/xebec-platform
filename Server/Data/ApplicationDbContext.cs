@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Server.Configurations.Entities;
 using XebecPortal.Shared.NewGamifiedModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
@@ -26,9 +25,9 @@ namespace Server.Data
         public DbSet<ApplicationPhase> ApplicationPhases { get; set; }
         public DbSet<ApplicationPhaseHelper> ApplicationPhasesHelpers { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<DocumentHelper> DocumentHelpers { get; set; }
+     
         public DbSet<Education> Educations { get; set; }
-        public DbSet<EducationHelper> EducationHelpers { get; set; }
+     
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<JobTypeHelper> JobTypeHelpers { get; set; }
@@ -36,57 +35,25 @@ namespace Server.Data
         public DbSet<PersonalInformation> PersonalInformations { get; set; }
         public DbSet<RegisterHelper> RegisterHelpers { get; set; }
         public DbSet<Status> Statuses { get; set; }
-        public DbSet<User> Users { get; set; }
+       
         public DbSet<WorkHistory> WorkHistories { get; set; }
-        public DbSet<WorkHistoryHelper> WorkHistoryHelpers { get; set; }
+     
 
-<<<<<<< HEAD
         /*newly added*/
         public DbSet<PersonalTestInfo> PersonalTestInfos { get; set; }
         public DbSet<EducationTest> EducationTests { get; set; }
         public DbSet<WorkHistoryTest> WorkHistoryTests { get; set; }
         public DbSet<AdditionalInformationTest> AdditionalInformationTests { get; set; }
         /*newly added*/
-=======
+
         //Added new DB Sets
         public DbSet<JobPlatform> JobPlatforms { get; set; }
         public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }
 
->>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-
-            modelBuilder.ApplyConfiguration(new JobConfiguration());
-
-            modelBuilder.ApplyConfiguration(new PersonalInformationConfiguration());
-
-            modelBuilder.ApplyConfiguration(new AdditionalInformationConfiguration());
-
-            modelBuilder.ApplyConfiguration(new JobTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new JobTypeHelperConfiguration());
-
-            modelBuilder.ApplyConfiguration(new ApplicationConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationPhaseConfiguration());
-            modelBuilder.ApplyConfiguration(new StatusConfiguration());
-            modelBuilder.ApplyConfiguration(new ApplicationPhaseHelperConfiguration());
-
-            modelBuilder.ApplyConfiguration(new EducationConfiguration());
-            modelBuilder.ApplyConfiguration(new EducationHelperConfiguration());
-
-            modelBuilder.ApplyConfiguration(new DocumentConfiguration());
-            modelBuilder.ApplyConfiguration(new DocumentHelperConfiguration());
-
-            modelBuilder.ApplyConfiguration(new WorkHistoryConfiguration());
-            modelBuilder.ApplyConfiguration(new WorkHistoryHelperConfiguration());
-
-            modelBuilder.ApplyConfiguration(new JobPlatformConfiguration());
-            modelBuilder.ApplyConfiguration(new JobPlatformHelperConfiguration());
-
-
+            base.OnModelCreating(modelBuilder);          
         }
 
     }

@@ -81,7 +81,7 @@
         box-shadow: 0 0 10px #719ECE;
     }
 
-    
+
     .form-title {
         padding: 1rem 0;
         width: 90%;
@@ -159,7 +159,7 @@
 
 @code {
 
-    private bool ToUpdate = false;
+
     private EducationTest Education = new EducationTest();
     [Parameter] public EventCallback<int> Increment { get; set; }
 
@@ -178,21 +178,19 @@
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-            Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/{State.Id}");
+            try
+            {
+                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/{State.Id}");
 
-        }
+            }
+            catch (Exception ex)
+            {
+                Education = new EducationTest();
+                Education.StartDate = DateTime.Now;
+                Education.EndDate = DateTime.Now;
+                Education.AppUserId = State.Id;
+            }
 
-        if (Education.Insitution == null)
-        {
-            Education = new EducationTest();
-            Education.StartDate = DateTime.Now;
-            Education.EndDate = DateTime.Now;
-            Education.AppUserId = State.Id;
-            ToUpdate = false;
-        }
-        else
-        {
-            ToUpdate = true;
         }
 
         State.IsSaved = false;
@@ -201,10 +199,9 @@
 
 
     private async Task Save()
-    {        
+    {
         message = "Saved!";
         State.IsSaved = true;
-
     }
 
     private void AddNew()
@@ -212,7 +209,6 @@
         Education = new EducationTest();
         Education.StartDate = DateTime.Now;
         Education.EndDate = DateTime.Now;
-        ToUpdate = false;
     }
 
 }

@@ -20,9 +20,19 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private static Action<string> countryAction;
         protected override async Task OnInitializedAsync()
-        {
-            jobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/JobType");
-            jobPlatform = await httpClient.GetFromJsonAsync<List<JobPlatform>>("api/JobPlatform");
+        {            
+
+            try
+            {
+                jobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/JobType");
+                jobPlatform = await httpClient.GetFromJsonAsync<List<JobPlatform>>("api/JobPlatform");
+            }
+            catch(Exception ex)
+            {
+                jobTypes = new List<JobType>();
+                jobPlatform = new List<JobPlatform>();
+            }
+
             job.CreationDate = DateTime.Now;
             countryAction = UpdateModelData;
             await base.OnInitializedAsync();

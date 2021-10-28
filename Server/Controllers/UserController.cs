@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Shared.Security;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,7 +33,7 @@ namespace Server.Controllers
         {
             try
             {
-                var users = await _unitOfWork.Users.GetAll();
+                var users = await _unitOfWork.AppUsers.GetAll();
              
                 return Ok(users);
 
@@ -51,7 +52,7 @@ namespace Server.Controllers
         {
             try
             {
-                var user = await _unitOfWork.Users.GetT(q => q.Id == id);
+                var user = await _unitOfWork.AppUsers.GetT(q => q.Id == id);
                 return Ok(user);
             }
             catch (Exception e)
@@ -65,7 +66,7 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] AppUser user)
         {
 
             if (!ModelState.IsValid)
@@ -78,7 +79,7 @@ namespace Server.Controllers
             try
             {
 
-                await _unitOfWork.Users.Insert(user);
+                await _unitOfWork.AppUsers.Insert(user);
                 await _unitOfWork.Save();
 
                 return CreatedAtAction("GetUser", new { id = user.Id }, user);
@@ -97,7 +98,7 @@ namespace Server.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] AppUser user)
         {
             if (!ModelState.IsValid)
             {
@@ -106,13 +107,13 @@ namespace Server.Controllers
 
             try
             {
-                var originalUser = await _unitOfWork.Users.GetT(q => q.Id == id);
+                var originalUser = await _unitOfWork.AppUsers.GetT(q => q.Id == id);
 
                 if (originalUser == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                _unitOfWork.Users.Update(originalUser);
+                _unitOfWork.AppUsers.Update(originalUser);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -140,14 +141,14 @@ namespace Server.Controllers
 
             try
             {
-                var user = await _unitOfWork.Users.GetT(q => q.Id == id);
+                var user = await _unitOfWork.AppUsers.GetT(q => q.Id == id);
 
                 if (user == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.Users.Delete(id);
+                await _unitOfWork.AppUsers.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

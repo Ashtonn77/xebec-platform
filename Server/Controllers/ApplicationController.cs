@@ -64,7 +64,7 @@ namespace Server.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] JobTest jobTest)
+        public async Task<IActionResult> CreateApplication([FromBody] Job jobTest, int userId)
         {
             Application application = new Application();
 
@@ -76,7 +76,7 @@ namespace Server.Controllers
             try
             {
                 application.JobId = jobTest.Id;
-                application.UserId = 2;
+                application.AppUserId = userId;
                 application.TimeApplied= DateTime.Now;
                 await _unitOfWork.Applications.Insert(application);
                 //await _unitOfWork.Applications.Insert(Application);

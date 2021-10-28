@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Shared.Security;
 
 namespace XebecPortal.Shared
 {
@@ -18,9 +19,10 @@ namespace XebecPortal.Shared
         public string PersonalWebsiteUrl { get; set; }
 
         //foreign key
-        public int UserId { get; set; }
+        public int AppUserId { get; set; }
 
-        public User User { get; set; }
+        public AppUser AppUser { get; set; }
+
 
     }
 }

@@ -2,6 +2,7 @@
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @using XebecPortal.Client.JobPortalTestEnv.Models
+@inject State State
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -187,6 +188,8 @@
         }
 </style>
 
+<h1>Test: @State.Id</h1>
+
 <!--Entire page as a flexbox-->
 <div class="wrapper-job">
 
@@ -245,7 +248,7 @@
                         @foreach (var job in DisplayJobs)
                         {
                             <div class="box">
-                                <ul class="list-group" @onclick="() => ViewJob(job)">
+                                <ul class="list-group" @onclick="() => ViewJob(job, State.Id)">
 
                                     <li> <p> <i class="fa fa-briefcase" aria-hidden="true" style="font-size:25px;color:cadetblue;"></i> </p> </li>
                                     <li> <p> <h5 class="box-title">@job.Title</h5> </p> </li>

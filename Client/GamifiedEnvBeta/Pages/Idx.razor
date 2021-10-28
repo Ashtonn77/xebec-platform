@@ -578,10 +578,14 @@ form.sign-up-form{
                 LoginMessage = result.Message;
                 isDisabledLogin = false;               
                 if (result.Success)
-                {                    
+                { 
+                    State.Id = result.Id;
+                    State.UserEmail = result.Email;
+                    State.Role = result.Role;
+                                      
                     await jsr.InvokeVoidAsync("localStorage.setItem", "user",
                     $"{result.Email};{result.Role};{result.JwtBearer};{result.Id}").ConfigureAwait(false);
-                    NavManager.NavigateTo("/main");
+                    NavManager.NavigateTo("/jobpostingsexp");
                     
                      @* if (result.Role.ToLower().Equals("candidate"))
                     {

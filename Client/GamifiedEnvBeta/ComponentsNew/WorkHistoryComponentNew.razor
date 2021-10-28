@@ -211,19 +211,21 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);
+            State.Id = Int32.Parse(userdetails[3]);             
 
-             WorkHistory = await http.GetFromJsonAsync<WorkHistoryTest>($"api/WorkHistoryTest/{State.Id}");    
+            try
+            {
+                WorkHistory = await http.GetFromJsonAsync<WorkHistoryTest>($"api/WorkHistoryTest/{State.Id}");
+            }
+            catch(Exception ex)
+            {
+                WorkHistory = new WorkHistoryTest();
+                WorkHistory.StartDate = DateTime.Now;
+                WorkHistory.EndDate = DateTime.Now;    
+                WorkHistory.AppUserId = State.Id;
+            }      
 
         }
-
-        if(WorkHistory.CompanyName == null)
-        {
-            WorkHistory = new WorkHistoryTest();
-            WorkHistory.StartDate = DateTime.Now;
-            WorkHistory.EndDate = DateTime.Now;    
-            WorkHistory.AppUserId = State.Id;
-        }    
 
         State.IsSaved = false;
     }

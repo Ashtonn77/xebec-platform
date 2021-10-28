@@ -21,9 +21,9 @@ namespace Server.IRepository
         IGenericRepository<ApplicationPhase> Phases { get; }
         IGenericRepository<ApplicationPhaseHelper> ApplicationPhaseHelpers { get; }
         IGenericRepository<Document> Documents { get; }
-        IGenericRepository<DocumentHelper> DocumentHelper { get; }
+      
         IGenericRepository<Education> Education { get; }
-        IGenericRepository<EducationHelper> EducationHelpers { get; }
+        
         IGenericRepository<Job> Jobs { get; }
         IGenericRepository<JobType> JobTypes { get; }
         IGenericRepository<JobTypeHelper> JobTypeHelpers { get; }
@@ -31,11 +31,8 @@ namespace Server.IRepository
         IGenericRepository<PersonalInformation> PersonalInformation { get; }
         IGenericRepository<RegisterHelper> RegisterHelpers { get; }
         IGenericRepository<Status> Statuses { get; }
-        IGenericRepository<User> Users { get; }
         IGenericRepository<WorkHistory> WorkHistory { get; }
-        IGenericRepository<WorkHistoryHelper> WorkHistoryHelpers { get; }
-
-<<<<<<< HEAD
+        
 
         /*newly added*/
         IGenericRepository<PersonalTestInfo> PersonalTestInfos { get; }
@@ -46,12 +43,11 @@ namespace Server.IRepository
 
         IGenericRepository<AdditionalInformationTest> AdditionalInformationTests { get; }
          /*newly added*/
-=======
+
         //Added new repository
         IGenericRepository<JobPlatform> JobPlatforms { get; }
         IGenericRepository<JobPlatformHelper> JobPlatformHelpers { get; }
 
->>>>>>> 5e6ecaec39e643a3bd81856a51877a1871902a4b
 
         //Saving to the DB
         Task Save();
