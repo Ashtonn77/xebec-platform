@@ -123,8 +123,9 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             await httpClient.PostAsJsonAsync("api/JobPlatform", jobPlatformHelper);
             if(jobTypeHelper != null)
                 await httpClient.PostAsJsonAsync("api/JobTypeHelper", jobTypeHelper);
-            //await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
             await JsRuntime.InvokeVoidAsync("alert", "Successfully Posted A New Job Post");
+            /*await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
+            await httpClient.PostAsJsonAsync("https://prod-170.westeurope.logic.azure.com:443/workflows/49a8ebc95f394b97a948dd59dfdcef24/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Fm6VYnJ8pqgyoJD8v26j8ZICGlR6p82_pjgQbPGoQT4", job);*/
         }
 
     }
