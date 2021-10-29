@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Security.Claims;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -78,7 +80,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         [HttpGet("GoogleSignIn")]
         public IActionResult GoogleSignIn()
         {           
-            return Challenge(new AuthenticationProperties { RedirectUri = "/testnavigation" }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = "/mainapp" }, "Google");
         }
 
         [HttpGet("TwitterSignIn")]
@@ -112,9 +114,11 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             
         }
 
-
-
-
     }
+
+
+
+    /*Test*/
+   
 
 }

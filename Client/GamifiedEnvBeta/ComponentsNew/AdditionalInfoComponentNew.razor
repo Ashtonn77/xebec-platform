@@ -213,7 +213,7 @@
         string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
         AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
-        @* await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); *@
+        await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); 
         State.IsSaved = true;
         AdditionalInfo = new AdditionalInformationTest();
 

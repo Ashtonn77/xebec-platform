@@ -156,6 +156,7 @@
 
 </form>
 
+
 <p>@message</p>
 
 @code {
@@ -201,6 +202,7 @@
 
     private async Task Save()
     {
+        await http.PostAsJsonAsync("api/EducationTest", Education);
         message = "Saved!";
         State.IsSaved = true;
     }

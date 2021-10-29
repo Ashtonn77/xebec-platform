@@ -1,4 +1,4 @@
-﻿@page "/loginbeta"
+﻿@page "/"
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @using XebecPortal.Shared.Security
@@ -596,7 +596,7 @@
                     loginHelper.AppUserId = result.Id;
                     await httpClient.PostAsJsonAsync("/api/LoginHelper", loginHelper);
 
-                    NavManager.NavigateTo("/jobpostingsexp");
+                    NavManager.NavigateTo("/mainapp");
 
                     @* if (result.Role.ToLower().Equals("candidate"))
                         {

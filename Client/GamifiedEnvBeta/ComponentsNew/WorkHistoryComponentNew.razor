@@ -233,7 +233,7 @@
    
     private async Task Save()
     {
-        @* await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); *@
+        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory);
         message = "Saved!";
         State.IsSaved = true;
          
