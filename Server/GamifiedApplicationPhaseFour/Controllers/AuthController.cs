@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
 using Microsoft.AspNetCore.Authentication;
 
+
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
 	[ApiController]
@@ -58,13 +59,15 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 			AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
 
 			if (newuser != null)
+
 				return new LoginResult
 				{
 					Message = "Registration successful.",
 					JwtBearer = CreateJWT(newuser),
 					Email = reg.Email,
 					Role = reg.Role,
-					Success = true
+					Success = true,
+					AppUserId = newuser.Id
 				};
 
 			return new LoginResult { Message = "User already exists.", Success = false };
