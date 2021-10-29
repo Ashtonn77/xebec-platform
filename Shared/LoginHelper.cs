@@ -12,7 +12,6 @@ namespace XebecPortal.Shared
         public int Id { get; set; }
         public DateTime TimeDateLogin { get; set; }
         public DateTime TimeDateLogOut { get; set; } 
-
         //foreign key
         public int AppUserId { get; set; }
 
