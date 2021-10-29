@@ -18,6 +18,7 @@
         height: 100vh;
         width: 100%;
         overflow: hidden;
+        position: absolute;
     }
 
     .nav {
@@ -50,36 +51,36 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-         background-color: #6c85a3;
-         color: #fff;
+        background-color: #6c85a3;
+        color: #fff;
     }
 
-    .footer-container span {
-        font-size: 13px;
-        font-weight: bold;
-        margin-right: 2rem;
-    }
+        .footer-container span {
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 2rem;
+        }
 
     .sidenav {
         height: 100%;
         width: 0;
         position: fixed;
-        z-index: 1;
         top: 0;
         right: 0;
         background-color: #6c85a3;
         overflow-x: hidden;
         transition: 0.5s;
+        z-index: 1;
     }
 
-    .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 15px;
-        color: #fff;
-        display: block;
-        transition: 0.3s;
-    }
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 15px;
+            color: #fff;
+            display: block;
+            transition: 0.3s;
+        }
 
     .sidenav a:hover {
         color: #333;
@@ -88,19 +89,20 @@
 
     @@media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
+
         .sidenav a {font-size: 18px;}
     }
 
 
     /*dashboard component*/
 
-     .dash-container {
+    .dash-container {
         background-color: white;
         height: 90%;
         width: 90%;
         margin: auto;
         overflow-y: auto;
-        @* border: 0.5px solid #ced4da;         *@
+        @* border: 0.5px solid #ced4da; *@
     }
 
     .header {
@@ -114,18 +116,16 @@
         align-items: center;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        
-    }
-    
-    .header h5
-    {
-        font-weight: bold;
     }
 
-    .header p{
-        font-size: 14px;
-        font-style: italic;        
-    }
+        .header h5 {
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 14px;
+            font-style: italic;
+        }
 
     .main {
         width: 100%;
@@ -142,7 +142,7 @@
     .report {
         width: 90%;
         height: 95%;
-        margin: auto;
+        margin-left: 5%;
     }
 
     @* .report-heading {
@@ -164,7 +164,35 @@
         height: 100%;
         width: 100%;
     }
-
+    .enlarge-iframe-div{
+        height:50px;
+        width: 5%;
+        text-align: center;
+        margin-top: 20px;
+    }
+    .big {
+        height: 100vh;
+        width: 100%;
+        background-color: rgb(0,0,0,0.7);
+        position: absolute;
+        z-index: 1;
+        margin-top: 0;
+        display: flex;
+    }
+    .big-main{
+        height: 85%;
+        margin-bottom: 5%;
+        margin-top: 5%;
+        width: 90%;
+        margin-left: 5%;
+    }
+    .compress-iframe-div {
+        height: 5%;
+        margin-top: 350px;
+        width: 5%;
+        text-align: center;
+    }
+    
 </style>
 
 <div class="wrapper">
@@ -210,48 +238,37 @@
 
         <div class="dash-container">
 
-
-
             <div class="header">
-                <h5>Xebec Analytics Dashboard</h5>  
-                <p>@topic</p>      
+                <h5>Xebec Analytics Dashboard</h5>
+                <p>@topic</p>
             </div>
-
+           
             <div class="main">
-                <div hidden="@us1" class="report">                 
-                    <div class="report-container">
+
+                <div class="report">
+                    <div hidden="@us1" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
-                </div>
-                <div hidden="@us2" class="report">
-                
-                    <div class="report-container">
+                    <div hidden="@us2" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=c4c17db7-63b9-4fcb-adb1-de650005a7b8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
-                </div>
-                <div hidden="@us3" class="report">
-                  
-                    <div class="report-container">
+                    <div hidden="@us3" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=79d75a8a-b476-4e93-8354-12ebf8d76d8b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
-                </div>
-                <div hidden="@us4" class="report">
-                  
-                    <div class="report-container">
+                    <div hidden="@us4" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=df92bb9b-beaf-44ac-8808-f8802b436252&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
-                </div>
-                <div hidden="@us5" class="report">
-                    
-                    <div class="report-container">
+                    <div hidden="@us5" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=cd4808b0-193d-4eb3-a3ff-55b057769cd7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
                     </div>
                 </div>
-
+                <div class="enlarge-iframe-div">
+                    <i class="fas fa-expand-arrows-alt" style="color: ivory; font-size:20px;" @onclick="Enlarge"></i>
+                </div>
+             
+            </div>
 
         </div>
-
-</div>
 
 
     </div>
@@ -264,15 +281,40 @@
 
 </div>
 
+<div class="big" hidden="@bigHidden">
+    <div class="big-main">
+        <div class="report-container" hidden="@bigus1">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="report-container" hidden="@bigus2">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=c4c17db7-63b9-4fcb-adb1-de650005a7b8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="report-container" hidden="@bigus3">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=79d75a8a-b476-4e93-8354-12ebf8d76d8b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="report-container" hidden="@bigus4">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=df92bb9b-beaf-44ac-8808-f8802b436252&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="report-container" hidden="@bigus5">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=cd4808b0-193d-4eb3-a3ff-55b057769cd7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+        </div>
+    </div>
+    <div class="compress-iframe-div">
+        <i class="fas fa-compress-arrows-alt" style="color: ivory; font-size:20px;" @onclick="Shrink"></i>
+    </div>
+
+</div>
+
+
 @code {
 
     string topic = "Analytics Department";
 
     protected override void OnInitialized()
-        {
+    {
         base.OnInitialized();
         us1Action();
-    } 
+    }
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -295,59 +337,119 @@
     }
 
     private bool us1 { get; set; } = true;
-        private bool us2 { get; set; } = true;
-        private bool us3 { get; set; } = true;
-        private bool us4 { get; set; } = true;
-        private bool us5 { get; set; } = true;
+    private bool us2 { get; set; } = true;
+    private bool us3 { get; set; } = true;
+    private bool us4 { get; set; } = true;
+    private bool us5 { get; set; } = true;
 
-        private void us1Action()
+    private void us1Action()
+    {
+        topic = "Analytics Department";
+        us2 = true;
+        us3 = true;
+        us4 = true;
+        us5 = true;
+        us1 = !us1;
+    }
+
+    private void us2Action()
+    {
+        topic = "Rate of Registration";
+        us1 = true;
+        us3 = true;
+        us4 = true;
+        us5 = true;
+        us2 = !us2;
+    }
+
+    private void us3Action()
+    {
+        topic = "Site Traffic";
+        us1 = true;
+        us2 = true;
+        us4 = true;
+        us5 = true;
+        us3 = !us3;
+    }
+
+    private void us4Action()
+    {
+        topic = "Time to Fill";
+        us1 = true;
+        us3 = true;
+        us2 = true;
+        us5 = true;
+        us4 = !us4;
+    }
+
+    private void us5Action()
+    {
+        topic = "Time to Hire";
+        us1 = true;
+        us3 = true;
+        us4 = true;
+        us2 = true;
+        us5 = !us5;
+    }
+    private bool bigHidden { get; set; } = true;
+    private bool bigus1 { get; set; } = true;
+    private bool bigus2 { get; set; } = true;
+    private bool bigus3 { get; set; } = true;
+    private bool bigus4 { get; set; } = true;
+    private bool bigus5 { get; set; } = true;
+
+    private void Enlarge()
+    {
+        bigHidden = false;
+
+        if (us1 == false)
         {
-            topic = "Analytics Department";
-            us2 = true;
-            us3 = true;
-            us4 = true;
-            us5 = true;
-            us1 = !us1;
+            bigus1 = false;
         }
-
-        private void us2Action()
+        else if (us2 == false)
         {
-            topic = "Rate of Registration";
-            us1 = true;
-            us3 = true;
-            us4 = true;
-            us5 = true;
-            us2 = !us2;
+            bigus2 = false;
         }
-
-        private void us3Action()
+        else if (us3 == false)
         {
-            topic = "Site Traffic";
-            us1 = true;
-            us2 = true;
-            us4 = true;
-            us5 = true;
-            us3 = !us3;
+            bigus3 = false;
+
         }
-
-        private void us4Action()
+        else if (us4 == false)
         {
-            topic = "Time to Fill";
-            us1 = true;
-            us3 = true;
-            us2 = true;
-            us5 = true;
-            us4 = !us4;
+            bigus4 = false;
         }
-
-        private void us5Action()
+        else if (us5 == false)
         {
-            topic = "Time to Hire";
-            us1 = true;
-            us3 = true;
-            us4 = true;
-            us2 = true;
-            us5 = !us5;
-        } 
+            bigus5 = false;
+        }
+    }
+
+    private void Shrink()
+    {
+        bigHidden = true;
+
+        if (us1 == false)
+        {
+            bigus1 = true;
+        }
+        else if (us2 == false)
+        {
+            bigus2 = true;
+        }
+        else if (us3 == false)
+        {
+            bigus3 = true;
+
+        }
+        else if (us4 == false)
+        {
+            bigus4 = true;
+        }
+        else if (us5 == false)
+        {
+            bigus5 = true;
+        }
+    }
 
 }
