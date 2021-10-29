@@ -22,7 +22,7 @@
 
     .nav {
         height: 8vh;
-        background-color: #fff;
+        background-color: #6c85a3;
         width: 100%;
         display: flex;
         align-items: center;
@@ -49,6 +49,8 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        background-color: #6c85a3;
+        color: #fff;
     }
 
     .footer-container span {
@@ -64,22 +66,22 @@
         z-index: 1;
         top: 0;
         right: 0;
-        background-color: #111;
+        background-color: #6c85a3;
         overflow-x: hidden;
-        transition: all 0.5s ease-in-out;
+        transition: 0.5s;
     }
 
     .sidenav a {
         padding: 8px 8px 8px 32px;
         text-decoration: none;
-        font-size: 18px;
-        color: #818181;
+        font-size: 15px;
+        color: #fff;
         display: block;
         transition: 0.3s;
     }
 
     .sidenav a:hover {
-        color: #f1f1f1;
+        color: #333;
     }
 
     @@media screen and (max-height: 450px) {
@@ -90,8 +92,8 @@
 
 <div class="wrapper">
 
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" @onclick="CloseMenu">&times;</a>
+    <div id="testNav" class="sidenav">
+        <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
         <a href="/profile" class="mb-2">@State.UserEmail</a>
         <a href="#">Home</a>        
         <a href="#">Analytical Dashboard</a>
@@ -103,13 +105,13 @@
     <div class="nav">        
 
         <div class="nav-title">
-            <h5>Xebec Platform</h5>
+            <h5 style="color:#fff;">Xebec Platform</h5>
         </div>
 
         <div class="nav-icons">
 
           
-            <span style="font-size:30px;cursor:pointer" @onclick="ShowMenu">&#9776;</span>
+            <span style="font-size:30px;cursor:pointer; color:#fff;" @onclick="ShowMenu">&#9776;</span>
 
         </div>
 
@@ -135,7 +137,7 @@
 {
      protected override async void OnAfterRender(bool firstRender)
     {
-        await jsRuntime.InvokeVoidAsync("initializeNav");       
+        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");       
         base.OnAfterRender(firstRender);
     }
     private async Task ShowMenu()
