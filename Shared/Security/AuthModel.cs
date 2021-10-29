@@ -22,6 +22,8 @@ namespace XebecPortal.Shared.Security
         public string JwtBearer { get; set; }
 
         public bool Success { get; set; }
+        /*test*/
+        public int AppUserId { get; set; }
 
     }
 

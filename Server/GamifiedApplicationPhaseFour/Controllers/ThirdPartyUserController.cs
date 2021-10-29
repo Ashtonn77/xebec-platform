@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Collections;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Security.Claims;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -15,23 +18,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     public class ThirdPartyUserController : ControllerBase
     {
 
-        /*Begin Google OAuth*/
-        // [HttpGet("GoogleSignIn")]
-        // public async Task GoogleSignIn()
-        // {
-        //     await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
-        //         new AuthenticationProperties { RedirectUri = "/profileTest" });
-        // }
-
-        // [HttpGet("GoogleSignIn")]
-        // public IActionResult GoogleSignIn()
-        // {
-        //     // var properties = new AuthenticationProperties{RedirectUri = Url.Action("GoogleResponse")};
-        //     var properties = new AuthenticationProperties{RedirectUri = "/profileTest"};
-        //     return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        // }
-
-
+       
         [HttpGet("GoogleResponse")]
         public async Task<IActionResult> GoogleResponse()
         {
@@ -80,33 +67,6 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, provider);
         }
 
-        // [HttpGet("Logout")]
-        // public async Task<IActionResult> Logout()
-        // {
-        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //     return Ok("");
-
-        // }
-
-        // [HttpGet("Logout")]
-        // public async Task Logout()
-        // {
-        //     Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
-        // }
-        // public async Task MyCustomSignOut(string redirectUri)
-        // {
-        //     // inject the HttpContextAccessor to get "context"
-        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //     var prop = new AuthenticationProperties()
-        //     {
-        //         RedirectUri = redirectUri
-        //     };
-        //     // after signout this will redirect to your provided target
-        //     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, prop);
-        // }
-
-
         #endregion
 
 
@@ -119,8 +79,8 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
         [HttpGet("GoogleSignIn")]
         public IActionResult GoogleSignIn()
-        {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/main" }, "Google");
+        {           
+            return Challenge(new AuthenticationProperties { RedirectUri = "/mainapp" }, "Google");
         }
 
         [HttpGet("TwitterSignIn")]
@@ -155,5 +115,10 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         }
 
     }
+
+
+
+    /*Test*/
+   
 
 }

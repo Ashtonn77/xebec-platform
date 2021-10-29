@@ -1,5 +1,7 @@
-<style>
+@inject HttpClient httpClient
+@inject State State
 
+<style>
     .container {
         width: 90%;
         height: 90%;
@@ -7,203 +9,190 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #5CCADA ;    
-        
+        @*background-color:#b4c0d0;*@border-radius: 5px;
+
     }
 
-/*LEFT*/
-      .left {
+    /*LEFT*/
+    .left {
         width: 30%;
-        height: 80%;
+        height: 100%;
         margin: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #EAEAEA;
-        border-style: solid;
-        border-width: 5px;
-        border-color: #D5D5D5;
-        box-shadow: 5px 10px 8px #888888;
-    }
-
-    
-    .picture {
-        width: 90%;
-        height: 40%;
-        margin: auto;
-        display: flex;
-        justify-content: center;
-        @* background-color: #EAEAEA;         *@
-        background-color: red;
-    }
-
-    .description {
-        width: 90%;
-        height: 55%;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        background-color: #EAEAEA;       
-        background-color: green;
-    }
-
-
-
-/*RIGHT*/
-     .right {
-        width: 60%;
-        height: 80%;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #EAEAEA;
-        margin-left: 20px;
-        border-style: solid;
-        border-width: 5px;
-        border-color: #D5D5D5;
+        background-color: #fff;
+        border-radius: 5px;
         box-shadow: 5px 10px 8px #888888;
         overflow-y: auto;
     }
-  
-   
-    .about { 
-        width: 90%;       
+
+
+    .picture {
+        width: 100%;
+        height: 45%;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #6c85a3;
     }
 
-
-     .left-about, .right-about {
-        width: 45%;
-        height: fit-content;
-        margin: auto;
-        background-color: pink;
+    .description {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #b4c0d0;
     }
 
-
-     @* .about-description {
-        width: 45%;
-        height: fit-content;
+    .image {
+        width: 60%;
+        height: 70%;
         margin: auto;
-        background-color: pink;
-    } *@
+        @*background-color:pink;*@
+    }
 
-    .experience {
+    .inner-desc {
         width: 90%;
+        height: fit-content;
+        margin: auto;
+        padding: 10px;
         display: flex;
+        flex-direction: column;
+        @*background-color:pink;*@
     }
-
-
-
 
     .name {
         width: 100%;
-        height: 10%;
-        display: flex;
-        background-color: white;
-        align-items: center;
-        margin-left: 2px;
+        height: fit-content;
         padding: 10px;
+        @*background-color:magenta;*@
     }
 
     .details {
         width: 100%;
         height: 90%;
-        display: flex;
-        background-color: white;
-        margin-left: 2px;
-        padding : 10px ;
+        padding: 10px;
+        font-size: 14px;
+        @*background-color:lime;*@
     }
 
-    .experiencedetails {
-        width: 50%;
+    /*RIGHT*/
+    .right {
+        width: 60%;
+        height: 100%;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 5px 10px 8px #888888;
+        overflow-y: auto;
+    }
+
+
+    .about {
+        width: 100%;
+        height: fit-content;
+        padding: 10px;
+        background-color: #b4c0d0;
+    }
+
+    .about-heading {
+        height: 8%;
+        width: 100%;
+        padding: 10px;
+        @*background-color:magenta;*@
+    }
+
+
+    .bottom-about {
+        width: 100%;
+        height: 92%;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @*background-color:purple;*@
+    }
+
+    .right-about,
+    .left-about {
+        word-wrap: normal;
+
+    }
+
+    .right-about p,
+    .left-about p {
+        font-size: 14px;
+    }
+
+    .right-about span,
+    .left-about span {
+        font-size: 14px;
+    }
+
+    /*experience*/
+
+    .experience {
+        width: 100%;
+        padding: 10px;
         height: 100%;
         display: flex;
-        flex-direction: column;
-        margin-left: 5px;
-        background-color: white;
-
-    }
-
-    .experience-heading {
-        width: 50%;
-        height: 10%;
-        display: flex;
-        background-color: white;
-        margin-left: 5px;
-
-    }
-    .experience-description {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
-        padding: 10px;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: #6c85a3;
+        color: #fff;
     }
 
     .education {
-        width: 50%;
+        width: 49%;
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color : white ;
+        margin: auto;
+        @*background-color:pink;*@
     }
 
-    .education-description {
+    .experiencedetails {
+        width: 49%;
+        height: 100%;
+        margin: auto;
+        @*background-color:pink;*@
+    }
+
+    .header-exp {
         width: 100%;
-        height: 90%;
-        display: flex;
-        background-color: white;
+        height: 10%;
         padding: 10px;
     }
 
-    @* .left-about {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        padding : 10px ;
-    }
-
-    .right-about {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-
-    } *@
-
-
-
-   
-
-    .about-details {
+    .bottom-exp {
         width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        margin-left: 5px;
-
-    }
-
-    .about-details-right {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        margin-left: 5px;
-        margin-top : 20px; 
-    }
-
-    .experience-text { 
-        color : dodgerblue ; 
+        height: 90%;
+        padding: 10px;
+        font-size: 15px;
+        @*background:orange;*@
     }
 
 
+
+    /*scroll*/
+    .left::-webkit-scrollbar,
+    .right::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .left::-webkit-scrollbar-track,
+    .right::-webkit-scrollbar-track {
+        background-color: #EAF2F8;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .left::-webkit-scrollbar-thumb,
+    .right::-webkit-scrollbar-thumb {
+        background-color: #95A5A6;
+        border: 3px solid #EAF2F8;
+        border-radius: 20px;
+    }
 </style>
 
 
@@ -214,28 +203,43 @@
 
         <div class="picture">
 
-            @* <img src="\img\profile.png" alt="profile" width= "250" height="230" /> *@
+            <div class="image">
+
+                <img src="\img\profile.png" alt="profile" width="100%" height="100%" />
+
+            </div>
 
         </div>
 
         <div class="description">
 
-            @* <div class="name">
+            <div class="inner-desc">
 
-                <span><strong>Jane Doe</strong></span>
+                <div class="name">
 
+                    <h6>Jane Doe</h6>
+
+                </div>
+
+                <div class="details">
+
+                    <p>
+                        Owner at Her Company Inc. <br />
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi
+                        illum qui unde aspernatur non deserunt.
+
+                    </p>
+
+                    <p>
+                        Owner at Her Company Inc. <br />
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi
+                        illum qui unde aspernatur non deserunt.
+
+                    </p>
+
+
+                </div>
             </div>
-
-            <div class="details">
-                <p>
-                    Owner at Her Company Inc. <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt.
-
-                </p>
-
-
-            </div> *@
-
 
         </div>
 
@@ -245,44 +249,45 @@
 
         <div class="about">
 
-            <div class="left-about">
+            <div class="about-heading">
+                <h5>About</h5>
+            </div>
 
-                @* <div class="experience-heading">
-                    <span><strong>About: </strong></span>
-                </div>*@
+            <div class="bottom-about">
 
-                @* <div class="about-description">
+                <div class="left-about">
 
                     <div class="about-details">
 
-                        <p><strong>First Name:</strong> Jane</p>
-                        <p><strong>Gender:</strong> Female</p>
-                        <p><strong>Email:</strong> jane@example.com</p>
+                        @if(Personal != null)
+                        {
+                            <p><strong>First Name:</strong> <span>@Personal.FirstName</span></p>
+                            <p><strong>Gender:</strong> <span>@Personal.Gender</span></p>
+                            <p><strong>Email:</strong> <span>@Personal.Email</span></p>
+                        }
 
                     </div>
 
 
-                </div>  *@
+                </div>
 
-            </div>
+                <div class="right-about">
 
-            <div class="right-about">
-
-                
-                @* <div class="about-description">
 
                     <div class="about-details-right">
 
-                        <p><strong>Last Name:</strong> Doe</p>
-                        <p><strong>Contact Number:</strong> 0842140296</p>
-                        <p><strong>Location:</strong> Durban</p>
+                         @if(Personal != null)
+                        {
+                            <p><strong>Last Name:</strong> <span>@Personal.LastName</span></p>
+                            <p><strong>Contact Number:</strong> <span>@Personal.PhoneNumber</span></p>
+                            <p><strong>Location:</strong> <span>@Personal.Address</span></p>
+                        }
 
 
                     </div>
 
 
-
-                </div>  *@
+                </div>
 
             </div>
 
@@ -290,43 +295,59 @@
 
         <div class="experience">
 
+
             <div class="experiencedetails">
 
-                @*<div class="experience-heading">
-                    <span><strong>Experience: </strong></span>
+                <div class=header-exp>
+                    <h5>Experience</h5>
                 </div>
 
-                <div class="experience-description">
 
-                    <p>
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now<br />
-                        <span class="experience-text"> Owner at Her Company Inc.</span><br />
-                        March 2020 - Now
-                    </p>
-                </div> *@
+                <div class="bottom-exp">
+
+
+                        @if(WorkHistory != null)
+                        {
+                            <p><strong>Company Name </strong>: @WorkHistory.CompanyName</p>
+                            <p><strong>Job Title </strong>: @WorkHistory.JobTitle</p>
+                            <p><strong>Description </strong>: @WorkHistory.Description</p>
+                            <p><strong>Start Date </strong>: @WorkHistory.StartDate</p>
+                            <p><strong>End Date</strong>: @WorkHistory.EndDate</p>
+                        }
+                  
+
+                </div>
+
+
+
 
             </div>
 
             <div class="education">
-                @* <div class="experience-heading">
-                    <span><strong>Education: </strong></span>
-                </div>
-                <div class="education-description">
-                    <p>
-                        <span class="experience-text"> Masters Degree in Oxford</span><br />
-                        March 2020 - Now <br />
-                       <span class="experience-text">Bachelors Degreen in LPU </span> <br />
-                        March 2020 - Now <br />
-                    </p>
 
-                </div> *@
+                <div class=header-exp>
+                    <h5>Education</h5>
+                </div>
+
+
+                <div class="bottom-exp">
+
+
+                     @if(Education != null)
+                     {
+                            <p><strong>Institution </strong>: @Education.Insitution</p>
+                            <p><strong>Qualification </strong>: @Education.Qualification</p>
+                            <p><strong>Start Date </strong>: @Education.StartDate</p>
+                            <p><strong>End Date</strong>: @Education.EndDate</p>
+                    }
+
+
+                </div>
+
+
 
             </div>
+
 
 
         </div>
@@ -336,3 +357,26 @@
 
 
 </div>
+
+<h1>@State.Id</h1>
+@code
+{
+    PersonalTestInfo Personal;
+
+    EducationTest Education;
+
+    WorkHistoryTest WorkHistory;
+
+    AdditionalInformationTest AdditionalInformationTest;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
+        await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
+        await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
+        await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");
+
+    }
+
+}
