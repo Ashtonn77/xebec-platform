@@ -191,6 +191,8 @@
     </div>
 
 </form>
+
+<h1>@State.Id</h1>
 <p>@message</p>
 
 @code {
@@ -233,7 +235,7 @@
    
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory);
+        @* await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); *@
         message = "Saved!";
         State.IsSaved = true;
          

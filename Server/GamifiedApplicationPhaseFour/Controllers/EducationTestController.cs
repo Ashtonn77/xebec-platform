@@ -44,6 +44,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             }
         }
 
+        //get by appuserid
         // GET api/<EducationController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -52,7 +53,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         {
             try
             {
-                var Education = await _unitOfWork.EducationTests.GetT(q => q.Id == id);
+                var Education = await _unitOfWork.EducationTests.GetT(q => q.AppUserId == id);
                 return Ok(Education);
             }
             catch (Exception e)

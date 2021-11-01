@@ -43,6 +43,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             }
         }
 
+        //get by appuserid
         // GET api/<AdditionalInformationController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,7 +52,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         {
             try
             {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
+                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.AppUserId == id);
                 return Ok(AdditionalInformation);
             }
             catch (Exception e)

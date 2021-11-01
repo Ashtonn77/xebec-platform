@@ -43,6 +43,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             }
         }
 
+        //get by appuserid
         // GET api/<WorkHistoryController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,7 +52,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         {
             try
             {
-                var WorkHistory = await _unitOfWork.WorkHistoryTests.GetT(q => q.Id == id);
+                var WorkHistory = await _unitOfWork.WorkHistoryTests.GetT(q => q.AppUserId == id);
                 return Ok(WorkHistory);
             }
             catch (Exception e)

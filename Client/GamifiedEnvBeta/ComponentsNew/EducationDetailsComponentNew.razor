@@ -156,7 +156,7 @@
 
 </form>
 
-
+<h1>@State.Id</h1>
 <p>@message</p>
 
 @code {
@@ -202,7 +202,7 @@
 
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/EducationTest", Education);
+        @* await http.PostAsJsonAsync("api/EducationTest", Education); *@
         message = "Saved!";
         State.IsSaved = true;
     }

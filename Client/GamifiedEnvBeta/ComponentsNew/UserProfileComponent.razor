@@ -1,5 +1,6 @@
 @inject HttpClient httpClient
 @inject State State
+@inject IJSRuntime jsRuntime
 
 <style>
     .container {
@@ -40,9 +41,6 @@
     .description {
         width: 100%;
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         background-color: #b4c0d0;
     }
 
@@ -217,12 +215,23 @@
 
                 <div class="name">
 
-                    <h6>Jane Doe</h6>
+                   @if(Personal != null)
+                   {
+                       <h6>@Personal.FirstName @Personal.LastName</h6>
+                   } 
 
                 </div>
 
                 <div class="details">
 
+                   @if(AdditionalInformationTest != null)
+                   {
+                        <p><strong>GitHub: </strong>@AdditionalInformationTest.GitHubLink</p>
+                    <p><strong>LinkedIn: </strong>@AdditionalInformationTest.LinkedInLink</p>
+                    <p><strong>Facebook: </strong>@AdditionalInformationTest.FacebookLink</p>
+                    <p><strong>Website: </strong>@AdditionalInformationTest.PersonalWebsiteUrl</p>
+                   }
+
                     <p>
                         Owner at Her Company Inc. <br />
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi
@@ -230,14 +239,7 @@
 
                     </p>
 
-                    <p>
-                        Owner at Her Company Inc. <br />
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi
-                        illum qui unde aspernatur non deserunt.
-
-                    </p>
-
-
+                    
                 </div>
             </div>
 
@@ -281,7 +283,7 @@
                             <p><strong>Last Name:</strong> <span>@Personal.LastName</span></p>
                             <p><strong>Contact Number:</strong> <span>@Personal.PhoneNumber</span></p>
                             <p><strong>Location:</strong> <span>@Personal.Address</span></p>
-                        }
+                        } 
 
 
                     </div>
@@ -305,7 +307,7 @@
 
                 <div class="bottom-exp">
 
-
+                    
                         @if(WorkHistory != null)
                         {
                             <p><strong>Company Name </strong>: @WorkHistory.CompanyName</p>
@@ -332,7 +334,7 @@
 
                 <div class="bottom-exp">
 
-
+                    
                      @if(Education != null)
                      {
                             <p><strong>Institution </strong>: @Education.Insitution</p>
@@ -358,7 +360,6 @@
 
 </div>
 
-<h1>@State.Id</h1>
 @code
 {
     PersonalTestInfo Personal;
@@ -371,12 +372,38 @@
 
     protected override async Task OnInitializedAsync()
     {
+       
+       await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);          
 
-        await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
-        await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
-        await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
-        await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");
+        }
+
+        try
+        {
+            Education = await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
+            WorkHistory = await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
+            Personal = await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
+           AdditionalInformationTest = await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");    
+
+        }
+        catch(Exception)
+        {
+            
+            Education = new EducationTest();
+            WorkHistory = new WorkHistoryTest();
+            Personal = new PersonalTestInfo();
+            AdditionalInformationTest = new AdditionalInformationTest();
+
+        }
 
     }
 
+    
 }
