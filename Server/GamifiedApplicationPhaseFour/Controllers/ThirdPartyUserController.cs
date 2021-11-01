@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
+using XebecPortal.Shared.Security;
+using Server.GamifiedApplicationPhaseFour.IRepositories;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -17,45 +19,18 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     [ApiController]
     public class ThirdPartyUserController : ControllerBase
     {
+        private readonly IUserDb userDb;
 
-       
-     
-        
-        //this is the one that works. Use this one and you're golden. The other ones down below aren't that important. However, they might prove useful in your journey.
-        // [HttpGet("LinkedInSignIn")]
-        // public async Task LinkedInSignIn()
-        // {
-        //     await HttpContext.ChallengeAsync("LinkedIn", properties: new AuthenticationProperties { RedirectUri = "/profile" });
-        // }
-
-        #region Other linkedin oauth stuff
-        //[HttpGet("~/signin")]
-        //public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
-
-        [HttpPost("~/signin")]
-        public async Task<IActionResult> SignIn([FromForm] string provider)
+        public ThirdPartyUserController(IUserDb userDb)
         {
-            // Note: the "provider" parameter corresponds to the external
-            // authentication provider choosen by the user agent.
-            if (string.IsNullOrWhiteSpace(provider))
-            {
-                return BadRequest();
-            }
-
-
-            // Instruct the middleware corresponding to the requested external identity
-            // provider to redirect the user agent to its own authorization endpoint.
-            // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, provider);
+            this.userDb = userDb;
         }
 
-        #endregion
-
         [HttpGet("GithubResponse")]
-        public async Task<IActionResult> GithubResponse()
+        public async Task<string> GithubResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault()            
+            var claims = result.Principal.Identities.FirstOrDefault()
             .Claims.Select(claim => new
             {
 
@@ -66,26 +41,36 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             });
 
-        //    var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
-            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
+           var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;  
 
-            return new JsonResult(claims);
+            return email;
 
         }
         /*GitHub OAuth*/
         [HttpGet("GitHubSignIn")]
-        public IActionResult GitHubSignIn()
+        public async Task<IActionResult> GitHubSignIn()
         {
+            RegisterModel reg = new RegisterModel();
+            reg.Password = "P@ssword1";
+            reg.Role = "Candidate";
+            string email = await GithubResponse();
+            if (!string.IsNullOrEmpty(email))
+            {                
+                //TODO: only add if email not in db
+                reg.Email = email;
+                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+            }
+
             // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Github");           
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profile"  }, "Github");
         }
 
 
         [HttpGet("GoogleResponse")]
-        public async Task<IActionResult> GoogleResponse()
+        public async Task<string> GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault()            
+            var claims = result.Principal.Identities.FirstOrDefault()
             .Claims.Select(claim => new
             {
 
@@ -96,26 +81,36 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             });
 
-           var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
-            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
-
-            return new JsonResult(claims);
+            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
+            
+            return email;
 
         }
 
         [HttpGet("GoogleSignIn")]
         public async Task<IActionResult> GoogleSignInAsync()
         {
+            RegisterModel reg = new RegisterModel();
+            reg.Password = "P@ssword1";
+            reg.Role = "Candidate";
+
+            string email = await GoogleResponse();
+            if (!string.IsNullOrEmpty(email))
+            {
+                //TODO: only add if email not in db
+                reg.Email = email;
+                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+            }
             // return Challenge(new AuthenticationProperties { RedirectUri = "GoogleResponse" }, "Google");
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, "Google");
         }
 
 
         [HttpGet("TwitterResponse")]
-        public async Task<IActionResult> TwitterResponse()
+        public async Task<string> TwitterResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault()            
+            var claims = result.Principal.Identities.FirstOrDefault()
             .Claims.Select(claim => new
             {
 
@@ -126,26 +121,36 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             });
 
-        //var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
-            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
-
-            return new JsonResult(claims);
+            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
+            
+            return email;
 
         }
 
         [HttpGet("TwitterSignIn")]
-        public IActionResult TwitterSignIn()
-        {            
-            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Twitter");
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Twitter");
+        public async Task<IActionResult> TwitterSignIn()
+        {
+            RegisterModel reg = new RegisterModel();
+            reg.Password = "P@ssword1";
+            reg.Role = "Candidate";
+
+            string email = await TwitterResponse();
+            if (!string.IsNullOrEmpty(email))
+            {
+                //TODO: only add if email not in db
+                reg.Email = email;
+                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+            }
+           
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profile"  }, "Twitter");
         }
 
-        
+
         [HttpGet("LinkedInResponse")]
-        public async Task<IActionResult> LinkedInResponse()
+        public async Task<string> LinkedInResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault()            
+            var claims = result.Principal.Identities.FirstOrDefault()
             .Claims.Select(claim => new
             {
 
@@ -156,17 +161,27 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             });
 
-        //var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
-            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
-
-            return new JsonResult(claims);
+            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
+            
+            return email;
 
         }
         [HttpGet("LinkedInSignIn")]
-        public IActionResult LinkedInSignIn()
+        public async Task<IActionResult> LinkedInSignIn()
         {
-            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "LinkedIn");
+            RegisterModel reg = new RegisterModel();
+            reg.Password = "P@ssword1";
+            reg.Role = "Candidate";
+
+            string email = await LinkedInResponse();
+            if (!string.IsNullOrEmpty(email))
+            {
+                //TODO: only add if email not in db
+                reg.Email = email;
+                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+            }
+          
+            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, "LinkedIn");
         }
 
         [HttpGet("LogOut")]
@@ -176,22 +191,18 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
                 foreach (var cookie in siteCookies)
                 {
-                    Response.Cookies.Delete(cookie.Key); 
+                    Response.Cookies.Delete(cookie.Key);
                 }
             }
 
             await HttpContext.SignOutAsync();
             HttpContext.Response.Redirect("/");
-            HttpContext.Session.Clear();          
-          
-            
+            HttpContext.Session.Clear();
+
+
         }
 
     }
 
-
-
-    /*Test*/
-   
 
 }

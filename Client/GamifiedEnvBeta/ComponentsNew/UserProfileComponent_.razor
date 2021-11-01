@@ -1,0 +1,356 @@
+@inject HttpClient httpClient
+@inject State State
+@inject IJSRuntime jsRuntime
+
+<style>
+    .profile-wrapper {
+        width: 100%;
+        height: 100%;
+        background-color: lightgray;
+        flex-grow: 1;
+        display: flex;
+
+
+        overflow: auto;
+        min-height: 0;
+    }
+
+    .left {
+        width: 60%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .right {
+        width: 35%;
+        height: 100%;
+        margin: auto;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    .content {
+        width: 100%;
+        background-color: #fff;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 650px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .right .content
+    {
+        max-width: 400px;        
+    }
+
+    .personal {
+        display: flex;
+        flex-direction: column;
+    }
+
+    h5 {
+        font-weight: bold;
+    }
+
+    .top {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid lightgray;
+    }
+
+    .bottom {
+        position: relative;
+        display: flex;
+        padding: 10px 5px;
+        margin: 0.8rem 0;
+    }
+
+    .image img {
+        max-width: 180px;
+        max-height: 180px;
+    }
+
+    .details {
+        width: 100%;
+        height: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 10px;
+    }
+
+    .details span {
+        font-size: 14px;
+        margin-bottom: 5px;
+        letter-spacing: 0.3px;
+    }
+
+    .education .details {
+        padding: 0;
+    }
+</style>
+
+
+@if(personalModal)
+{
+    <PersonalModal TogglePersonalModal="TogglePersonalModal"></PersonalModal>
+}
+else if(educationModal)
+{
+    <EducationModal ToggleEducationModal="ToggleEducationModal"></EducationModal>
+}
+else if(workModal)
+{
+    <WorkHistoryModal ToggleWorkModal="ToggleWorkModal"></WorkHistoryModal>
+}
+else if(portfolioModal)
+{
+    <ProfilesPortfoliosModal TogglePorfoliosModal="TogglePorfoliosModal"></ProfilesPortfoliosModal>
+}
+else if(documentsModal)
+{
+    <DocumentsModal ToggleDocumentsModal="ToggleDocumentsModal"></DocumentsModal>
+}
+
+<div class="profile-wrapper">
+
+    <div class="left">
+
+        <div class="personal content">
+
+            <div class="top">
+                <h5>Personal Information</h5>
+                <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button>
+            </div>
+
+            <div class="bottom">
+
+                <div class="image">
+                    <img src="img\user.jpg" alt="user">
+                </div>
+
+                <div class="details">
+
+                    @if(Personal != null)
+                    {
+                        <span>@Personal.FirstName @Personal.LastName</span>
+                        <span>@Personal.Address</span>
+                        <span>@Personal.Email</span>
+                        <span>@Personal.PhoneNumber</span>
+                    }
+                    else
+                    {
+                        <span>Name: n/a</span>
+                        <span>Address: n/a</span>
+                        <span>Email: n/a</span>
+                        <span>Phone Number: n/a</span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="education content">
+
+            <div class="top">
+                <h5>Education History</h5>
+                <div class="btn-container">
+                    <button class="btn btn-success btn-sm">Add New</button>
+                    <button class="btn btn-primary btn-sm" @onclick="ToggleEducationModal">Edit</button>
+                </div>
+            </div>
+
+            <div class="bottom">
+
+                <div class="details">
+
+                    <span>University of Cape Town</span>
+                    <span>BSc - Computer Science</span>
+                    <span>2018 - 2021</span>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="content">
+
+            <div class="top">
+                <h5>Work History</h5>
+                <div class="btn-container">
+                    <button class="btn btn-success btn-sm">Add New</button>
+                    <button class="btn btn-primary btn-sm" @onclick="ToggleWorkModal">Edit</button>
+                </div>
+            </div>
+
+            <div class="bottom">
+
+                <div class="details">
+
+                    <span>Nebula</span>
+                    <span>Software Engineer</span>
+                    <span>1 year, 5 months</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="top">
+                <h5>Profiles and Portfolios</h5>
+                <div class="btn-container">
+                    <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button>
+                </div>
+            </div>
+
+            <div class="bottom">
+
+                <div class="details">
+
+                    <span>www.github.com</span>
+                    <span>www.linkedin.com</span>
+                    <span>www.facebook.com</span>
+                    <span>www.personalsite.com</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="top">
+                <h5>Documents</h5>
+                <div class="btn-container">
+                    <button class="btn btn-success btn-sm">Upload</button>
+                    <button class="btn btn-primary btn-sm" @onclick="ToggleDocumentsModal">Edit</button>
+                </div>
+            </div>
+
+            <div class="bottom">
+
+                <div class="details">
+
+                    <span>No documents uploaded</span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            ut labore et dolore magna aliqua. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Diam
+            vulputate ut pharetra sit amet aliquam id diam. Est ultricies integer quis auctor elit sed vulputate mi.
+            Turpis cursus in hac habitasse platea dictumst quisque. In fermentum et sollicitudin ac. Tellus mauris a
+            diam maecenas. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Posuere lorem ipsum dolor sit.
+            Bibendum at varius vel pharetra vel turpis nunc. Enim diam vulputate ut pharetra sit. Suspendisse in est
+            ante in nibh mauris cursus mattis molestie. Felis eget velit aliquet sagittis id consectetur purus ut.
+            Volutpat diam ut venenatis tellus in metus vulputate eu. Ultrices sagittis orci a scelerisque purus semper
+            eget.</div>
+
+    </div>
+
+
+</div>
+
+@code
+{
+
+    PersonalTestInfo Personal;
+
+    EducationTest Education;
+
+    WorkHistoryTest WorkHistory;
+
+    AdditionalInformationTest AdditionalInformationTest;
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);          
+
+        }
+
+        try
+        {
+            Education = await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
+            WorkHistory = await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
+            Personal = await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
+            AdditionalInformationTest = await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");    
+
+        }
+        catch(Exception)
+        {
+            
+            Education = new EducationTest();
+            WorkHistory = new WorkHistoryTest();
+            Personal = new PersonalTestInfo();
+            AdditionalInformationTest = new AdditionalInformationTest();
+
+        }
+
+    }
+
+    bool personalModal = false;
+    bool educationModal = false;
+    bool workModal = false;
+    bool documentsModal = false;
+
+    bool portfolioModal = false;
+    private void TogglePersonalModal()
+    {
+        personalModal = !personalModal;
+    }
+
+    private void ToggleEducationModal()
+    {
+        educationModal = !educationModal;
+    }
+
+    private void ToggleWorkModal()
+    {
+        workModal = !workModal;
+    }
+
+    private void TogglePorfoliosModal()
+    {
+        portfolioModal = !portfolioModal;
+    }
+
+    private void ToggleDocumentsModal()
+    {
+        documentsModal = !documentsModal;
+    }
+
+}
