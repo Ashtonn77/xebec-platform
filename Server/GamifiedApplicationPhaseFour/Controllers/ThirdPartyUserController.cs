@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
 using XebecPortal.Shared.Security;
 using Server.GamifiedApplicationPhaseFour.IRepositories;
+using Server.Data;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -20,14 +21,39 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     public class ThirdPartyUserController : ControllerBase
     {
         private readonly IUserDb userDb;
+        private readonly ApplicationDbContext context;
 
-        public ThirdPartyUserController(IUserDb userDb)
+        public ThirdPartyUserController(IUserDb userDb, ApplicationDbContext context)
         {
             this.userDb = userDb;
+            this.context = context;
         }
 
+
+        //   [HttpGet("GoogleResponse")]
+        // public async Task<IActionResult> GoogleResponse()
+        // {
+        //     var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //     var claims = result.Principal.Identities.FirstOrDefault()
+        //     .Claims.Select(claim => new
+        //     {
+
+        //         claim.Issuer,
+        //         claim.OriginalIssuer,
+        //         claim.Type,
+        //         claim.Value
+
+        //     }).Where(q => q.Type == ClaimTypes.Email);
+
+        //     var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+        //     email = email == null ? string.Empty : email;
+
+        //     return new JsonResult(email);
+
+        // }
+
         [HttpGet("GithubResponse")]
-        public async Task<string> GithubResponse()
+        public async Task GithubResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault()
@@ -39,35 +65,44 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 claim.Type,
                 claim.Value
 
-            });
+            }).Where(q => q.Type == ClaimTypes.Email);
 
-           var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;  
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
 
-            return email;
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
 
         }
         /*GitHub OAuth*/
         [HttpGet("GitHubSignIn")]
         public async Task<IActionResult> GitHubSignIn()
         {
-            RegisterModel reg = new RegisterModel();
-            reg.Password = "P@ssword1";
-            reg.Role = "Candidate";
-            string email = await GithubResponse();
-            if (!string.IsNullOrEmpty(email))
-            {                
-                //TODO: only add if email not in db
-                reg.Email = email;
-                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
-            }
-
-            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile"  }, "Github");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Google");
         }
 
 
         [HttpGet("GoogleResponse")]
-        public async Task<string> GoogleResponse()
+        public async Task GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault()
@@ -79,35 +114,46 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 claim.Type,
                 claim.Value
 
-            });
+            }).Where(q => q.Type == ClaimTypes.Email);
 
-            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
-            
-            return email;
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
 
         }
 
         [HttpGet("GoogleSignIn")]
         public async Task<IActionResult> GoogleSignInAsync()
         {
-            RegisterModel reg = new RegisterModel();
-            reg.Password = "P@ssword1";
-            reg.Role = "Candidate";
 
-            string email = await GoogleResponse();
-            if (!string.IsNullOrEmpty(email))
-            {
-                //TODO: only add if email not in db
-                reg.Email = email;
-                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
-            }
-            // return Challenge(new AuthenticationProperties { RedirectUri = "GoogleResponse" }, "Google");
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") }, "Google");
+
         }
 
 
         [HttpGet("TwitterResponse")]
-        public async Task<string> TwitterResponse()
+        public async Task TwitterResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault()
@@ -119,35 +165,45 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 claim.Type,
                 claim.Value
 
-            });
+            }).Where(q => q.Type == ClaimTypes.Email);
 
-            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
-            
-            return email;
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
 
         }
 
         [HttpGet("TwitterSignIn")]
         public async Task<IActionResult> TwitterSignIn()
         {
-            RegisterModel reg = new RegisterModel();
-            reg.Password = "P@ssword1";
-            reg.Role = "Candidate";
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Google");
 
-            string email = await TwitterResponse();
-            if (!string.IsNullOrEmpty(email))
-            {
-                //TODO: only add if email not in db
-                reg.Email = email;
-                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
-            }
-           
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile"  }, "Twitter");
         }
 
 
         [HttpGet("LinkedInResponse")]
-        public async Task<string> LinkedInResponse()
+        public async Task LinkedInResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault()
@@ -159,29 +215,39 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 claim.Type,
                 claim.Value
 
-            });
+            }).Where(q => q.Type == ClaimTypes.Email);
 
-            var email = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase))?.Value;
-            
-            return email;
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
 
         }
         [HttpGet("LinkedInSignIn")]
         public async Task<IActionResult> LinkedInSignIn()
         {
-            RegisterModel reg = new RegisterModel();
-            reg.Password = "P@ssword1";
-            reg.Role = "Candidate";
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "Google");
 
-            string email = await LinkedInResponse();
-            if (!string.IsNullOrEmpty(email))
-            {
-                //TODO: only add if email not in db
-                reg.Email = email;
-                AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
-            }
-          
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, "LinkedIn");
         }
 
         [HttpGet("LogOut")]
