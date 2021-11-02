@@ -19,26 +19,8 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     {
 
        
-        [HttpGet("GoogleResponse")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault()
-            .Claims.Select(claim => new
-            {
-
-                claim.Issuer,
-                claim.OriginalIssuer,
-                claim.Type,
-                claim.Value
-
-            });
-
-            return new JsonResult(claims);
-
-        }
-        /*End Google OAuth*/
-
+     
+        
         //this is the one that works. Use this one and you're golden. The other ones down below aren't that important. However, they might prove useful in your journey.
         // [HttpGet("LinkedInSignIn")]
         // public async Task LinkedInSignIn()
@@ -69,31 +51,122 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
         #endregion
 
+        [HttpGet("GithubResponse")]
+        public async Task<IActionResult> GithubResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()            
+            .Claims.Select(claim => new
+            {
 
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+        //    var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
+            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
+
+            return new JsonResult(claims);
+
+        }
         /*GitHub OAuth*/
         [HttpGet("GitHubSignIn")]
         public IActionResult GitHubSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
+            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Github");           
+        }
+
+
+        [HttpGet("GoogleResponse")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()            
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+           var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
+            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
+
+            return new JsonResult(claims);
+
         }
 
         [HttpGet("GoogleSignIn")]
-        public IActionResult GoogleSignIn()
-        {           
-            return Challenge(new AuthenticationProperties { RedirectUri = "/mainapp" }, "Google");
+        public async Task<IActionResult> GoogleSignInAsync()
+        {
+            // return Challenge(new AuthenticationProperties { RedirectUri = "GoogleResponse" }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") }, "Google");
+        }
+
+
+        [HttpGet("TwitterResponse")]
+        public async Task<IActionResult> TwitterResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()            
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+        //var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
+            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
+
+            return new JsonResult(claims);
+
         }
 
         [HttpGet("TwitterSignIn")]
         public IActionResult TwitterSignIn()
-        {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Twitter");
+        {            
+            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Twitter");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Twitter");
         }
 
         
+        [HttpGet("LinkedInResponse")]
+        public async Task<IActionResult> LinkedInResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()            
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+        //var emailTest = claims?.First(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", StringComparison.OrdinalIgnoreCase)).Value;    
+            //claims?.FirstOrDefault(x => x.Type.Equals("UserName", StringComparison.OrdinalIgnoreCase))?.Value;   
+
+            return new JsonResult(claims);
+
+        }
         [HttpGet("LinkedInSignIn")]
         public IActionResult LinkedInSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
+            // return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "LinkedIn");
         }
 
         [HttpGet("LogOut")]
@@ -108,7 +181,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             }
 
             await HttpContext.SignOutAsync();
-            HttpContext.Response.Redirect("/loginbeta");
+            HttpContext.Response.Redirect("/");
             HttpContext.Session.Clear();          
           
             
