@@ -45,7 +45,9 @@
 
     .right .content
     {
-        max-width: 400px;        
+        max-width: 400px; 
+        padding: 15px;
+        font-size: 16px;       
     }
 
     .personal {
@@ -149,11 +151,12 @@ else if(documentsModal)
                     }
                     else
                     {
-                        <span>Name: n/a</span>
-                        <span>Address: n/a</span>
-                        <span>Email: n/a</span>
-                        <span>Phone Number: n/a</span>
+                        <span>Name: N/A</span>
+                        <span>Address: N/A</span>
+                        <span>Email: N/A</span>
+                        <span>Phone Number: N/A</span>
                     }
+                 
 
                 </div>
 
@@ -262,15 +265,16 @@ else if(documentsModal)
 
     <div class="right">
 
-        <div class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+        <div class="content">
+
+            @State.Id - @State.UserEmail - @State.Role
+            <br>
+        
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
             ut labore et dolore magna aliqua. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl. Diam
             vulputate ut pharetra sit amet aliquam id diam. Est ultricies integer quis auctor elit sed vulputate mi.
             Turpis cursus in hac habitasse platea dictumst quisque. In fermentum et sollicitudin ac. Tellus mauris a
-            diam maecenas. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Posuere lorem ipsum dolor sit.
-            Bibendum at varius vel pharetra vel turpis nunc. Enim diam vulputate ut pharetra sit. Suspendisse in est
-            ante in nibh mauris cursus mattis molestie. Felis eget velit aliquet sagittis id consectetur purus ut.
-            Volutpat diam ut venenatis tellus in metus vulputate eu. Ultrices sagittis orci a scelerisque purus semper
-            eget.</div>
+            diam maecenas. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Posuere lorem ipsum dolor sit.</div>
 
     </div>
 
@@ -302,12 +306,16 @@ else if(documentsModal)
 
         }
 
+        /*
+        The problem is putting multiple asyncronous calls inside the try
+        It works when its just one call        
+        */
         try
         {
-            Education = await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
-            WorkHistory = await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
-            Personal = await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
-            AdditionalInformationTest = await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");    
+            @* Education = await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
+            WorkHistory = await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}"); *@
+            Personal = await httpClient.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}");            
+            @* AdditionalInformationTest = await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");     *@
 
         }
         catch(Exception)

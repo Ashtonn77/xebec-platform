@@ -187,9 +187,8 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 {
                     email = "already in db";
                 }
-
-            }
-
+           }
+            
             HttpContext.Response.Redirect("/profile_");
 
         }

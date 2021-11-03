@@ -271,7 +271,8 @@
 
          try
             {
-                Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}");
+                Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}"); 
+                
             }
             catch (Exception ex)
             {
@@ -297,7 +298,16 @@
 
     private async Task Save()
     {
-        @* await http.PostAsJsonAsync("api/PersonalsTest", Personal); *@
+        if(Personal.Id == 0)
+        {
+            await http.PostAsJsonAsync("api/PersonalsTest", Personal);
+        }
+        else
+        {
+            await http.PutAsJsonAsync($"api/PersonalsTest/{Personal.Id}", Personal);
+        }
+
+
         message = "Saved!";
         State.IsSaved = true;
 
