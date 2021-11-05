@@ -1,5 +1,8 @@
-<style>
+@inject HttpClient httpClient
+@inject State State
+@inject IJSRuntime jsRuntime
 
+<style>
     .container {
         width: 90%;
         height: 90%;
@@ -7,13 +10,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        @* background-color: #b4c0d0; *@
-        border-radius: 5px;    
+        @*background-color:#b4c0d0;*@border-radius: 5px;
 
     }
 
-/*LEFT*/
-      .left {
+    /*LEFT*/
+    .left {
         width: 30%;
         height: 100%;
         margin: auto;
@@ -25,7 +27,7 @@
         box-shadow: 5px 10px 8px #888888;
         overflow-y: auto;
     }
-   
+
 
     .picture {
         width: 100%;
@@ -39,49 +41,43 @@
     .description {
         width: 100%;
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;      
         background-color: #b4c0d0;
     }
 
-    .image
-    {
+    .image {
         width: 60%;
         height: 70%;
         margin: auto;
-        @* background-color: pink; *@
+        @*background-color:pink;*@
     }
-    .inner-desc
-    {
+
+    .inner-desc {
         width: 90%;
         height: fit-content;
         margin: auto;
         padding: 10px;
         display: flex;
         flex-direction: column;
-        @* background-color: pink; *@
+        @*background-color:pink;*@
     }
 
-    .name
-    {
+    .name {
         width: 100%;
         height: fit-content;
         padding: 10px;
-        @* background-color: magenta; *@
+        @*background-color:magenta;*@
     }
 
-    .details
-    {
+    .details {
         width: 100%;
         height: 90%;
         padding: 10px;
         font-size: 14px;
-        @* background-color: lime; *@
+        @*background-color:lime;*@
     }
 
-/*RIGHT*/
-     .right {
+    /*RIGHT*/
+    .right {
         width: 60%;
         height: 100%;
         margin: auto;
@@ -92,45 +88,44 @@
     }
 
 
-    .about { 
+    .about {
         width: 100%;
         height: fit-content;
         padding: 10px;
         background-color: #b4c0d0;
     }
 
-    .about-heading
-    {
+    .about-heading {
         height: 8%;
         width: 100%;
         padding: 10px;
-        @* background-color: magenta; *@
+        @*background-color:magenta;*@
     }
 
 
-    .bottom-about
-    {
+    .bottom-about {
         width: 100%;
         height: 92%;
         padding: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        @* background-color: purple; *@
+        @*background-color:purple;*@
     }
 
-    .right-about, .left-about
-    {
+    .right-about,
+    .left-about {
         word-wrap: normal;
 
     }
 
-    .right-about p, .left-about p
-    {
+    .right-about p,
+    .left-about p {
         font-size: 14px;
     }
-    .right-about span, .left-about span
-    {
+
+    .right-about span,
+    .left-about span {
         font-size: 14px;
     }
 
@@ -143,61 +138,59 @@
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        background-color: #6c85a3;        
+        background-color: #6c85a3;
         color: #fff;
     }
 
-    .education
-    {
+    .education {
         width: 49%;
         height: 100%;
         margin: auto;
-        @* background-color: pink; *@
+        @*background-color:pink;*@
     }
 
-    .experiencedetails
-    {
+    .experiencedetails {
         width: 49%;
         height: 100%;
         margin: auto;
-        @* background-color: pink; *@
+        @*background-color:pink;*@
     }
 
-    .header-exp
-    {
+    .header-exp {
         width: 100%;
         height: 10%;
         padding: 10px;
     }
 
-    .bottom-exp
-    {
+    .bottom-exp {
         width: 100%;
         height: 90%;
         padding: 10px;
         font-size: 15px;
-        @* background: orange; *@
+        @*background:orange;*@
     }
 
 
 
     /*scroll*/
-    .left::-webkit-scrollbar, .right::-webkit-scrollbar {
+    .left::-webkit-scrollbar,
+    .right::-webkit-scrollbar {
         width: 12px;
     }
 
-    .left::-webkit-scrollbar-track, .right::-webkit-scrollbar-track {
+    .left::-webkit-scrollbar-track,
+    .right::-webkit-scrollbar-track {
         background-color: #EAF2F8;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
     }
 
-    .left::-webkit-scrollbar-thumb, .right::-webkit-scrollbar-thumb {
+    .left::-webkit-scrollbar-thumb,
+    .right::-webkit-scrollbar-thumb {
         background-color: #95A5A6;
         border: 3px solid #EAF2F8;
         border-radius: 20px;
     }
-
 </style>
 
 
@@ -210,7 +203,7 @@
 
             <div class="image">
 
-                <img src="\img\profile.png" alt="profile" width= "100%" height="100%" />
+                <img src="\img\profile.png" alt="profile" width="100%" height="100%" />
 
             </div>
 
@@ -218,30 +211,36 @@
 
         <div class="description">
 
-           <div class="inner-desc">         
+            <div class="inner-desc">
 
-                  <div class="name">
+                <div class="name">
 
-                        <h6>Jane Doe</h6>
+                   @if(Personal != null)
+                   {
+                       <h6>@Personal.FirstName @Personal.LastName</h6>
+                   } 
 
-                    </div>
+                </div>
 
-                    <div class="details">
+                <div class="details">
 
-                        <p>
-                            Owner at Her Company Inc. <br />
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt.
+                   @if(AdditionalInformationTest != null)
+                   {
+                        <p><strong>GitHub: </strong>@AdditionalInformationTest.GitHubLink</p>
+                    <p><strong>LinkedIn: </strong>@AdditionalInformationTest.LinkedInLink</p>
+                    <p><strong>Facebook: </strong>@AdditionalInformationTest.FacebookLink</p>
+                    <p><strong>Website: </strong>@AdditionalInformationTest.PersonalWebsiteUrl</p>
+                   }
 
-                        </p>
+                    <p>
+                        Owner at Her Company Inc. <br />
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi
+                        illum qui unde aspernatur non deserunt.
 
-                         <p>
-                            Owner at Her Company Inc. <br />
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt.
+                    </p>
 
-                        </p>
-
-
-                    </div> 
+                    
+                </div>
             </div>
 
         </div>
@@ -253,38 +252,44 @@
         <div class="about">
 
             <div class="about-heading">
-                    <h5>About</h5>
+                <h5>About</h5>
             </div>
 
             <div class="bottom-about">
 
-            <div class="left-about">
+                <div class="left-about">
 
                     <div class="about-details">
 
-                        <p><strong>First Name:</strong> <span>Jane</span></p>
-                        <p><strong>Gender:</strong> <span>Female</span></p>
-                        <p><strong>Email:</strong> <span>jane@example.com</span></p>
+                        @if(Personal != null)
+                        {
+                            <p><strong>First Name:</strong> <span>@Personal.FirstName</span></p>
+                            <p><strong>Gender:</strong> <span>@Personal.Gender</span></p>
+                            <p><strong>Email:</strong> <span>@Personal.Email</span></p>
+                        }
 
                     </div>
 
 
-            </div>
+                </div>
 
-            <div class="right-about">
+                <div class="right-about">
 
 
                     <div class="about-details-right">
 
-                        <p><strong>Last Name:</strong> <span>Doe</span></p>
-                        <p><strong>Contact Number:</strong> <span>0842140296</span></p>
-                        <p><strong>Location:</strong> <span>Durban</span></p>
+                         @if(Personal != null)
+                        {
+                            <p><strong>Last Name:</strong> <span>@Personal.LastName</span></p>
+                            <p><strong>Contact Number:</strong> <span>@Personal.PhoneNumber</span></p>
+                            <p><strong>Location:</strong> <span>@Personal.Address</span></p>
+                        } 
 
 
                     </div>
 
 
-            </div>
+                </div>
 
             </div>
 
@@ -295,24 +300,25 @@
 
             <div class="experiencedetails">
 
-                    <div class=header-exp>
-                        <h5>Experience</h5>
-                    </div>
+                <div class=header-exp>
+                    <h5>Experience</h5>
+                </div>
 
 
-                    <div class="bottom-exp">
+                <div class="bottom-exp">
 
+                    
+                        @if(WorkHistory != null)
+                        {
+                            <p><strong>Company Name </strong>: @WorkHistory.CompanyName</p>
+                            <p><strong>Job Title </strong>: @WorkHistory.JobTitle</p>
+                            <p><strong>Description </strong>: @WorkHistory.Description</p>
+                            <p><strong>Start Date </strong>: @WorkHistory.StartDate</p>
+                            <p><strong>End Date</strong>: @WorkHistory.EndDate</p>
+                        }
+                  
 
-                        <p class="experience-text"> Owner at Her Company Inc.</p>
-                        March 2020 - Now
-                        <p class="experience-text"> Owner at Her Company Inc.</p>
-                        March 2020 - Now
-                        <p class="experience-text"> Owner at Her Company Inc.</p>
-                        March 2020 - Now
-                        <p class="experience-text"> Owner at Her Company Inc.</p>
-                        March 2020 - Now 
-
-                    </div>
+                </div>
 
 
 
@@ -321,21 +327,24 @@
 
             <div class="education">
 
-                 <div class=header-exp>
-                        <h5>Education</h5>
-                    </div>
+                <div class=header-exp>
+                    <h5>Education</h5>
+                </div>
 
 
-                    <div class="bottom-exp">
+                <div class="bottom-exp">
+
+                    
+                     @if(Education != null)
+                     {
+                            <p><strong>Institution </strong>: @Education.Insitution</p>
+                            <p><strong>Qualification </strong>: @Education.Qualification</p>
+                            <p><strong>Start Date </strong>: @Education.StartDate</p>
+                            <p><strong>End Date</strong>: @Education.EndDate</p>
+                    }
 
 
-                    <p class="experience-text"> Masters Degree in Oxford</p>
-                        March 2020 - Now
-                       <p class="experience-text">Bachelors Degreen in LPU </p> 
-                        March 2020 - Now 
-
-
-                    </div>                   
+                </div>
 
 
 
@@ -350,3 +359,51 @@
 
 
 </div>
+
+@code
+{
+    PersonalTestInfo Personal;
+
+    EducationTest Education;
+
+    WorkHistoryTest WorkHistory;
+
+    AdditionalInformationTest AdditionalInformationTest;
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+       await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);          
+
+        }
+
+        try
+        {
+            Education = await httpClient.GetFromJsonAsync<EducationTest>($"/api/EducationTest/{State.Id}");
+            WorkHistory = await httpClient.GetFromJsonAsync<WorkHistoryTest>($"/api/WorkHistoryTest/{State.Id}");
+            Personal = await httpClient.GetFromJsonAsync<PersonalTestInfo>($"/api/PersonalsTest/{State.Id}");
+           AdditionalInformationTest = await httpClient.GetFromJsonAsync<AdditionalInformationTest>($"/api/AdditionalInformationTest/{State.Id}");    
+
+        }
+        catch(Exception)
+        {
+            
+            Education = new EducationTest();
+            WorkHistory = new WorkHistoryTest();
+            Personal = new PersonalTestInfo();
+            AdditionalInformationTest = new AdditionalInformationTest();
+
+        }
+
+    }
+
+    
+}

@@ -15,7 +15,8 @@ namespace XebecPortal.Shared
         public int ApplicationPhaseId { get; set; }
         public ApplicationPhase ApplicationPhase { get; set; }
         public int StatusId { get; set; }
-        //public Status Status { get; set; }
+
+        public Status Status { get; set; }
         public DateTime TimeMoved { get; set; }
         public string Comments { get; set; }
         

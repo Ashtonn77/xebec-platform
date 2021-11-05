@@ -45,11 +45,11 @@ namespace XebecPortal.Server.JobPortalTestEnv
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetJobsbySeacrch([FromQuery]string searchQuery, [FromQuery]string jobtypeQuery)
+        public async Task<IActionResult> GetJobsbySeacrch([FromQuery]string searchQuery, [FromQuery] string searchLocation, [FromQuery]string jobtypeQuery)
         {
             try
             {
-                var Jobs = await jobTest.SearchJobs(searchQuery,jobtypeQuery);
+                var Jobs = await jobTest.SearchJobs(searchQuery, searchLocation, jobtypeQuery);
 
                 return Ok(Jobs);
 
