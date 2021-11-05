@@ -73,7 +73,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             if (!string.IsNullOrEmpty(ethnicityFiler))
             {
                     query = from user in query
-                                   join person in _context.PersonalInformations.Where(e => e.Ethnicity.Contains(ethnicityFiler))
+                                   join person in _context.PersonalInformations.Where(e => e.IdNumber.Contains(ethnicityFiler))
                                        on user.Id equals person.AppUserId
                                    select user;
                     //Searches for job titles, compensation and locations based on what user entered
@@ -82,21 +82,13 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             if (!string.IsNullOrEmpty(GenderFilter))
             {
                 query = from user in query
-                               join person in _context.PersonalInformations.Where(e => e.Gender.Equals(GenderFilter))
+                               join person in _context.PersonalInformations.Where(e => e.FirstName.Equals(GenderFilter))
                                    on user.Id equals person.AppUserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
             }
             //filter by disability
-            if (!string.IsNullOrEmpty(disabilityFilter))
-            {
-                bool isDisabled = disabilityFilter.Contains("disabled");
-                query = from user in query
-                               join person in _context.PersonalInformations.Where(e => e.Disability == isDisabled)
-                                   on user.Id equals person.AppUserId
-                               select user;
-                //Searches for job titles, compensation and locations based on what user entered
-            }
+          
             queryPI = from users in query
                       join applications in queryPI
                           on users.Id equals applications.AppUserId
