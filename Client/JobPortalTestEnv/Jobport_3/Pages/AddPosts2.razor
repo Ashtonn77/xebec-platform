@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @using System.Net.Http
+@inject State State
 
 @code{ 
     int i = 0;
@@ -290,9 +291,7 @@
                         <div class="form-group-others">
                             @foreach (var items in jobPlatform)
                             {
-                            <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
-                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
-
+                            <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
                             }
                         </div>
                     </div>
@@ -306,6 +305,8 @@
                     <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
                 </div><br />
             </form>
+
+            <h1>@State.Id</h1>
         </div>
     </div>
 </div>

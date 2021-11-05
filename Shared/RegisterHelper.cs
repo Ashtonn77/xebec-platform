@@ -10,8 +10,7 @@ namespace XebecPortal.Shared
      public class RegisterHelper
     {
         public int Id { get; set; }
-        public DateTime TimeDateOfRegistration { get; set; }
-        
+        public DateTime TimeDateOfRegistration { get; set; }                        
         //foreign key
         public int AppUserId { get; set; }
         public AppUser AppUser { get; set; }

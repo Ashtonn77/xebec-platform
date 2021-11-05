@@ -1,10 +1,9 @@
-@inherits LayoutComponentBase
-@inject IJSRuntime jsRuntime
+@page "/testnavigation"
 @inject State State
+@inject IJSRuntime jsRuntime
 
-<div class="page">
-   @Body
-</div>
+<h1>You have arrived!</h1>
+<h1>@State.Id</h1>
 
 @code
 {
