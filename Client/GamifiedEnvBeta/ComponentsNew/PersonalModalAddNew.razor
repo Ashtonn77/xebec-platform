@@ -139,7 +139,7 @@
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => TogglePersonalModal.InvokeAsync())">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => TogglePersonalAddNewModal.InvokeAsync())">Close</button>
     </div>
 
     <div class="lower">
@@ -224,7 +224,8 @@
                 </div>
             </div>
 
-              <div class="btn-container">
+          
+            <div class="btn-container">
 
                 <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
@@ -239,7 +240,7 @@
 
 @code
 {
-    [Parameter] public EventCallback<int> TogglePersonalModal { get; set; }
+    [Parameter] public EventCallback<int> TogglePersonalAddNewModal { get; set; }
 
   
     private PersonalTestInfo Personal = new PersonalTestInfo();
@@ -272,16 +273,9 @@
 
         }
 
-         try
-            {
-                Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}"); 
-                
-            }
-            catch (Exception ex)
-            {
-                Personal = new PersonalTestInfo();
-                Personal.AppUserId = State.Id;
-            }
+   
+        Personal = new PersonalTestInfo();
+        Personal.AppUserId = State.Id;     
 
         State.IsSaved = false;
     }
@@ -301,9 +295,8 @@
 
     private async Task Save()
     {
-   
-        await http.PutAsJsonAsync($"api/PersonalsTest/{Personal.Id}", Personal);
-             
+        await http.PostAsJsonAsync("api/PersonalsTest", Personal);
+  
         message = "Saved!";
         State.IsSaved = true;
 

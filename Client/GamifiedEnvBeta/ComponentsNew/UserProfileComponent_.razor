@@ -163,6 +163,10 @@ else if(addNewWorkModal)
 {
     <WorkHistoryModalAddNew ToggleWorkModalAddNew="ToggleWorkModalAddNew"></WorkHistoryModalAddNew>
 }
+else if(addNewPersonalModal)
+{
+    <PersonalModalAddNew TogglePersonalAddNewModal="TogglePersonalAddNewModal"></PersonalModalAddNew>
+}
 
 <div class="profile-wrapper">
 
@@ -172,7 +176,14 @@ else if(addNewWorkModal)
 
             <div class="top">
                 <h5>Personal Information</h5>
-                <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button>
+                @if(Personals == null || Personals.Count <= 0)
+                {
+                    <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button>
+                }
             </div>
 
             <div class="bottom">
@@ -183,12 +194,23 @@ else if(addNewWorkModal)
 
                 <div class="details">
 
-                    @if(Personal != null)
+                    @if(Personals != null && Personals.Count > 0)
                     {
-                        <span>@Personal.FirstName @Personal.LastName</span>
-                        <span>@Personal.Address</span>
-                        <span>@Personal.Email</span>
-                        <span>@Personal.PhoneNumber</span>
+
+                       @foreach(var Personal in Personals)
+                       {
+                            <span>@Personal.FirstName @Personal.LastName</span>
+                            <span>@Personal.Address</span>
+                            <span>@Personal.Email</span>
+                            <span>@Personal.PhoneNumber</span>
+
+                             <div class="btn-inline">
+
+                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button> 
+                                
+                            </div>
+                       }
+
                     }
                     else
                     {
@@ -197,7 +219,7 @@ else if(addNewWorkModal)
                         <span>Email: N/A</span>
                         <span>Phone Number: N/A</span>
                     }
-                 
+                   
 
                 </div>
 
@@ -357,7 +379,7 @@ else if(addNewWorkModal)
 
             <ul>
                
-                <li>Personal Information</li>
+                <li style="color:@personalProgress">Personal Information</li>
                 <li style="color:@educationProgress">Education History</li>
                 <li style="color:@workProgress">Work History</li>
                 <li>Profiles and Portfolios</li>
@@ -384,10 +406,11 @@ else if(addNewWorkModal)
 {
 
 
-    PersonalTestInfo Personal;
-
+    
+    IList<PersonalTestInfo> Personals;
     IList<EducationTest> Educations;
     IList<WorkHistoryTest> WorkHistories;
+
 
     WorkHistoryTest WorkHistory;
 
@@ -395,7 +418,7 @@ else if(addNewWorkModal)
 
     string educationProgress = "green";
     string workProgress = "green";
-     
+    string personalProgress = "green"; 
 
     protected override async Task OnInitializedAsync()
     {
@@ -415,7 +438,7 @@ else if(addNewWorkModal)
         The problem is putting multiple asyncronous calls inside the try
         It works when its just one call        
         */
-       
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
         Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
 
@@ -440,6 +463,15 @@ else if(addNewWorkModal)
             workProgress = "red";
             
         }
+
+        if(Personals.Count > 0)
+        {
+            personalProgress = "green";
+        }
+        else
+        {
+            personalProgress = "red";
+        } 
 
     }
 
@@ -481,15 +513,42 @@ else if(addNewWorkModal)
     }
 
 
+     private async Task RemovePersonalInfo(PersonalTestInfo personal)
+    {
+        await httpClient.DeleteAsync($"api/PersonalsTest/{personal.Id}");
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+
+        if(Personals.Count > 0)
+        {
+            personalProgress = "green";
+            
+        }
+        else
+        {
+            personalProgress = "red";
+           
+        }
+
+    }
+
     bool personalModal = false;
     bool educationModal = false;
     bool workModal = false;
     bool documentsModal = false;
 
     bool portfolioModal = false;
-    private void TogglePersonalModal()
+    private async Task TogglePersonalModal()
     {
         personalModal = !personalModal;
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+        if(Personals.Count > 0)
+        {
+            personalProgress = "green";
+        }
+        else
+        {
+            personalProgress = "red";
+        }
     }       
 
     private async Task ToggleEducationModal(EducationTest Education)
@@ -555,6 +614,22 @@ else if(addNewWorkModal)
            
         }
         
+    }
+
+    bool addNewPersonalModal = false;
+    private async Task TogglePersonalAddNewModal()
+    {
+        addNewPersonalModal = !addNewPersonalModal;
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+
+         if(Personals.Count > 0)
+        {
+            personalProgress = "green";
+        }
+        else
+        {
+            personalProgress = "red";
+        } 
     }
 
 }
