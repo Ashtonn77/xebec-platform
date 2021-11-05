@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using System.Security.Claims;
+using XebecPortal.Shared.Security;
+using Server.GamifiedApplicationPhaseFour.IRepositories;
+using Server.Data;
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
@@ -17,10 +20,40 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     [ApiController]
     public class ThirdPartyUserController : ControllerBase
     {
+        private readonly IUserDb userDb;
+        private readonly ApplicationDbContext context;
 
-       
-        [HttpGet("GoogleResponse")]
-        public async Task<IActionResult> GoogleResponse()
+        public ThirdPartyUserController(IUserDb userDb, ApplicationDbContext context)
+        {
+            this.userDb = userDb;
+            this.context = context;
+        }
+
+
+        //   [HttpGet("GoogleResponse")]
+        // public async Task<IActionResult> GoogleResponse()
+        // {
+        //     var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //     var claims = result.Principal.Identities.FirstOrDefault()
+        //     .Claims.Select(claim => new
+        //     {
+
+        //         claim.Issuer,
+        //         claim.OriginalIssuer,
+        //         claim.Type,
+        //         claim.Value
+
+        //     }).Where(q => q.Type == ClaimTypes.Email);
+
+        //     var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+        //     email = email == null ? string.Empty : email;
+
+        //     return new JsonResult(email);
+
+        // }
+
+        [HttpGet("GithubResponse")]
+        public async Task GithubResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault()
@@ -32,68 +65,188 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 claim.Type,
                 claim.Value
 
-            });
+            }).Where(q => q.Type == ClaimTypes.Email);
 
-            return new JsonResult(claims);
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
 
-        }
-        /*End Google OAuth*/
 
-        //this is the one that works. Use this one and you're golden. The other ones down below aren't that important. However, they might prove useful in your journey.
-        // [HttpGet("LinkedInSignIn")]
-        // public async Task LinkedInSignIn()
-        // {
-        //     await HttpContext.ChallengeAsync("LinkedIn", properties: new AuthenticationProperties { RedirectUri = "/profile" });
-        // }
-
-        #region Other linkedin oauth stuff
-        //[HttpGet("~/signin")]
-        //public async Task<IActionResult> SignIn() => View("SignIn", await HttpContext.GetExternalProvidersAsync());
-
-        [HttpPost("~/signin")]
-        public async Task<IActionResult> SignIn([FromForm] string provider)
-        {
-            // Note: the "provider" parameter corresponds to the external
-            // authentication provider choosen by the user agent.
-            if (string.IsNullOrWhiteSpace(provider))
+            if (!string.IsNullOrEmpty(email))
             {
-                return BadRequest();
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
             }
 
+            HttpContext.Response.Redirect("/profile_");
 
-            // Instruct the middleware corresponding to the requested external identity
-            // provider to redirect the user agent to its own authorization endpoint.
-            // Note: the authenticationScheme parameter must match the value configured in Startup.cs
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profile" }, provider);
         }
-
-        #endregion
-
-
         /*GitHub OAuth*/
         [HttpGet("GitHubSignIn")]
-        public IActionResult GitHubSignIn()
+        public async Task<IActionResult> GitHubSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Github");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Google");
+        }
+
+
+        [HttpGet("GoogleResponse")]
+        public async Task GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            }).Where(q => q.Type == ClaimTypes.Email);
+
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
+
         }
 
         [HttpGet("GoogleSignIn")]
-        public IActionResult GoogleSignIn()
-        {           
-            return Challenge(new AuthenticationProperties { RedirectUri = "/mainapp" }, "Google");
+        public async Task<IActionResult> GoogleSignInAsync()
+        {
+
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") }, "Google");
+
+        }
+
+
+        [HttpGet("TwitterResponse")]
+        public async Task TwitterResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            }).Where(q => q.Type == ClaimTypes.Email);
+
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+           }
+            
+            HttpContext.Response.Redirect("/profile_");
+
         }
 
         [HttpGet("TwitterSignIn")]
-        public IActionResult TwitterSignIn()
+        public async Task<IActionResult> TwitterSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "Twitter");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Google");
+
         }
 
-        
-        [HttpGet("LinkedInSignIn")]
-        public IActionResult LinkedInSignIn()
+
+        [HttpGet("LinkedInResponse")]
+        public async Task LinkedInResponse()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/profileTest" }, "LinkedIn");
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault()
+            .Claims.Select(claim => new
+            {
+
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            }).Where(q => q.Type == ClaimTypes.Email);
+
+            var email = (claims == null ? string.Empty : claims.FirstOrDefault().Value);
+            email = email == null ? string.Empty : email;
+
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                RegisterModel reg = new RegisterModel();
+                reg.Password = "P@ssword1";
+                reg.Role = "Candidate";
+                reg.Email = email;
+                var users = context.AppUser.FirstOrDefault(q => q.Email.Equals(email));
+
+                if (users == null)
+                {
+                    AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                }
+                else
+                {
+                    email = "already in db";
+                }
+
+            }
+
+            HttpContext.Response.Redirect("/profile_");
+
+        }
+        [HttpGet("LinkedInSignIn")]
+        public async Task<IActionResult> LinkedInSignIn()
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "Google");
+
         }
 
         [HttpGet("LogOut")]
@@ -103,22 +256,18 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.Contains(".AspNetCore.") || c.Key.Contains("Microsoft.Authentication"));
                 foreach (var cookie in siteCookies)
                 {
-                    Response.Cookies.Delete(cookie.Key); 
+                    Response.Cookies.Delete(cookie.Key);
                 }
             }
 
             await HttpContext.SignOutAsync();
-            HttpContext.Response.Redirect("/loginbeta");
-            HttpContext.Session.Clear();          
-          
-            
+            HttpContext.Response.Redirect("/");
+            HttpContext.Session.Clear();
+
+
         }
 
     }
 
-
-
-    /*Test*/
-   
 
 }

@@ -44,6 +44,7 @@ namespace Server.Controllers
             }
         }
 
+        //get by appuserId
         // GET api/<PersonalInformationController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -52,7 +53,7 @@ namespace Server.Controllers
         {
             try
             {
-                var PersonalInformation = await _unitOfWork.PersonalTestInfos.GetT(q => q.Id == id);
+                var PersonalInformation = await _unitOfWork.PersonalTestInfos.GetT(q => q.AppUserId == id);
                 return Ok(PersonalInformation);
             }
             catch (Exception e)

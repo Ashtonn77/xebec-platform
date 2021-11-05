@@ -254,7 +254,7 @@
 
     <!--Heading-->
     <div class="header">
-        <h5>Job Postings</h5>
+        @* <h5>Job Postings</h5> *@
 
         @if (LstJobs != null)
         {
@@ -355,7 +355,7 @@
                         {
                             <div class="rightbox">
                                 <!--Details box-->
-                                <div class="select-details">
+                                <div class="select-details" style="padding: 10px;">
                                     <h2>@CurrentJob2.Title</h2>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
@@ -368,7 +368,7 @@
                         <!--Search + post job buttons-->
                         <div class="btn-container">
                             <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
-                            <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
+                            <a href="/addjobpost" class="btn btn-light btn-sm ml-1">Post Job</a>
                         </div>
                     </div>
 
