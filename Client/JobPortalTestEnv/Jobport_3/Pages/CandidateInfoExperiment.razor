@@ -300,6 +300,17 @@
         try
         {
             RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={JobId}");
+            if (RealCandidates.Count > 0)
+            {
+                Console.WriteLine("we made it here");
+                RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}");
+            }
+            if (RealCandidatesInfo.Count > 0)
+            {
+                Console.WriteLine("are we in?");
+                RealUserPersonalInfo = RealCandidatesInfo[0];
+                CurrentCandidate = Candidates[0];
+            }
         }
         catch (Exception ex)
         {
@@ -307,16 +318,7 @@
         }
 
 
-        if (RealCandidates.Count > 0)
-        {
-            Console.WriteLine("we made it here");
-            RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}");
-        }
-        if (RealCandidatesInfo.Count > 0)
-        {
-            RealUserPersonalInfo = RealCandidatesInfo[0];
-            CurrentCandidate = Candidates[0];
-        }
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
