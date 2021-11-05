@@ -144,11 +144,11 @@
 
         <form class="input-form">
 
-
+@* 
             <div class="inline-inner">
                 <label for="documents">Documents:</label>
                 <input type="file" id="documents" @bind="AdditionalInfo.DocumentUrl">
-            </div>
+            </div> *@
 
             <div class="btn-container">
                 <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
@@ -199,19 +199,19 @@
             }
 
 
-        AdditionalInfo.DocumentUrl = null;
+        @* AdditionalInfo.DocumentUrl = null; *@
         State.IsSaved = false;
     }
 
     private async Task Save()
     {
 
-        string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
+        @* string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
         AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
         //await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo);
         State.IsSaved = true;
-        AdditionalInfo = new AdditionalInformationTest();
+        AdditionalInfo = new AdditionalInformationTest(); *@
 
     }
 

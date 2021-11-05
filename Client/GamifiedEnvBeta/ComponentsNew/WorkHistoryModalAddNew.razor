@@ -47,7 +47,7 @@
         width: 90%;
         margin: auto;
         max-width: 700px;
-        max-height: 270px;
+        max-height: 450px;
         display: flex;
         flex-direction: column;
         border-radius: 5px;
@@ -132,57 +132,63 @@
         align-items: center;
 
     }
- 
 </style>
 
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleEducationModal.InvokeAsync(Education))">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleWorkModalAddNew.InvokeAsync())">Close</button>
     </div>
 
     <div class="lower">
 
-        <form class="input-form">
-           
-            <div class="inline">
-
-                <div class="inline-inner">
-                    <label for="institution">Institution:</label>
-                    <input type="text" id="institution" @bind="Education.Insitution">
-                </div>
-
-                <div class="inline-inner">
-                    <label for="qualification">Qualification:</label>
-                    <input type="text" id="qualification" @bind="Education.Qualification">
-                </div>
+       <form class="input-form">
 
 
-            </div>
+    <div class="inline">
 
-            <div class="inline">
+        <div class="inline-inner">
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" @bind="WorkHistory.CompanyName">
+        </div>
 
-                <div class="inline-inner">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate" @bind="Education.StartDate">
-                </div>
+        <div class="inline-inner">
+            <label for="jobTitle">Job Title:</label>
+            <input type="text" id="jobTitle" @bind="WorkHistory.JobTitle">
+        </div>
 
-                <div class="inline-inner">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate" @bind="Education.EndDate">
-                </div>
 
-            </div>
+    </div>
 
-            <div class="btn-container">
+    <div class="inline">
+
+        <div class="inline-inner">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" @bind="WorkHistory.StartDate">
+        </div>
+
+        <div class="inline-inner">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" @bind="WorkHistory.EndDate">
+        </div>
+
+    </div>
+
+    <div class="inline">
+        <div class="inline-inner address-inner">
+            <label for="description">Description:</label>
+            <textarea id="description" @bind="WorkHistory.Description"></textarea>
+        </div>
+    </div>
+
+   <div class="btn-container">
 
                 <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
 
             </div>
-            
 
-        </form>
+</form>
 
     </div>
 
@@ -191,13 +197,15 @@
 
 
 @code
-{    
-    private EducationTest Education = new EducationTest(); 
-    [Parameter] public EventCallback<EducationTest> ToggleEducationModal { get; set; }
+{
+    [Parameter] public EventCallback<int> ToggleWorkModalAddNew { get; set; }
 
-    private string message = string.Empty;
+    
+   private WorkHistoryTest WorkHistory = new WorkHistoryTest();
+   
+   private string message = string.Empty;    
 
-    protected override async Task OnInitializedAsync()
+      protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
@@ -206,35 +214,27 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);
+            State.Id = Int32.Parse(userdetails[3]);      
 
-            try
-            {
-                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/single/{State.EducationEditId}");
+        }
 
-            }
-            catch (Exception ex)
-            {
-                Education = new EducationTest();
-                Education.StartDate = DateTime.Now;
-                Education.EndDate = DateTime.Now;
-                Education.AppUserId = State.Id;
-            }
-
-        }       
-       
-
+  
+                WorkHistory = new WorkHistoryTest();
+                WorkHistory.StartDate = DateTime.Now;
+                WorkHistory.EndDate = DateTime.Now;    
+                WorkHistory.AppUserId = State.Id;
+ 
         State.IsSaved = false;
-
     }
-
-
+   
     private async Task Save()
     {
-        await http.PutAsJsonAsync($"api/EducationTest/{Education.Id}", Education);
+        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); 
         message = "Saved!";
         State.IsSaved = true;
-    }
+         
+    }    
+
 
 
 }

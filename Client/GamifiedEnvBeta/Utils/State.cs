@@ -17,6 +17,10 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public bool IsSaved { get; set; } = false;
 
+        public int EducationEditId { get; set; } = -1;
+
+        public int WorkEditId { get; set; } = -1;
+
     }
 
 }

@@ -224,8 +224,11 @@
                 </div>
             </div>
 
-            <div class="btn-container">
-                <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
+              <div class="btn-container">
+
+                <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
             </div>
 
         </form>
@@ -298,16 +301,9 @@
 
     private async Task Save()
     {
-        if(Personal.Id == 0)
-        {
-            await http.PostAsJsonAsync("api/PersonalsTest", Personal);
-        }
-        else
-        {
-            await http.PutAsJsonAsync($"api/PersonalsTest/{Personal.Id}", Personal);
-        }
-
-
+   
+        await http.PutAsJsonAsync($"api/PersonalsTest/{Personal.Id}", Personal);
+             
         message = "Saved!";
         State.IsSaved = true;
 
