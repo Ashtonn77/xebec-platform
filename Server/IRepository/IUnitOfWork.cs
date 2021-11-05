@@ -49,6 +49,11 @@ namespace Server.IRepository
         IGenericRepository<JobPlatformHelper> JobPlatformHelpers { get; }
 
 
+        //Newly Added (Kian) 
+        IGenericRepository<ProfilePortfolioLink> ProfilePortfolioLinks { get; }
+
+
+
         //Saving to the DB
         Task Save();
 

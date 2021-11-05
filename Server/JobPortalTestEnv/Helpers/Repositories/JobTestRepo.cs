@@ -16,13 +16,17 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
         {
         }
 
-        public async Task<List<Job>> SearchJobs(string SearchQuery, string jobtypeQuery)
+        public async Task<List<Job>> SearchJobs(string SearchQuery, string SearchLocation, string jobtypeQuery)
         {
             IQueryable<Job> query = _context.Jobs;
             //Search parameters
             if (!string.IsNullOrEmpty(SearchQuery))
             {
-                query =  query.Where(j => j.Title.Contains(SearchQuery) || j.Compensation.Contains(SearchQuery) || j.Location.Contains(SearchQuery));
+                query =  query.Where(j => j.Title.Contains(SearchQuery) || j.Compensation.Contains(SearchQuery));
+            }
+            if (!string.IsNullOrEmpty(SearchLocation))
+            {
+                query = query.Where(j => j.Location.Contains(SearchLocation));
             }
             if (!string.IsNullOrEmpty(jobtypeQuery))
             {

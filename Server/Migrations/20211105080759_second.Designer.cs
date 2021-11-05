@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Data;
 
 namespace XebecPortal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211105080759_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,16 @@ namespace XebecPortal.Server.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Disability")
+                    b.Property<string>("FacebookLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ethnicity")
+                    b.Property<string>("GitHubLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("LinkedInLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonalWebsiteUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -148,8 +153,6 @@ namespace XebecPortal.Server.Migrations
 
                     b.HasIndex("ApplicationPhaseId");
 
-                    b.HasIndex("StatusId");
-
                     b.ToTable("ApplicationPhasesHelpers");
                 });
 
@@ -211,9 +214,6 @@ namespace XebecPortal.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Company")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Compensation")
                         .HasColumnType("nvarchar(max)");
@@ -424,16 +424,22 @@ namespace XebecPortal.Server.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Disability")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ethnicity")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdNumber")
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("IdNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -447,35 +453,6 @@ namespace XebecPortal.Server.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("PersonalInformations");
-                });
-
-            modelBuilder.Entity("XebecPortal.Shared.ProfilePortfolioLink", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GitHubLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LinkedInLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalWebsiteUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TwitterLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("ProfilePortfolioLinks");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.RegisterHelper", b =>
@@ -653,17 +630,9 @@ namespace XebecPortal.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("XebecPortal.Shared.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Application");
 
                     b.Navigation("ApplicationPhase");
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.Document", b =>
@@ -760,17 +729,6 @@ namespace XebecPortal.Server.Migrations
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.PersonalInformation", b =>
-                {
-                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("XebecPortal.Shared.ProfilePortfolioLink", b =>
                 {
                     b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
                         .WithMany()
