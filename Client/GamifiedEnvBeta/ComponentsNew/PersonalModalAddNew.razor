@@ -3,6 +3,7 @@
 @inject HttpClient http
 
 <style>
+
     @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
     * {
@@ -24,7 +25,8 @@
 
     }
 
-    .upper button {
+    .upper button
+    {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -46,8 +48,8 @@
         height: 90%;
         width: 90%;
         margin: auto;
-        max-width: 700px;
-        max-height: 270px;
+        max-width: 800px;
+        max-height: 600px;
         display: flex;
         flex-direction: column;
         border-radius: 5px;
@@ -132,29 +134,28 @@
         align-items: center;
 
     }
- 
 </style>
 
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleEducationModal.InvokeAsync(Education))">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => TogglePersonalAddNewModal.InvokeAsync())">Close</button>
     </div>
 
     <div class="lower">
 
         <form class="input-form">
-           
+
             <div class="inline">
 
                 <div class="inline-inner">
-                    <label for="institution">Institution:</label>
-                    <input type="text" id="institution" @bind="Education.Insitution">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" @bind="Personal.FirstName">
                 </div>
 
                 <div class="inline-inner">
-                    <label for="qualification">Qualification:</label>
-                    <input type="text" id="qualification" @bind="Education.Qualification">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" @bind="Personal.LastName">
                 </div>
 
 
@@ -163,24 +164,73 @@
             <div class="inline">
 
                 <div class="inline-inner">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate" @bind="Education.StartDate">
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="text" id="phoneNumber" @bind="Personal.PhoneNumber">
                 </div>
 
                 <div class="inline-inner">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate" @bind="Education.EndDate">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" @bind="Personal.Email">
                 </div>
 
             </div>
 
+            <div class="inline">
+
+                <div class="inline-inner">
+                    <label for="idNumber">I.D Number:</label>
+                    <input type="text" id="idNumber" @bind="Personal.IdNumber">
+                </div>
+
+                <div class="inline-inner">
+                    <label for="ethnicity">Ethnicity:</label>
+                    <input type="text" id="ethnicity" @bind="Personal.Ethnicity">
+                </div>
+
+            </div>
+
+            <div class="inline">
+
+                <div class="inline-inner">
+
+                    <label for="disability">Disabilty:</label>
+                    <select id="disability" @onchange="OnDisabilityChanged">
+                        <option value="--">--</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                        <option value="both">Don't wish to disclose</option>
+                    </select>
+
+                </div>
+
+                <div class="inline-inner">
+
+                    <label for="gender">Gender:</label>
+                    <select id="gender" @onchange="OnGenderChanged">
+                        <option value="--">--</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="both">Don't wish to disclose</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="inline">
+                <div class="inline-inner address-inner">
+                    <label for="address">Address:</label>
+                    <textarea id="address" @bind="Personal.Address"></textarea>
+                </div>
+            </div>
+
+          
             <div class="btn-container">
 
                 <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
 
             </div>
-            
 
         </form>
 
@@ -188,15 +238,28 @@
 
 </div>
 
-
-
 @code
-{    
-    private EducationTest Education = new EducationTest(); 
-    [Parameter] public EventCallback<EducationTest> ToggleEducationModal { get; set; }
+{
+    [Parameter] public EventCallback<int> TogglePersonalAddNewModal { get; set; }
+
+  
+    private PersonalTestInfo Personal = new PersonalTestInfo();
 
     private string message = string.Empty;
 
+    [Parameter]
+    public EventCallback<string> DisabilityChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<string> GenderChanged
+    {
+        get;
+        set;
+    }
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -208,33 +271,35 @@
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-            try
-            {
-                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/single/{State.EducationEditId}");
+        }
 
-            }
-            catch (Exception ex)
-            {
-                Education = new EducationTest();
-                Education.StartDate = DateTime.Now;
-                Education.EndDate = DateTime.Now;
-                Education.AppUserId = State.Id;
-            }
-
-        }       
-       
+   
+        Personal = new PersonalTestInfo();
+        Personal.AppUserId = State.Id;     
 
         State.IsSaved = false;
-
     }
 
+    private Task OnDisabilityChanged(ChangeEventArgs e)
+    {
+        Personal.Disability = e.Value.ToString();
+        return DisabilityChanged.InvokeAsync(Personal.Disability);
+    }
+
+
+    private Task OnGenderChanged(ChangeEventArgs e)
+    {
+        Personal.Gender = e.Value.ToString();
+        return GenderChanged.InvokeAsync(Personal.Gender);
+    }
 
     private async Task Save()
     {
-        await http.PutAsJsonAsync($"api/EducationTest/{Education.Id}", Education);
+        await http.PostAsJsonAsync("api/PersonalsTest", Personal);
+  
         message = "Saved!";
         State.IsSaved = true;
-    }
 
+    }
 
 }

@@ -56,6 +56,8 @@ namespace XebecPortal.Server
             services.AddTransient<ICandidateTestRepo, CandidateTestRepo>();
             services.AddTransient<IUsersCustomRepo, UsersCustomRepo>();
 
+            services.AddTransient<IApplicationPhaseHelperRepository, ApplicationPhaseHelperRepository>();
+
 
             services.AddSingleton<State>();
             services.AddAutoMapper(typeof(MapperInitializer));
