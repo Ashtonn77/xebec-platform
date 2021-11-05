@@ -438,40 +438,48 @@ else if(addNewPersonalModal)
         The problem is putting multiple asyncronous calls inside the try
         It works when its just one call        
         */
-        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
-        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
-        WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
-
-        if(Educations.Count > 0)
+        try
         {
-            educationProgress = "green";
-           
+            Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+            Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
+            WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
         }
-        else
+        catch(Exception ex)
         {
-            educationProgress = "red";
+
+        }
+
+           if(Educations != null && Educations.Count > 0)
+            {
+                educationProgress = "green";
             
-        }
+            }
+            else
+            {
+                educationProgress = "red";
+                
+            }
 
-        if(WorkHistories.Count > 0)
-        {
-            workProgress = "green";
-           
-        }
-        else
-        {
-            workProgress = "red";
+            if(WorkHistories != null && WorkHistories.Count > 0)
+            {
+                workProgress = "green";
             
-        }
+            }
+            else
+            {
+                workProgress = "red";
+                
+            }
 
-        if(Personals.Count > 0)
-        {
-            personalProgress = "green";
-        }
-        else
-        {
-            personalProgress = "red";
-        } 
+            if(Personals != null && Personals.Count > 0)
+            {
+                personalProgress = "green";
+            }
+            else
+            {
+                personalProgress = "red";
+            } 
+       
 
     }
 
@@ -481,7 +489,7 @@ else if(addNewPersonalModal)
         await httpClient.DeleteAsync($"api/EducationTest/{education.Id}");
         Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
 
-        if(Educations.Count > 0)
+        if(Educations != null && Educations.Count > 0)
         {
             educationProgress = "green";
             
@@ -499,7 +507,7 @@ else if(addNewPersonalModal)
         await httpClient.DeleteAsync($"api/WorkHistoryTest/{work.Id}");
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
 
-        if(WorkHistories.Count > 0)
+        if(WorkHistories != null && WorkHistories.Count > 0)
         {
             workProgress = "green";
             
@@ -518,7 +526,7 @@ else if(addNewPersonalModal)
         await httpClient.DeleteAsync($"api/PersonalsTest/{personal.Id}");
         Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
 
-        if(Personals.Count > 0)
+        if(Personals != null && Personals.Count > 0)
         {
             personalProgress = "green";
             
@@ -541,7 +549,7 @@ else if(addNewPersonalModal)
     {
         personalModal = !personalModal;
         Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
-        if(Personals.Count > 0)
+        if(Personals != null && Personals.Count > 0)
         {
             personalProgress = "green";
         }
@@ -581,9 +589,16 @@ else if(addNewPersonalModal)
     private async Task ToggleEducationModalAddNew()
     {
         addNewEducationModal = !addNewEducationModal;
-        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
+        try
+        {
+            Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
+        }
+        catch(Exception ex)
+        {
+            
+        }
 
-        if(Educations.Count > 0)
+        if(Educations != null && Educations.Count > 0)
         {
             educationProgress = "green";
             
@@ -601,9 +616,16 @@ else if(addNewPersonalModal)
     private async Task ToggleWorkModalAddNew()
     {
         addNewWorkModal = !addNewWorkModal;
-        WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        try
+        {
+            WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        }
+        catch(Exception ex)
+        {
 
-        if(WorkHistories.Count > 0)
+        }
+
+        if(WorkHistories != null && WorkHistories.Count > 0)
         {
             workProgress = "green";
             
@@ -620,9 +642,17 @@ else if(addNewPersonalModal)
     private async Task TogglePersonalAddNewModal()
     {
         addNewPersonalModal = !addNewPersonalModal;
-        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
 
-         if(Personals.Count > 0)
+       try
+       {
+            Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+       }
+       catch(Exception ex)
+       {
+
+       }
+
+        if(Personals != null && Personals.Count > 0)
         {
             personalProgress = "green";
         }
@@ -630,6 +660,7 @@ else if(addNewPersonalModal)
         {
             personalProgress = "red";
         } 
+        
     }
 
 }
