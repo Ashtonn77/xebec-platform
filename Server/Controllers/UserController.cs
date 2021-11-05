@@ -61,6 +61,40 @@ namespace Server.Controllers
             }
         }
 
+        // GET api/<UsersController>/email=test@test.com
+        [HttpGet("email={email}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersonalInfoByEmail(string email)
+        {
+            try
+            {
+                var user = await _unitOfWork.AppUsers.GetT(q => q.Email == email);
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<UserController>/role=candidate
+        [HttpGet("role={role}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUsersByRole(string role)
+        {
+            try
+            {
+                var users = await _unitOfWork.AppUsers.GetAll(q => q.Role == role);
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<UsersController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

@@ -60,6 +60,24 @@ namespace Server.Controllers
             }
         }
 
+
+        // GET api/<WorkHistoryController>/userId=1
+        [HttpGet("userId={userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetWorkHistoryByUserId(int userId)
+        {
+            try
+            {
+                var workHistory = await _unitOfWork.WorkHistory.GetAll(q => q.AppUserId == userId);
+                return Ok(workHistory);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<WorkHistoryController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
