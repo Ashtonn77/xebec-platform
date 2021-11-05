@@ -228,19 +228,19 @@
 
         }
 
-        AdditionalInfo.DocumentUrl = null;       
+        @* AdditionalInfo.DocumentUrl = null;        *@
         State.IsSaved = false;
     }
 
     private async Task Save()
     {
         
-        string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
+        @* string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
         AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
         //await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); 
         State.IsSaved = true;
-        AdditionalInfo = new AdditionalInformationTest();
+        AdditionalInfo = new AdditionalInformationTest(); *@
 
     }
 

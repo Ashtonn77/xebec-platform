@@ -132,21 +132,21 @@
         align-items: center;
 
     }
- 
+
 </style>
 
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleEducationModal.InvokeAsync(Education))">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleEducationModalAddNew.InvokeAsync())">Close</button>
     </div>
 
     <div class="lower">
 
         <form class="input-form">
-           
-            <div class="inline">
 
+            <div class="inline">
+              
                 <div class="inline-inner">
                     <label for="institution">Institution:</label>
                     <input type="text" id="institution" @bind="Education.Insitution">
@@ -180,7 +180,6 @@
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
 
             </div>
-            
 
         </form>
 
@@ -189,11 +188,13 @@
 </div>
 
 
-
 @code
-{    
-    private EducationTest Education = new EducationTest(); 
-    [Parameter] public EventCallback<EducationTest> ToggleEducationModal { get; set; }
+{
+    [Parameter] public EventCallback<int> ToggleEducationModalAddNew { get; set; }
+
+
+    private EducationTest Education = new EducationTest();     
+   
 
     private string message = string.Empty;
 
@@ -206,23 +207,14 @@
             string[] userdetails = userdata.Split(';');
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);
+            State.Id = Int32.Parse(userdetails[3]);       
 
-            try
-            {
-                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/single/{State.EducationEditId}");
+        }
 
-            }
-            catch (Exception ex)
-            {
-                Education = new EducationTest();
-                Education.StartDate = DateTime.Now;
-                Education.EndDate = DateTime.Now;
-                Education.AppUserId = State.Id;
-            }
-
-        }       
-       
+        Education = new EducationTest();
+        Education.StartDate = DateTime.Now;
+        Education.EndDate = DateTime.Now;
+        Education.AppUserId = State.Id;
 
         State.IsSaved = false;
 
@@ -231,7 +223,8 @@
 
     private async Task Save()
     {
-        await http.PutAsJsonAsync($"api/EducationTest/{Education.Id}", Education);
+        await http.PostAsJsonAsync("api/EducationTest", Education); 
+       
         message = "Saved!";
         State.IsSaved = true;
     }

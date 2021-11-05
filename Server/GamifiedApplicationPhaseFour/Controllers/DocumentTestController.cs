@@ -1,43 +1,40 @@
-﻿using AutoMapper;
-using Server.Data;
-using Server.IRepository;
-using XebecPortal.Shared;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Server.IRepository;
+using XebecPortal.Shared;
 using XebecPortal.Shared.NewGamifiedDtos;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Server.GamifiedApplicationPhaseFour.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class AdditionalInformationTestController : ControllerBase
+    [Route("api/[controller]")]
+    public class DocumentTestController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public AdditionalInformationTestController(IUnitOfWork unitOfWork, IMapper mapper)
+        public DocumentTestController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
-        } 
+        }
 
-        // GET: api/<AdditionalInformationController>
+        // GET: api/<DocumentController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAdditionalInformation()
+        public async Task<IActionResult> GetDocuments()
         {
             try
             {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetAll();
+                var Document = await _unitOfWork.Documents.GetAll();
              
-                return Ok(AdditionalInformation);
+                return Ok(Document);
 
             }
             catch (Exception e)
@@ -45,17 +42,19 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+
 
         [HttpGet("all/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAdditionalInfoByAppUserId(int id)
+        public async Task<IActionResult> GetDocumentsByAppUserId(int id)
         {
             try
             {
-                var AdditionalInformationTests = await _unitOfWork.AdditionalInformationTests.GetAll(q => q.AppUserId == id);
+                var Documents = await _unitOfWork.Documents.GetAll(q => q.AppUserId == id);
              
-                return Ok(AdditionalInformationTests);
+                return Ok(Documents);
 
             }
             catch (Exception e)
@@ -65,17 +64,34 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         }
 
 
+        
+        [HttpGet("single/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleDocumentById(int id)
+        {
+            try
+            {
+                var Document = await _unitOfWork.Documents.GetT(q => q.Id == id);                
+                return Ok(Document);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         //get by appuserid
-        // GET api/<AdditionalInformationController>/5
+        // GET api/<DocumentController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAdditionalInformation(int id)
+        public async Task<IActionResult> GetDocument(int id)
         {
             try
             {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.AppUserId == id);
-                return Ok(AdditionalInformation);
+                var Document = await _unitOfWork.Documents.GetT(q => q.AppUserId == id);                
+                return Ok(Document);
             }
             catch (Exception e)
             {
@@ -83,12 +99,12 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             }
         }
 
-        // POST api/<AdditionalInformationController>
+        // POST api/<DocumentController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateAdditionalInformation([FromBody] AdditionalInformationTest AdditionalInformation)
+        public async Task<IActionResult> CreateDocument([FromBody] Document Document)
         {
 
             if (!ModelState.IsValid)
@@ -101,10 +117,10 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
             try
             {
 
-                await _unitOfWork.AdditionalInformationTests.Insert(AdditionalInformation);
+                await _unitOfWork.Documents.Insert(Document);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetAdditionalInformation", new { id = AdditionalInformation.Id }, AdditionalInformation);
+                return CreatedAtAction("GetDocument", new { id = Document.Id }, Document);
 
             }
             catch (Exception e)
@@ -118,9 +134,9 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         }
 
 
-        // PUT api/<AdditionalInformationController>/5
+        // PUT api/<DocumentController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAdditionalInformation(int id, [FromBody] AdditionalInformationTestDto AdditionalInformation)
+        public async Task<IActionResult> UpdateDocument(int id, [FromBody] DocumentTestDto Document)
         {
             if (!ModelState.IsValid)
             {
@@ -129,14 +145,15 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             try
             {
-                var originalAdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
+                var originalDocument = await _unitOfWork.Documents.GetT(q => q.Id == id);
 
-                if (originalAdditionalInformation == null)
+                if (originalDocument == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(AdditionalInformation, originalAdditionalInformation);
-                _unitOfWork.AdditionalInformationTests.Update(originalAdditionalInformation);
+
+                 mapper.Map(Document, originalDocument);
+                _unitOfWork.Documents.Update(originalDocument);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -150,12 +167,12 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         }
 
 
-        // DELETE api/<AdditionalInformationController>/5
+        // DELETE api/<DocumentController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteAdditionalInformation(int id)
+        public async Task<IActionResult> DeleteDocument(int id)
         {
             if (id < 1)
             {
@@ -164,14 +181,14 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
             try
             {
-                var AdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
+                var Document = await _unitOfWork.Documents.GetT(q => q.Id == id);
 
-                if (AdditionalInformation == null)
+                if (Document == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.AdditionalInformationTests.Delete(id);
+                await _unitOfWork.Documents.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();
