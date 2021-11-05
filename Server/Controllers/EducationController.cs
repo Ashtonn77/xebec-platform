@@ -60,6 +60,23 @@ namespace Server.Controllers
             }
         }
 
+        // GET api/<EducationController>/userId=1
+        [HttpGet("userId={userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersonalInfoByUserId(int userId)
+        {
+            try
+            {
+                var education = await _unitOfWork.Education.GetAll(q => q.AppUserId == userId);
+                return Ok(education);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<EducationController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

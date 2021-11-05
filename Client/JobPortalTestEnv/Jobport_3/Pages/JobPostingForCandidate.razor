@@ -1,4 +1,5 @@
 @page "/jobpostforcandidate"
+@layout JobPortalLayout
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @inject NavigationManager NavManager
@@ -13,12 +14,12 @@
     }
 
     .wrapper-job {
-        height: 90%;
-        width: 90%;
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: white;
+        background-color: #6c85a3;
         margin: auto;
         overflow-y: auto;
     }
@@ -87,7 +88,6 @@
             background-color: #C4C4C4;
         }
 
-
     /*=======================main container ================================*/
     .add-job-container {
         padding: 20px;
@@ -96,7 +96,6 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        background-color: #6c85a3;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
     }
@@ -109,20 +108,19 @@
         /* background-color: aliceblue;*/
     }
 
-
     /*=======================left side container ================================*/
     .left {
         width: 40%;
         height: inherit;
         padding: 5px;
-        overflow-x: unset;
+        /*overflow-x: unset;
         overflow-y: auto;
-        /*box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;*/
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;*/
         border-radius: 5px;
         /*background-color: #fff;*/
     }
 
-        .left::-webkit-scrollbar {
+    /*.left::-webkit-scrollbar {
             width: 12px;
         }
 
@@ -134,7 +132,7 @@
             background-color: #95A5A6;
             border-radius: 20px;
             border: 3px solid #EAF2F8;
-        }
+        }*/
 
     .box {
         width: 99%;
@@ -166,14 +164,14 @@
 
     .rightbox {
         width: 97%;
-        height: 85%;
+        height: 98%;
         margin: auto;
         /*background-color: aqua;*/
         overflow-y: auto;
     }
 
     .select-details {
-        width: 98%;
+        width: 50%;
         height: 100%, fit-content;
         margin: auto;
         padding: 10px;
@@ -222,7 +220,6 @@
         align-items: center;
     }
 
-
     ul span {
         font-weight: bold;
     }
@@ -248,13 +245,12 @@
     }
 </style>
 
-
 <!--Entire page as a flexbox-->
 <div class="wrapper-job">
 
     <!--Heading-->
     <div class="header">
-        @* <h5>Job Postings</h5> *@
+        <h1>Job List Postings</h1>
 
         @if (LstJobs != null)
         {
@@ -281,7 +277,6 @@
                             {
                                 <option value="@jobType.Type"> @jobType.Type </option>
                             }
-
                         </select>
                     }
                     <div>
@@ -297,7 +292,6 @@
             </div>
         }
     </div>
-
 
     @if (LstJobs != null)
     {
@@ -343,9 +337,6 @@
                         {
                             <p> No Jobs found</p>
                         }
-
-
-
                     </div>
 
                     <!--Box on the right/Details box + buttons-->
@@ -355,7 +346,7 @@
                         {
                             <div class="rightbox">
                                 <!--Details box-->
-                                <div class="select-details" style="padding: 10px;">
+                                <div class="select-details position-fixed">
                                     <h2>@CurrentJob2.Title</h2>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
@@ -365,13 +356,7 @@
                                 </div>
                             </div>
                         }
-                        <!--Search + post job buttons-->
-                        <div class="btn-container">
-                            <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
-                            <a href="/addjobpost" class="btn btn-light btn-sm ml-1">Post Job</a>
-                        </div>
                     </div>
-
                 </div>
             }
             else
@@ -379,7 +364,6 @@
                 <br /> <br /> <br />
                 <h4 style="color:#fff">Could not retrive the records you are looking for</h4>
             }
-
         </div>
 
     }

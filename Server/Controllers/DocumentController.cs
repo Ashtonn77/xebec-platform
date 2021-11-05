@@ -60,6 +60,23 @@ namespace Server.Controllers
             }
         }
 
+        // GET api/<DocumentController>/userId=1
+        [HttpGet("userId={userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDocumentsByUserId(int userId)
+        {
+            try
+            {
+                var documents = await _unitOfWork.Documents.GetAll(q => q.AppUserId == userId);
+                return Ok(documents);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<DocumentsController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

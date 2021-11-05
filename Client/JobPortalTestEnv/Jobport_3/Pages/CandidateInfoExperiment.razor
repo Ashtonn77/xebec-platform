@@ -1,10 +1,9 @@
 ﻿@page "/candidateinfoexp/{JobId}"
+@layout JobPortalLayout
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @using XebecPortal.Client.JobPortalTestEnv.Models
 @using XebecPortal.Shared.Security
-
-
 <style>
 
     * {
@@ -13,18 +12,18 @@
 
     .wrapper-job {
         width: 100%;
-        height: 100vh;
-        display: flex;
+        height: 86vh;
+        /*display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center;*/
         background-color: white;
     }
 
     .add-job-container {
-        padding: 20px;
+        /*padding: 20px;*/
         width: 90%;
         margin: auto auto 5% auto;
-        height: 90%;
+        height: 67%;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -70,7 +69,6 @@
         cursor: pointer;
     }
 
-
     .input:focus {
         outline: none !important;
         border: 1px solid red;
@@ -100,8 +98,9 @@
     .filterSection {
         display: flex;
         flex-direction: row;
-        padding-left:50px;
+        padding-left: 50px;
     }
+
     .filterpill {
         background-color: #ddd;
         border: none;
@@ -113,42 +112,45 @@
         margin: 4px 2px;
         border-radius: 12px;
     }
-    .filterClose{
+
+    .filterClose {
         cursor: pointer;
-        border-radius:11px;
+        border-radius: 11px;
         height: 50%;
     }
+
         .filterClose:hover {
             background-color: #C4C4C4;
         }
 
-        .filterEthinic{
-            height:75%;
-            width: 65%;
-        }
+    /*.filterEthinic {
+        height: 75%;
+        width: 65%;
+    }*/
 </style>
 
+<div class="container-fluid">
+    <!--Entire page as a flexbox-->
+    <div class="wrapper-job">
 
+        <!--Heading-->
+        <div class="row" style="background-color: #b4c0d0">
+            <div class="col-12">
+                <h1 class="text-center" style="font-size:50px">Candidates</h1>
+            </div>
 
-
-<!--Entire page as a flexbox-->
-<div class="wrapper-job">
-
-    <!--Heading-->
-    <h1 class="mt-5 p-" style="margin-bottom: -5px; font-size:50px;">Candidates</h1>
-
-    @if (RealCandidatesInfo != null)
-    {
-            <!--Div in the center of the page-->
-            <div class="add-job-container">
-                <div class="input-group input-group-sm mb-3">
+            <div class="col-12">
+                <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+                        <span class="input-group-text" id="inputGroup-sizing-sm" @onclick="RealSearch"><i class="fa fa-search"></i></span>
                     </div>
                     <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." @bind="SearchTerm">
-                    <span><button class="btn btn-primary" @onclick="RealSearch">Search</button></span>
+                    @*<span><button class="btn btn-primary" >Search</button></span>*@
                 </div>
-
+            </div>
+            <br />
+            <br />
+            <div class="col-12">
                 <div class="filterSection">
 
                     <select class="form-control filterEthinic" @onchange="@onValChanged">
@@ -170,52 +172,63 @@
                         <option value="disabled">disabled</option>
                         <option value="abled">Not Disabled</option>
                     </select>
-
                 </div>
-                <div>
-                @if (EthnicFilterApplied)
-                {
-                            <div class="filterpill">
-                                <span>@EthnicFilter</span>
-                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearEthnic" /></span>
-                            </div>
-                }
-                @if (GenderFilterApplied)
-                {
-                            <div class="filterpill">
-                                <span>@GenderFilter</span>
-                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearGender" /></span>
-                            </div>
-                }
-                @if (DisabilityFilterApplied)
-                {
-                            <div class="filterpill">
-                                <span>@DisabilityFilter</span>
-                                <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearDisability" /></span>
-                            </div>
-                }
-                </div>
-                <!--Div containing the functionality-->
-            <div class="inner-wrapper m-0">
+            </div>
+            <br />
+            <br />
+        </div>
 
-                    <!--Boxes on the left/summary boxes-->
-                <div class="left m-2">
-                        <div class="">
-                            <table class="table table-sm table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Full Name</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Change status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @if (RealCandidatesInfo.Count > 0)
-                                {
-                                    int num = 1;
-                                    @foreach (var candidate in RealCandidatesInfo)
-                                    {
+        <div class="row" style="background-color: #6c85a3">
+            <div class="col-12">
+                @if (RealCandidatesInfo != null)
+                {
+                    <!--Div in the center of the page-->
+                    <div class="add-job-container">
+
+                        <div>
+                            @if (EthnicFilterApplied)
+                            {
+                                <div class="filterpill">
+                                    <span>@EthnicFilter</span>
+                                    <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearEthnic" /></span>
+                                </div>
+                            }
+                            @if (GenderFilterApplied)
+                            {
+                                <div class="filterpill">
+                                    <span>@GenderFilter</span>
+                                    <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearGender" /></span>
+                                </div>
+                            }
+                            @if (DisabilityFilterApplied)
+                            {
+                                <div class="filterpill">
+                                    <span>@DisabilityFilter</span>
+                                    <span><img src="Icon_close.png" alt="close" class="filterClose" @onclick="ClearDisability" /></span>
+                                </div>
+                            }
+                        </div>
+                        <!--Div containing the functionality-->
+                        <div class="inner-wrapper m-0">
+
+                            <!--Boxes on the left/summary boxes-->
+                            <div class="left m-2">
+                                <div class="">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Full Name</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Change status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (RealCandidatesInfo.Count > 0)
+                                            {
+                                                int num = 1;
+                                                @foreach (var candidate in RealCandidatesInfo)
+                                                {
                                                     <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
                                                         <td scope="row">@(num++)</td>
                                                         <td scope="row">@candidate.FirstName @candidate.LastName</td>
@@ -224,57 +237,57 @@
                                                             <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
                                                         </td>
                                                     </tr>
-                                    }
-                                }
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
+                            <!--Box on the right/Details box + buttons-->
+                            <div class="right  col-6 m-2" style="background-color:white">
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                <!--Details box-->
+                                <div class="profile rounded shadow-sm ">
+                                    <div class="container col-12">
+                                        <div class="row text-center">
 
-                    <!--Box on the right/Details box + buttons-->
-                <div class="right  col-6 m-2">
-
-                        <!--Details box-->
-                    <div class="profile rounded shadow-sm ">
-                            <div class="container col-12">
-                                <div class="row text-center">
-
-                                    <div class="col-xl-12 col-sm-12 mb-1">
-                                        <div class="py-5 px-4 select-details">
-                                        @if (RealUserPersonalInfo != null)
-                                        {
-                                                    <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                                    <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
-                                                    <hr />
-                                                    <span class="small text-uppercase text-muted">Gender</span>
-                                                    <p>@RealUserPersonalInfo.Email</p>
-                                                    <hr>
-                                                    <span class="small text-uppercase text-muted">Contact Info</span>
-                                                    <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
-                                                    <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
-                                                    <hr>
-                                                    <div>
-                                                        <ProgressBarComp />
-                                                    </div>
-                                                    <span class="small text-uppercase text-muted">More Info</span>
-                                                    <p>@CurrentCandidate.ExtraInfo</p>
-                                        }
+                                            <div class="col-xl-12 col-sm-12 mb-1">
+                                                <div class="py-5 px-4 select-details">
+                                                    @if (RealUserPersonalInfo != null)
+                                                    {
+                                                        <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                                        <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
+                                                        <hr />
+                                                        <span class="small text-uppercase text-muted">Gender</span>
+                                                        <hr>
+                                                        <span class="small text-uppercase text-muted">Contact Info</span>
+                                                        <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
+                                                        <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
+                                                        <hr>
+                                                        <div>
+                                                            <ProgressBarComp />
+                                                        </div>
+                                                        <span class="small text-uppercase text-muted">More Info</span>
+                                                        <p>@CurrentCandidate.ExtraInfo</p>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <br /> <br /> <br />
+                    <h2>Loading...</h2>
+                }
             </div>
-    }
-    else
-    {
-            <br /> <br /> <br />
-            <h2>Loading...</h2>
-    }
+        </div>
+    </div>
 </div>
 
 @code {
@@ -290,33 +303,33 @@
     [Parameter]
     public string JobId { get; set; }
 
-
     #region Component LifeCycles
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-
         try
         {
             RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={JobId}");
+
+            if (RealCandidates.Count > 0)
+            {
+                Console.WriteLine("we made it here");
+                RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}");
+            }
+            if (RealCandidatesInfo.Count > 0)
+            {
+                RealUserPersonalInfo = RealCandidatesInfo[0];
+                CurrentCandidate = Candidates[0];
+            }
+
         }
         catch (Exception ex)
         {
             RealCandidates = new List<AppUser>();
+            RealCandidatesInfo = new List<PersonalInformation>();
         }
 
-
-        if (RealCandidates.Count > 0)
-        {
-            Console.WriteLine("we made it here");
-            RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}");
-        }
-        if (RealCandidatesInfo.Count > 0)
-        {
-            RealUserPersonalInfo = RealCandidatesInfo[0];
-            CurrentCandidate = Candidates[0];
-        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -332,12 +345,10 @@
     }
     #endregion Component LifeCycles
 
-
     private void ChangeCurrent(PersonalInformation newcandidate)
     {
         RealUserPersonalInfo = newcandidate;
     }
-
 
     #region Searching and Filtering
     //Search query parameters
@@ -425,7 +436,6 @@
     private async Task<List<PersonalInformation>> SearchEvent()
     {
 
-
         try
         {
             RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={int.Parse(JobId)}");
@@ -451,9 +461,7 @@
 
     #endregion
 
-
     //==============================================================================================================================================================
-
 
     //TestModels
     private static List<CandidateTest> DisplayItems = Candidates;
@@ -463,7 +471,6 @@
     //Data
     private static List<CandidateTest> Candidates = new List<CandidateTest>
 {
-
 
     new CandidateTest
     {
@@ -506,6 +513,5 @@
     }
 
     };
-
 
 }
