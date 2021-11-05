@@ -1,4 +1,5 @@
 @page "/jobpostingsexp"
+@layout JobPortalLayout
 @inject IJSRuntime jsr
 @inject HttpClient HttpClient
 @inject NavigationManager NavManager
@@ -12,12 +13,12 @@
     }
 
     .wrapper-job {
-        height: 90%;
-        width: 90%;
+        height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: white;
+        background-color: #6c85a3;
         margin: auto;
         overflow-y: auto;
     }
@@ -95,7 +96,6 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        background-color: #6c85a3;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
     }
@@ -144,13 +144,13 @@
         cursor: pointer;
     }
 
-    .box:hover {
-        border-color: blue;
-    }
+        .box:hover {
+            border-color: blue;
+        }
 
-    .box:hover ~ .box-title {
-        text-decoration: underline;
-    }
+            .box:hover ~ .box-title {
+                text-decoration: underline;
+            }
 
     /*=======================right side container ================================*/
 
@@ -162,30 +162,31 @@
         justify-content: space-evenly;
         /*background-color: rosybrown;*/
     }
+
     .rightbox {
         width: 97%;
         height: 85%;
         margin: auto;
-        /*background-color: aqua;*/
-        overflow-y: auto;
+        /*background-color: aqua;
+        overflow-y: scroll;*/
     }
 
     .select-details {
-        width: 98%;
+        width: 50%;
         height: 100%, fit-content;
         margin: auto;
         padding: 10px;
         background-color: #fff;
         border-radius: 5px;
-
         /*hiding the scrollbar*/
-        overflow-y:auto;
+        overflow-y: auto;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none; /* IE 10+ */
     }
-    .select-details::-webkit-scrollbar {
-        width: 0px;
-    }
+
+        .select-details::-webkit-scrollbar {
+            width: 0px;
+        }
 
     .box,
     .select-details {
@@ -244,8 +245,6 @@
     .select-details p span {
         font-weight: bold;
     }
-
-  
 </style>
 
 
@@ -254,7 +253,7 @@
 
     <!--Heading-->
     <div class="header">
-        <h5>Job Postings</h5>
+        @*<h1>Job Postings</h1>*@
 
         @if (LstJobs != null)
         {
@@ -316,6 +315,7 @@
 
                         @if (LstJobs != null && LstJobs.Count > 0)
                         {
+                            <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                             @foreach (var job in LstJobs)
                             {
                                 <div class="box">
@@ -335,9 +335,7 @@
                                         }
                                     </ul>
                                 </div>
-
                             }
-                            <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                         }
                         else
                         {
@@ -355,20 +353,22 @@
                         {
                             <div class="rightbox">
                                 <!--Details box-->
-                                <div class="select-details">
+                                <div class="select-details position-fixed">
                                     <h2>@CurrentJob2.Title</h2>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
                                     <button class="btn" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
                                     <hr />
-                                    <p>@CurrentJob2.Description</p>
+                                    <div style="height: 40px; overflow-y:scroll">
+                                        <p>@CurrentJob2.Description</p>
+                                    </div>
                                 </div>
                             </div>
                         }
                         <!--Search + post job buttons-->
                         <div class="btn-container">
                             <!--button class="btn btn-outline-info btn-sm mr-1" onclick="">Search</button>* -->
-                            <a href="/addjobpost" class="btn btn-outline-success btn-sm ml-1">Post Job</a>
+                            <a href="/addposts2" > <i class="fa fa-plus-circle fa-3x position-fixed" style="color:white" aria-hidden="true"></i></a>
                         </div>
                     </div>
 
