@@ -9,6 +9,6 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
 {
     public interface IJobTestRepo
     {
-        Task<List<Job>> SearchJobs(string SearchQuery, string jobtypeQuery);
+        Task<List<Job>> SearchJobs(string SearchQuery, string SearchLocation, string jobtypeQuery);
     }
 }

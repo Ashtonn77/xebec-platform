@@ -2,6 +2,7 @@
 @inject State State
 @inject IJSRuntime jsRuntime
 
+
 <style>
     @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -107,13 +108,6 @@
     }
 </style>
 
-@* @if(State.UserEmail == null)
-{
-    <UnauthorizedComponent/>
-}
-else
-{
-} *@
 <form class="input-form">
 
 
@@ -209,12 +203,11 @@ else
 
 </form>
 
-@* 
-<p>@State.Id</p>
-<p>@message</p> *@
+<h1>@State.Id</h1>
+<p>@message</p>
+@code {   
+  
 
-@code {
-   
     string btnText = "Save";
     [Parameter] public EventCallback<int> Increment { get; set; }
 

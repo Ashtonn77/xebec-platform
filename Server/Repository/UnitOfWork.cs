@@ -48,6 +48,10 @@ namespace Server.Repository
         private IGenericRepository<JobPlatform> _jobPlatforms;
         private IGenericRepository<JobPlatformHelper> _jobPlatformHelpers;
 
+        //Newly Added(Kian) 
+        private IGenericRepository<ProfilePortfolioLink> _profilePortfolioLinks;
+
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
@@ -96,6 +100,8 @@ namespace Server.Repository
         public IGenericRepository<JobPlatform> JobPlatforms => _jobPlatforms ??= new GenericRepository<JobPlatform>(_context);
 
         public IGenericRepository<JobPlatformHelper> JobPlatformHelpers => _jobPlatformHelpers ??= new GenericRepository<JobPlatformHelper>(_context);
+
+        public IGenericRepository<ProfilePortfolioLink> ProfilePortfolioLinks => _profilePortfolioLinks??= new GenericRepository<ProfilePortfolioLink>(_context);
 
         public void Dispose()
         {

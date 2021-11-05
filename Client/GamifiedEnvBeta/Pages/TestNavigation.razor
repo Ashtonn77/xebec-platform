@@ -1,3 +1,25 @@
 @page "/testnavigation"
+@inject State State
+@inject IJSRuntime jsRuntime
 
 <h1>You have arrived!</h1>
+<h1>@State.Id</h1>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);          
+
+        }
+
+        
+    }
+}

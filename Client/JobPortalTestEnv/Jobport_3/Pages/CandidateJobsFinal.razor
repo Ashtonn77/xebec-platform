@@ -1,9 +1,8 @@
-@page "/profile"
+﻿@page "/CandidateJobsFinal"
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
 @inject State State
-
 @*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
 
 <style>
@@ -42,6 +41,7 @@
     }
 
 
+
     /*FOOTER*/
     .footer-container {
         width: 100%;
@@ -49,8 +49,8 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        background-color: #6c85a3;
-        color: #fff;
+         background-color: #6c85a3;
+         color: #fff;
     }
 
     .footer-container span {
@@ -84,25 +84,38 @@
         color: #333;
     }
 
+
     @@media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+
+
+
 </style>
 
 <div class="wrapper">
 
     <div id="testNav" class="sidenav">
-        <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
+
+        <a href="javascript:void(0)" class="closebtn" style="font-size: 36px;" @onclick="CloseMenu">&times;</a>
         <a href="/profile" class="mb-2">@State.UserEmail</a>
-        <a href="#">Home</a>        
+        <a href="#">Home</a>
         <a href="#">Analytical Dashboard</a>
         <a href="#">Job Board</a>
-        <a href="/testlogout">Logout</a> 
-        
+        <a href="/testlogout">Logout</a>
+
+        <hr style="width:90%; margin:0 auto" />
+
+        @* <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
+            <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
+            <a href="javascript:void(0)" @onclick="@us3Action">Site Traffic</a>
+            <a href="javascript:void(0)" @onclick="@us4Action">Time to Fill</a>
+            <a href="javascript:void(0)" @onclick="@us5Action">Time to Hire</a> *@
+        <a href="javascript:void(0)" @onclick="@HRView">HR's Job Board</a>
     </div>
 
-    <div class="nav">        
+    <div class="nav">
 
         <div class="nav-title">
             <h5 style="color:#fff;">Xebec Platform</h5>
@@ -110,8 +123,8 @@
 
         <div class="nav-icons">
 
-          
-            <span style="font-size:30px;cursor:pointer; color:#fff;" @onclick="ShowMenu">&#9776;</span>
+
+            <span style="font-size:30px;cursor:pointer; color:#fff" @onclick="ShowMenu">&#9776;</span>
 
         </div>
 
@@ -121,10 +134,15 @@
 
     <div class="main-body">
 
-        
-<UserProfileComponent/>
+        <!--BEGIN NEW CONTENT-->
+        <!--END NEW CONTENT-->
+        <JobPostingForCandidate  />
 
-  </div>
+
+    </div>
+
+
+
 
     <div class="footer-container">
 
@@ -134,13 +152,24 @@
 
 </div>
 
-@code
-{
-     protected override async void OnAfterRender(bool firstRender)
+@code {
+
+    protected override void OnInitialized()
     {
-        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");       
-        base.OnAfterRender(firstRender);
+        base.OnInitialized();
+
     }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
+        }
+
+    }
+
     private async Task ShowMenu()
     {
         await jsRuntime.InvokeVoidAsync("openNav");
@@ -150,4 +179,10 @@
     {
         await jsRuntime.InvokeVoidAsync("closeNav");
     }
+
+    private async Task HRView()
+    {
+        NavigationManager.NavigateTo("/HRJobsFinal");
+    }
+
 }

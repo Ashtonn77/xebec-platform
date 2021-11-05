@@ -20,23 +20,23 @@ namespace Server.Data
         public DbSet<AppUser> AppUser { get; set; }
         /*Authentication*/
 
-        public DbSet<AdditionalInformation> AdditionalInformations { get; set; }
-        public DbSet<Application> Applications { get; set; }
+        public DbSet<AdditionalInformation> AdditionalInformations { get; set;}
+        public DbSet<Application> Applications { get; set;}
         public DbSet<ApplicationPhase> ApplicationPhases { get; set; }
-        public DbSet<ApplicationPhaseHelper> ApplicationPhasesHelpers { get; set; }
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<ApplicationPhaseHelper> ApplicationPhasesHelpers { get; set;}
+        public DbSet<Document> Documents { get; set;}
      
-        public DbSet<Education> Educations { get; set; }
+        public DbSet<Education> Educations { get; set;}
      
-        public DbSet<Job> Jobs { get; set; }
-        public DbSet<JobType> JobTypes { get; set; }
-        public DbSet<JobTypeHelper> JobTypeHelpers { get; set; }
-        public DbSet<LoginHelper> LoginHelpers { get; set; }
-        public DbSet<PersonalInformation> PersonalInformations { get; set; }
-        public DbSet<RegisterHelper> RegisterHelpers { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<Job> Jobs { get; set;}
+        public DbSet<JobType> JobTypes { get; set;}
+        public DbSet<JobTypeHelper> JobTypeHelpers { get; set;}
+        public DbSet<LoginHelper> LoginHelpers { get; set;}
+        public DbSet<PersonalInformation> PersonalInformations { get; set;}
+        public DbSet<RegisterHelper> RegisterHelpers { get; set;}
+        public DbSet<Status> Statuses { get; set;}
        
-        public DbSet<WorkHistory> WorkHistories { get; set; }
+        public DbSet<WorkHistory> WorkHistories { get; set;}
      
 
         /*newly added*/
@@ -49,6 +49,11 @@ namespace Server.Data
         //Added new DB Sets
         public DbSet<JobPlatform> JobPlatforms { get; set; }
         public DbSet<JobPlatformHelper> JobPlatformHelpers { get; set; }
+
+        //Newly Added(Kian) 
+        public DbSet<ProfilePortfolioLink> ProfilePortfolioLinks { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

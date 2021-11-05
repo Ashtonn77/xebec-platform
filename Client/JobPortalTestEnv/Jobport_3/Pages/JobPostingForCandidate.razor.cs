@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using XebecPortal.Client.GamifiedEnvBeta.Utils;
 using XebecPortal.Shared;
 
 namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
@@ -15,32 +16,35 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private bool IsShown { get; set; } = false;
 
         private List<Application> applications = new List<Application>();
-        private static List<Job> Jobs = new List<Job>();
+        private static List<Job> LstJobs = new List<Job>();
         public List<JobType> JobTypes { get; set; }
+
+
+        private string SearchLocation { get; set; } = String.Empty;
 
         protected override async Task OnInitializedAsync()
         {
-
+            await base.OnInitializedAsync();
 
 
             try
             {
-                Jobs = await httpClient.GetFromJsonAsync<List<Job>>("api/Job");
+                LstJobs = await httpClient.GetFromJsonAsync<List<Job>>("api/Job");
                 JobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
+
+                if (LstJobs != null)
+                {
+                    DisplayJobs = LstJobs;
+                    CurrentJob2 = LstJobs[0];
+                }
             }
             catch (Exception ex)
             {
-                Jobs = new List<Job>();
+                LstJobs = new List<Job>();
                 JobTypes = new List<JobType>();
             }
 
-            if (Jobs != null)
-            {
-                DisplayJobs = Jobs;
-                CurrentJob2 = Jobs[0];
-            }
 
-            await base.OnInitializedAsync();
 
         }
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -59,8 +63,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private async Task ViewJob(Job JobToView, int userId)
         {
-
-
             try
             {
                 applications = await httpClient.GetFromJsonAsync<List<Application>>("api/Application");
@@ -78,7 +80,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             CurrentJob2 = JobToView;
         }
 
-        private static List<Job> SearchResults = Jobs;
+        private static List<Job> SearchResults = LstJobs;
 
         // Apply Function
         private async Task Apply()
@@ -153,7 +155,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             }
             DisplayJobs = SearchedJobs;
             InvokeAsync(StateHasChanged);
-            return Jobs;
+            return LstJobs;
         }
 
         #endregion

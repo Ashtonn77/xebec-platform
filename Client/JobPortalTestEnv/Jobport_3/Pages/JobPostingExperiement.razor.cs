@@ -72,8 +72,9 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         #region Searching and Filtering
 
-        public string SearchTerm { get; set; } = String.Empty;
-        public string JobFilter { get; set; } = String.Empty;
+        private string SearchTerm { get; set; } = String.Empty;
+        private string SearchLocation { get; set; } = String.Empty;
+        private string JobFilter { get; set; } = String.Empty;
         private bool jobFilterApplied = false;
         private List<Job> SearchedJobs { get; set; } = new List<Job>();
 
@@ -105,7 +106,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
             try
             {
-                SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+                SearchedJobs = await HttpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&searchLocation={SearchLocation}&jobtypeQuery={JobFilter}");
             }
             catch (Exception ex)
             {
