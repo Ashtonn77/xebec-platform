@@ -71,7 +71,7 @@ namespace Server.Repository
             if (!string.IsNullOrEmpty(ethnicityFiler))
             {
                     query = from user in query
-                                   join person in _context.PersonalInformations.Where(e => e.Ethnicity.Contains(ethnicityFiler))
+                                   join person in _context.AdditionalInformations.Where(e => e.Ethnicity.Contains(ethnicityFiler))
                                        on user.Id equals person.AppUserId
                                    select user;
                     //Searches for job titles, compensation and locations based on what user entered
@@ -80,7 +80,7 @@ namespace Server.Repository
             if (!string.IsNullOrEmpty(GenderFilter))
             {
                 query = from user in query
-                               join person in _context.PersonalInformations.Where(e => e.Gender.Equals(GenderFilter))
+                               join person in _context.AdditionalInformations.Where(e => e.Gender.Equals(GenderFilter))
                                    on user.Id equals person.AppUserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
@@ -88,9 +88,8 @@ namespace Server.Repository
             //filter by disability
             if (!string.IsNullOrEmpty(disabilityFilter))
             {
-                bool isDisabled = disabilityFilter.Contains("disabled");
                 query = from user in query
-                               join person in _context.PersonalInformations.Where(e => e.Disability == isDisabled)
+                               join person in _context.AdditionalInformations.Where(e => e.Disability == disabilityFilter)
                                    on user.Id equals person.AppUserId
                                select user;
                 //Searches for job titles, compensation and locations based on what user entered
@@ -134,7 +133,7 @@ namespace Server.Repository
             if (!string.IsNullOrEmpty(disability))
             {
                 queryPI = from user in queryPI
-                        join personalinfo in _context.PersonalInformations.
+                        join personalinfo in _context.AdditionalInformations.
                         Where(p => p.Ethnicity.Contains(ethnicity))
                             on user.AppUserId equals personalinfo.AppUserId
                         select user;
@@ -143,9 +142,8 @@ namespace Server.Repository
 
             if (!string.IsNullOrEmpty(ethnicity))
             {
-                bool isDisabled = disability.Contains("disabled");
                 queryPI = from user in queryPI
-                        join addition in _context.PersonalInformations.Where(e => e.Disability == isDisabled)
+                        join addition in _context.AdditionalInformations.Where(e => e.Disability == disability)
                             on user.AppUserId equals addition.AppUserId
                         select user;
                 //filters by ethnicity in additionalInfo table
@@ -154,7 +152,7 @@ namespace Server.Repository
             if (!string.IsNullOrEmpty(gender))
             {
                 queryPI = from user in queryPI
-                        join person in _context.PersonalInformations.Where(e => e.Gender.Equals(gender))
+                        join person in _context.AdditionalInformations.Where(e => e.Gender.Equals(gender))
                             on user.AppUserId equals person.AppUserId
                         select user;
                 //filters by gender in additionalInfo table
