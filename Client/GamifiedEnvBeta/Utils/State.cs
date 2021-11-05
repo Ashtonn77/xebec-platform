@@ -21,6 +21,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public int WorkEditId { get; set; } = -1;
 
+        public int DocumentEditId { get; set; } = -1;
+
     }
 
 }

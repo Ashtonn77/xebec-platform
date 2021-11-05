@@ -194,11 +194,11 @@
         </div>
     </div>
 
-    <div class="btn-container">
-        <button type="button" class="btn btn-primary btn-sm mr-1">Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">@btnText</button>
-        <button type="button" class="btn btn-primary btn-sm ml-1"
-            @onclick="@(() => Increment.InvokeAsync())">Next</button>
+   <div class="btn-container">
+
+                <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
     </div>
 
 </form>
