@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared.NewGamifiedModels;
+using XebecPortal.Shared.NewGamifiedDtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,17 +20,19 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
     public class EducationTestController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public EducationTestController(IUnitOfWork unitOfWork)
+        public EducationTestController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<EducationController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetEducation()
+        public async Task<IActionResult> GetEducations()
         {
             try
             {
@@ -37,6 +40,44 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
              
                 return Ok(Education);
 
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+
+
+        [HttpGet("all/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetEducationsByAppUserId(int id)
+        {
+            try
+            {
+                var Educations = await _unitOfWork.EducationTests.GetAll(q => q.AppUserId == id);
+             
+                return Ok(Educations);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+
+        
+        [HttpGet("single/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleEducationById(int id)
+        {
+            try
+            {
+                var Education = await _unitOfWork.EducationTests.GetT(q => q.Id == id);                
+                return Ok(Education);
             }
             catch (Exception e)
             {
@@ -53,7 +94,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         {
             try
             {
-                var Education = await _unitOfWork.EducationTests.GetT(q => q.AppUserId == id);
+                var Education = await _unitOfWork.EducationTests.GetT(q => q.AppUserId == id);                
                 return Ok(Education);
             }
             catch (Exception e)
@@ -99,7 +140,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
 
         // PUT api/<EducationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEducation(int id, [FromBody] EducationTest Education)
+        public async Task<IActionResult> UpdateEducation(int id, [FromBody] EducationTestDto Education)
         {
             if (!ModelState.IsValid)
             {
@@ -114,6 +155,8 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+
+                 mapper.Map(Education, originalEducation);
                 _unitOfWork.EducationTests.Update(originalEducation);
                 await _unitOfWork.Save();
 

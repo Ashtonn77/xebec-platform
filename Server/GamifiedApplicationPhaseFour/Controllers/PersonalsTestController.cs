@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared.NewGamifiedModels;
+using XebecPortal.Shared.NewGamifiedDtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,10 +20,12 @@ namespace Server.Controllers
     public class PersonalsTestController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public PersonalsTestController(IUnitOfWork unitOfWork)
+        public PersonalsTestController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         } 
 
         // GET: api/<PersonalInformationController>
@@ -43,6 +46,28 @@ namespace Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+
+
+        [HttpGet("all/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPersonalsByAppUserId(int id)
+        {
+            try
+            {
+                var Personals = await _unitOfWork.PersonalTestInfos.GetAll(q => q.AppUserId == id);
+             
+                return Ok(Personals);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+
 
         //get by appuserId
         // GET api/<PersonalInformationController>/5
@@ -99,7 +124,7 @@ namespace Server.Controllers
 
         // PUT api/<PersonalInformationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalTestInfo PersonalInformation)
+        public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalTestDto PersonalInformation)
         {
             if (!ModelState.IsValid)
             {
@@ -114,6 +139,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(PersonalInformation, originalPersonalInformation);
                 _unitOfWork.PersonalTestInfos.Update(originalPersonalInformation);
                 await _unitOfWork.Save();
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared.Security;
 
-namespace XebecPortal.Shared
+namespace XebecPortal.Shared.NewGamifiedDtos
 {
-    public class AdditionalInformationTest
+    public class AdditionalInformationTestDto
     {
         public int Id { get; set; }
 
@@ -22,7 +22,5 @@ namespace XebecPortal.Shared
         public int AppUserId { get; set; }
 
         public AppUser AppUser { get; set; }
-
-
     }
 }

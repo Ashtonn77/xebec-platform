@@ -137,7 +137,7 @@
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleWorkModal.InvokeAsync())">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleWorkModal.InvokeAsync(WorkHistory))">Close</button>
     </div>
 
     <div class="lower">
@@ -181,11 +181,12 @@
         </div>
     </div>
 
-   <div class="btn-container">
-              
-            <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>      
-     
-    </div>
+    <div class="btn-container">
+
+                <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
+            </div>
 
 </form>
 
@@ -197,10 +198,11 @@
 
 @code
 {
-    [Parameter] public EventCallback<int> ToggleWorkModal { get; set; }
+    
+    [Parameter] public EventCallback<WorkHistoryTest> ToggleWorkModal { get; set; }
 
-
-  private WorkHistoryTest WorkHistory = new WorkHistoryTest();
+    
+   private WorkHistoryTest WorkHistory = new WorkHistoryTest();
    [Parameter] public EventCallback<int> Increment { get; set; }
 
    [Parameter] public EventCallback<int> Decrement { get; set; }  
@@ -237,12 +239,10 @@
    
     private async Task Save()
     {
-        @* await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); *@
+        await http.PutAsJsonAsync($"api/WorkHistoryTest/{WorkHistory.Id}", WorkHistory);
         message = "Saved!";
         State.IsSaved = true;
          
     }    
-
-
 
 }
