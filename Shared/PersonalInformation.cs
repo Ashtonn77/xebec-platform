@@ -22,12 +22,9 @@ namespace XebecPortal.Shared
 
         public string Address { get; set; }
 
-        public bool Disability { get; set; }
+        public string ImageUrl { get; set; }
 
-        public string Gender { get; set; }
 
-        public string Ethnicity { get; set; }
-       
         //foreign key
         public int AppUserId { get; set; }
 
