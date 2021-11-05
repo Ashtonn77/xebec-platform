@@ -132,6 +132,22 @@
         display: flex;
     }
 
+    .icon-btn{
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    .icon-btn:hover
+    {
+        transform:scale(110%);
+    }
+
+    .icon-btn:active
+    {
+        transform:scale(90%);
+    }
+
+
 </style>
 
 
@@ -186,11 +202,13 @@ else if(addDocumentModal)
                 <h5>Personal Information</h5>
                 @if(Personals == null || Personals.Count <= 0)
                 {
-                    <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button>
+                    @* <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePersonalAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 }
                 else
                 {
-                    <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button>
+                    @* <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePersonalModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                 }
             </div>
 
@@ -214,7 +232,9 @@ else if(addDocumentModal)
 
                              <div class="btn-inline">
 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button> 
+                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button>  *@                                
+                                <a href="javascript:void(0)" @onclick="() => RemovePersonalInfo(Personal)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
+                                
                                 
                             </div>
                        }
@@ -240,7 +260,8 @@ else if(addDocumentModal)
             <div class="top">
                 <h5>Education History</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm" @onclick="ToggleEducationModalAddNew">Add New</button>                 
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleEducationModalAddNew">Add New</button>    *@
+                    <a href="javascript:void(0)" @onclick="ToggleEducationModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                
                 </div>
             </div>
 
@@ -258,9 +279,11 @@ else if(addDocumentModal)
 
                             <div class="btn-inline">
 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveEducation(Education)">Remove</button>
+                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveEducation(Education)">Remove</button> *@
+                                <a href="javascript:void(0)" @onclick="() => RemoveEducation(Education)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
-                                <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button> 
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)" @onclick="() => ToggleEducationModal(Education)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                                 
                             </div>
                           
@@ -288,7 +311,8 @@ else if(addDocumentModal)
             <div class="top">
                 <h5>Work History</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm" @onclick="ToggleWorkModalAddNew">Add New</button>                  
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleWorkModalAddNew">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="ToggleWorkModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
                 </div>
             </div>
 
@@ -307,9 +331,10 @@ else if(addDocumentModal)
                              
                             <div class="btn-inline">                                
                                 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveWorkHistory(Work)">Remove</button>
+                                <a href="javascript:void(0)" @onclick="() => RemoveWorkHistory(Work)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
-                                <button type="button" class="btn btn-primary btn-sm ml-1 mt-2"  @onclick="() => ToggleWorkModal(Work)" >Edit</button> 
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)"  @onclick="() => ToggleWorkModal(Work)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                                 
                             </div>
                           
@@ -338,11 +363,13 @@ else if(addDocumentModal)
                 <div class="btn-container">
                 @if(AdditionalInfos == null || AdditionalInfos.Count <= 0)
                 {
-                    <button class="btn btn-success btn-sm" @onclick="TogglePortfoiloAddNewModal">Add New</button>
+                    @* <button class="btn btn-success btn-sm" @onclick="TogglePortfoiloAddNewModal">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePortfoiloAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 }
                 else
                 {
-                    <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button>
+                    @* <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePorfoliosModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                 }
                     
                 </div>
@@ -362,8 +389,8 @@ else if(addDocumentModal)
                             <span>@URL.PersonalWebsiteUrl</span>
 
                             <div class="btn-inline">                                
-                                
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveSocialLinks(URL)">Remove</button>
+                               
+                                <a href="javascript:void(0)" @onclick="() => RemoveSocialLinks(URL)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
                                 
                             </div>
                         }
@@ -387,7 +414,8 @@ else if(addDocumentModal)
             <div class="top">
                 <h5>Documents</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm" @onclick="ToggleDocumentAddNewModal">Upload</button>                    
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleDocumentAddNewModal">Upload</button> *@
+                    <a href="javascript:void(0)" @onclick="ToggleDocumentAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
                 </div>
             </div>
 
@@ -399,15 +427,17 @@ else if(addDocumentModal)
                     {
                         @foreach(var Document in Documents)
                         {
-                             @* <span>@Document.DocumentName</span> *@
+                             <span>@Document.DocumentName</span> 
                              <span>@Document.DocumentUrl</span>                             
                               
 
                             <div class="btn-inline">                                
                                 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveDocument(Document)">Remove</button>                                
 
-                                <button class="btn btn-primary btn-sm mt-2 ml-1" @onclick="() => ToggleDocumentsModal(Document)">Edit</button>  
+                                <a href="javascript:void(0)" @onclick="() => RemoveDocument(Document)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
+
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)"  @onclick="() => ToggleDocumentsModal(Document)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
 
                             </div>
                           
@@ -440,13 +470,13 @@ else if(addDocumentModal)
                 <li style="color:@educationProgress">Education History</li>
                 <li style="color:@workProgress">Work History</li>
                 <li style="color:@porfolioProgress">Profiles and Portfolios</li>
-                <li>Documents:</li>
+                <li style="color:@documentsColor">Documents: @uploadCount</li>
 
                 <ul>
-                    <li class="document-type">Updated C.V</li>
-                    <li class="document-type">Academic Transcript</li>
-                    <li class="document-type">Certified Copy of I.D/Passport</li>
-                    <li class="document-type">Cover Letter</li>                   
+                    <li style="color:@documentsColor" class="document-type">Updated C.V</li>
+                    <li style="color:@documentsColor" class="document-type">Academic Transcript</li>
+                    <li style="color:@documentsColor" class="document-type">Certified Copy of I.D/Passport</li>
+                    <li style="color:@documentsColor" class="document-type">Cover Letter</li>                   
                 </ul>
 
             </ul>
@@ -475,6 +505,9 @@ else if(addDocumentModal)
     string workProgress = "green";
     string personalProgress = "green"; 
     string porfolioProgress = "green";
+    string documentsColor = "green";
+    
+    string uploadCount = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -509,7 +542,6 @@ else if(addDocumentModal)
         {
 
         }
-
            if(Educations != null && Educations.Count > 0)
             {
                 educationProgress = "green";
@@ -549,7 +581,16 @@ else if(addDocumentModal)
             {
                 porfolioProgress = "red";
             }
-       
+        int docCount = Documents == null ? 0 : Documents.Count; 
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)
+        {
+            documentsColor = "red";
+        }
+        else
+        {
+            documentsColor = "green";
+        }              
 
     }
 
@@ -630,10 +671,21 @@ else if(addDocumentModal)
 
     }
 
-      private async Task RemoveDocument(Document document)
+    private async Task RemoveDocument(Document document)
     {
         await httpClient.DeleteAsync($"api/DocumentTest/{document.Id}");
-        Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");        
+        Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
+        ;
+        int docCount = Documents == null ? 0 : Documents.Count; 
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)
+        {
+            documentsColor = "red";
+        }
+        else
+        {
+            documentsColor = "green";
+        }              
     }
 
     bool personalModal = false;
@@ -681,6 +733,16 @@ else if(addDocumentModal)
         State.DocumentEditId = document.Id;
         documentsModal = !documentsModal;
         Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
+        int docCount = Documents == null ? 0 : Documents.Count; 
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)
+        {
+            documentsColor = "red";
+        }
+        else
+        {
+            documentsColor = "green";
+        }      
     }
 
 
@@ -803,7 +865,16 @@ else if(addDocumentModal)
 
        }
       
-             
+       int docCount = Documents == null ? 0 : Documents.Count; 
+       uploadCount = $"{docCount}/4";
+       if(docCount < 4)
+       {
+           documentsColor = "red";
+       }
+       else
+       {
+           documentsColor = "green";
+       }      
         
     }
 

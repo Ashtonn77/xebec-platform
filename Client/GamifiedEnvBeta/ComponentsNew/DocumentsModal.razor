@@ -210,7 +210,9 @@
         message = "Saved!";
         if(Document.DocumentUrl != null)
         {
-            await http.PutAsJsonAsync($"api/DocumentTest/{State.Id}", Document);
+            string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
+            Document.DocumentName = url != null ? url[url.Length - 1] : "";
+            await http.PutAsJsonAsync($"api/DocumentTest/{Document.Id}", Document);
         }
         
         State.IsSaved = true;        

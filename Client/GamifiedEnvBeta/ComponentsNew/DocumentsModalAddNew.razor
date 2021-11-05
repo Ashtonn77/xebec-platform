@@ -199,6 +199,8 @@
 
     private async Task Save()
     {
+        string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
+        Document.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
         await http.PostAsJsonAsync("api/DocumentTest", Document);
         State.IsSaved = true;        
