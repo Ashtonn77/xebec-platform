@@ -250,13 +250,13 @@
 
     <!--Heading-->
     <div class="header">
-        <h1>Job List Postings</h1>
+        <h4>Job List Postings</h4>
 
         @if (LstJobs != null)
         {
             <!--Search bar-->
             @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
-            <div class="searchbar">
+            <div class="searchbar d-flex justify-content-center">
                 <div class="searchTitle" style="padding-bottom: 10px; padding-left: 15px;">
                     <span><input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Job Title/Compensation" @bind="SearchTerm"></span>
                 </div>
