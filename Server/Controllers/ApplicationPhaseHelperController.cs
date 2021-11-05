@@ -18,10 +18,12 @@ namespace Server.Controllers
     public class ApplicationPhaseHelperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IApplicationPhaseHelperRepository applicationPhaseHelperRepository;
 
-        public ApplicationPhaseHelperController(IUnitOfWork unitOfWork)
+        public ApplicationPhaseHelperController(IUnitOfWork unitOfWork, IApplicationPhaseHelperRepository applicationPhaseHelperRepository)
         {
             _unitOfWork = unitOfWork;
+            this.applicationPhaseHelperRepository = applicationPhaseHelperRepository;
         }
 
         // GET: api/<ApplicationPhaseHelpersController>
@@ -159,6 +161,24 @@ namespace Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
 
+        }
+        // GET: api/<ApplicationPhaseHelpersController>
+        [HttpGet("UserId={AppUserId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicationPhaseInfo(int AppUserId)
+        {
+            try
+            {
+                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfo(AppUserId);
+
+                return Ok(ApplicationPhaseHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
     }
 }
