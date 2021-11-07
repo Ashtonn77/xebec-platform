@@ -58,7 +58,7 @@
 
     .right .content ul li{
         list-style: none;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         font-weight: bold;
         color: green;
     }
@@ -123,7 +123,7 @@
     {
         width: 100%;
         height: 1px;
-        background-color: #333;
+        background-color: #cad2dd;
         margin: 1rem auto;
     }
 
@@ -148,11 +148,39 @@
     }
 
 
+/*loading test*/
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 40%;
+    left: 55%;
+    position: absolute;
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
 </style>
 
+@if(loadSpinner)
+{
+    <div class="spinner"></div>
+}
 
 @if(personalModal)
 {
+    
     <PersonalModal TogglePersonalModal="TogglePersonalModal"></PersonalModal>
 }
 else if(educationModal)
@@ -192,6 +220,12 @@ else if(addDocumentModal)
     <DocumentsModalAddNew ToggleDocumentAddNewModal="ToggleDocumentAddNewModal"></DocumentsModalAddNew>
 }
 
+@if(State.Id == 0)
+{
+    <div class="spinner"></div>
+}
+else
+{
 <div class="profile-wrapper">
 
     <div class="left">
@@ -460,23 +494,22 @@ else if(addDocumentModal)
     </div>
 
     <div class="right">
-    @State.Id - @State.UserEmail - @State.Role
-
+   
         <div class="content">
 
             <ul>
                
-                <li style="color:@personalProgress">Personal Information</li>
-                <li style="color:@educationProgress">Education History</li>
-                <li style="color:@workProgress">Work History</li>
-                <li style="color:@porfolioProgress">Profiles and Portfolios</li>
-                <li style="color:@documentsColor">Documents: @uploadCount</li>
+                <li style="color:@personalProgress">Personal Information &nbsp; <img src="img\@GetProgressIcon(personalProgress)" height="20px"></li>
+                <li style="color:@educationProgress">Education History &nbsp; <img src="img\@GetProgressIcon(educationProgress)" height="20px"></li>
+                <li style="color:@workProgress">Work History &nbsp; <img src="img\@GetProgressIcon(workProgress)" height="20px"></li>
+                <li style="color:@porfolioProgress">Profiles and Portfolios &nbsp; <img src="img\@GetProgressIcon(porfolioProgress)" height="20px"></li>
+                <li style="color:@documentsColor">Documents: @uploadCount &nbsp; <img src="img\@GetProgressIcon(documentsColor)" height="20px"></li>
 
                 <ul>
-                    <li style="color:@documentsColor" class="document-type">Updated C.V</li>
-                    <li style="color:@documentsColor" class="document-type">Academic Transcript</li>
-                    <li style="color:@documentsColor" class="document-type">Certified Copy of I.D/Passport</li>
-                    <li style="color:@documentsColor" class="document-type">Cover Letter</li>                   
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Updated C.V</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Academic Transcript</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Certified Copy of I.D/Passport</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Cover Letter</li>                   
                 </ul>
 
             </ul>
@@ -488,7 +521,7 @@ else if(addDocumentModal)
 
 
 </div>
-
+}
 @code
 {
 
@@ -497,17 +530,23 @@ else if(addDocumentModal)
     IList<EducationTest> Educations;
     IList<WorkHistoryTest> WorkHistories;
     IList<AdditionalInformationTest> AdditionalInfos;
-    IList<Document> Documents;
+    IList<Document> Documents;   
 
-   
-
-    string educationProgress = "green";
-    string workProgress = "green";
-    string personalProgress = "green"; 
-    string porfolioProgress = "green";
-    string documentsColor = "green";
+    string educationProgress = "#6c85a3";
+    string workProgress = "#6c85a3";
+    string personalProgress = "#6c85a3"; 
+    string porfolioProgress = "#6c85a3";
+    string documentsColor = "#6c85a3";
     
     string uploadCount = string.Empty;
+
+    bool personalModal = false;
+    bool educationModal = false;
+    bool workModal = false;
+    bool documentsModal = false;
+    bool portfolioModal = false;
+
+    bool loadSpinner = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -522,11 +561,7 @@ else if(addDocumentModal)
             State.Id = Int32.Parse(userdetails[3]);          
 
         }
-
-        /*
-        The problem is putting multiple asyncronous calls inside the try
-        It works when its just one call        
-        */
+ 
         try
         {
             Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
@@ -538,238 +573,169 @@ else if(addDocumentModal)
             Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
 
         }
-        catch(Exception ex)
-        {
+        catch(Exception ex){}         
 
-        }
-           if(Educations != null && Educations.Count > 0)
-            {
-                educationProgress = "green";
+            educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
+            workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
+            personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
+            porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);
+
+
+            int docCount = Documents == null ? 0 : Documents.Count; 
+            uploadCount = $"{docCount}/4";
+            if(docCount < 4)            
+                documentsColor = "#9a9c9a";            
+            else            
+                documentsColor = "#6c85a3";
             
-            }
-            else
-            {
-                educationProgress = "red";
-                
-            }
-
-            if(WorkHistories != null && WorkHistories.Count > 0)
-            {
-                workProgress = "green";
-            
-            }
-            else
-            {
-                workProgress = "red";
-                
-            }
-
-            if(Personals != null && Personals.Count > 0)
-            {
-                personalProgress = "green";
-            }
-            else
-            {
-                personalProgress = "red";
-            } 
-
-            if(AdditionalInfos != null && AdditionalInfos.Count > 0)
-            {
-                porfolioProgress = "green";
-            }
-            else
-            {
-                porfolioProgress = "red";
-            }
-        int docCount = Documents == null ? 0 : Documents.Count; 
-        uploadCount = $"{docCount}/4";
-        if(docCount < 4)
-        {
-            documentsColor = "red";
-        }
-        else
-        {
-            documentsColor = "green";
-        }              
+            string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+            State.IsUserProfileComplete = IsProfileComplete(colors);             
 
     }
 
 
     private async Task RemoveEducation(EducationTest education)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/EducationTest/{education.Id}");
         Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
+        educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
 
-        if(Educations != null && Educations.Count > 0)
-        {
-            educationProgress = "green";
-            
-        }
-        else
-        {
-            educationProgress = "red";
-           
-        }
-
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
     }
 
     private async Task RemoveWorkHistory(WorkHistoryTest work)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/WorkHistoryTest/{work.Id}");
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
 
-        if(WorkHistories != null && WorkHistories.Count > 0)
-        {
-            workProgress = "green";
-            
-        }
-        else
-        {
-            workProgress = "red";
-           
-        }
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
+    }    
 
-    }
-
-
-
-
-     private async Task RemovePersonalInfo(PersonalTestInfo personal)
+    private async Task RemovePersonalInfo(PersonalTestInfo personal)
     {
-
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/PersonalsTest/{personal.Id}");
-        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");      
+        personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
 
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-            
-        }
-        else
-        {
-            personalProgress = "red";
-           
-        }
-
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
     }
 
     
      private async Task RemoveSocialLinks(AdditionalInformationTest Portfolio)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/AdditionalInformationTest/{Portfolio.Id}");
         AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
+        porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);      
 
-          if(AdditionalInfos != null && AdditionalInfos.Count > 0)
-          {
-                porfolioProgress = "green";
-          }
-          else
-          {
-                porfolioProgress = "red";
-          }
-       
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;        
 
     }
 
     private async Task RemoveDocument(Document document)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/DocumentTest/{document.Id}");
         Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
         ;
         int docCount = Documents == null ? 0 : Documents.Count; 
         uploadCount = $"{docCount}/4";
-        if(docCount < 4)
-        {
-            documentsColor = "red";
-        }
-        else
-        {
-            documentsColor = "green";
-        }              
+        if(docCount < 4)        
+            documentsColor = "#9a9c9a";        
+        else        
+            documentsColor = "#6c85a3";
+
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;     
+                    
     }
 
-    bool personalModal = false;
-    bool educationModal = false;
-    bool workModal = false;
-    bool documentsModal = false;
+   
 
-    bool portfolioModal = false;
     private async Task TogglePersonalModal()
     {
+        loadSpinner = true;
         personalModal = !personalModal;
         Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-        }
-        else
-        {
-            personalProgress = "red";
-        }
+        personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
+        loadSpinner = false;
     }       
 
     private async Task ToggleEducationModal(EducationTest Education)
     {
+        loadSpinner = true;
         State.EducationEditId = Education.Id;
         educationModal = !educationModal;
-        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");        
+        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}"); 
+        loadSpinner = false;       
     }
 
     private async Task ToggleWorkModal(WorkHistoryTest Work)
     {
+        loadSpinner = true;
         State.WorkEditId = Work.Id;
         workModal = !workModal;
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        loadSpinner = false;
     }
 
     private async Task TogglePorfoliosModal()
     {
+        loadSpinner = true;
         portfolioModal = !portfolioModal;
         AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
+        loadSpinner = false;
     }
 
     private async Task ToggleDocumentsModal(Document document)
-    {        
+    {
+        loadSpinner = true;        
         State.DocumentEditId = document.Id;
         documentsModal = !documentsModal;
         Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
         int docCount = Documents == null ? 0 : Documents.Count; 
         uploadCount = $"{docCount}/4";
-        if(docCount < 4)
-        {
-            documentsColor = "red";
-        }
-        else
-        {
-            documentsColor = "green";
-        }      
+        if(docCount < 4)        
+            documentsColor = "#9a9c9a";        
+        else        
+            documentsColor = "#6c85a3";
+
+        loadSpinner = false;
+
     }
-
-
+           
     /*add new modals*/
     bool addNewEducationModal = false;
     private async Task ToggleEducationModalAddNew()
     {
+        loadSpinner = true;
         addNewEducationModal = !addNewEducationModal;
         try
         {
             Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
         }
-        catch(Exception ex)
-        {
-            
-        }
+        catch(Exception ex) { }
 
-        if(Educations != null && Educations.Count > 0)
-        {
-            educationProgress = "green";
-            
-        }
-        else
-        {
-            educationProgress = "red";
-           
-        }
+        educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
         
     }
 
@@ -777,104 +743,84 @@ else if(addDocumentModal)
     bool addNewWorkModal = false;
     private async Task ToggleWorkModalAddNew()
     {
+        loadSpinner = true;
         addNewWorkModal = !addNewWorkModal;
         try
         {
             WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
         }
-        catch(Exception ex)
-        {
+        catch(Exception ex) {}
+        workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
 
-        }
-
-        if(WorkHistories != null && WorkHistories.Count > 0)
-        {
-            workProgress = "green";
-            
-        }
-        else
-        {
-            workProgress = "red";
-           
-        }
-        
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
     }
 
     bool addNewPersonalModal = false;
     private async Task TogglePersonalAddNewModal()
     {
+        loadSpinner = true;
         addNewPersonalModal = !addNewPersonalModal;
 
        try
        {
             Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
        }
-       catch(Exception ex)
-       {
+       catch(Exception ex){ }
 
-       }
+       personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
 
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-        }
-        else
-        {
-            personalProgress = "red";
-        } 
+       string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+       State.IsUserProfileComplete = IsProfileComplete(colors);   
+       loadSpinner = false;   
         
     }
 
     bool addPortfolioModal = false;
     private async Task TogglePortfoiloAddNewModal()
     {
+        loadSpinner = true;
         addPortfolioModal = !addPortfolioModal;
 
        try
        {
             AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
        }
-       catch(Exception ex)
-       {
+       catch(Exception ex){ }
 
-       }
+        porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);
 
-        if(AdditionalInfos != null && AdditionalInfos.Count > 0)
-        {
-            porfolioProgress = "green";
-        }
-        else
-        {
-               porfolioProgress = "red";
-        }
-             
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
         
     }
 
     bool addDocumentModal = false;
     private async Task ToggleDocumentAddNewModal()
     {
+        loadSpinner = true;
         addDocumentModal = !addDocumentModal;
 
        try
        {
            Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
        }
-       catch(Exception ex)
-       {
-
-       }
+       catch(Exception ex){ }
       
        int docCount = Documents == null ? 0 : Documents.Count; 
        uploadCount = $"{docCount}/4";
-       if(docCount < 4)
-       {
-           documentsColor = "red";
-       }
-       else
-       {
-           documentsColor = "green";
-       }      
+       if(docCount < 4)       
+           documentsColor = "#9a9c9a";       
+       else       
+           documentsColor = "#6c85a3";
+
+
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors); 
+        loadSpinner = false;           
         
     }
 

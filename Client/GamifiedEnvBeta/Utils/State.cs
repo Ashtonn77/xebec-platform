@@ -23,6 +23,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public int DocumentEditId { get; set; } = -1;
 
+        public bool IsUserProfileComplete { get; set; }
+
     }
 
 }
