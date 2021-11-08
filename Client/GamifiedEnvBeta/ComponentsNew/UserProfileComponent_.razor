@@ -58,7 +58,7 @@
 
     .right .content ul li{
         list-style: none;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         font-weight: bold;
         color: green;
     }
@@ -123,7 +123,7 @@
     {
         width: 100%;
         height: 1px;
-        background-color: #333;
+        background-color: #cad2dd;
         margin: 1rem auto;
     }
 
@@ -132,11 +132,55 @@
         display: flex;
     }
 
+    .icon-btn{
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    .icon-btn:hover
+    {
+        transform:scale(110%);
+    }
+
+    .icon-btn:active
+    {
+        transform:scale(90%);
+    }
+
+
+/*loading test*/
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 40%;
+    left: 55%;
+    position: absolute;
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
 </style>
 
+@if(loadSpinner)
+{
+    <div class="spinner"></div>
+}
 
 @if(personalModal)
 {
+    
     <PersonalModal TogglePersonalModal="TogglePersonalModal"></PersonalModal>
 }
 else if(educationModal)
@@ -167,7 +211,21 @@ else if(addNewPersonalModal)
 {
     <PersonalModalAddNew TogglePersonalAddNewModal="TogglePersonalAddNewModal"></PersonalModalAddNew>
 }
+else if(addPortfolioModal)
+{
+    <ProfilesPortfoliosModalAddNew TogglePortfoiloAddNewModal="TogglePortfoiloAddNewModal"></ProfilesPortfoliosModalAddNew>
+}
+else if(addDocumentModal)
+{
+    <DocumentsModalAddNew ToggleDocumentAddNewModal="ToggleDocumentAddNewModal"></DocumentsModalAddNew>
+}
 
+@if(State.Id == 0)
+{
+    <div class="spinner"></div>
+}
+else
+{
 <div class="profile-wrapper">
 
     <div class="left">
@@ -178,11 +236,13 @@ else if(addNewPersonalModal)
                 <h5>Personal Information</h5>
                 @if(Personals == null || Personals.Count <= 0)
                 {
-                    <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button>
+                    @* <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePersonalAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 }
                 else
                 {
-                    <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button>
+                    @* <button class="btn btn-primary btn-sm" @onclick="TogglePersonalModal">Edit</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePersonalModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                 }
             </div>
 
@@ -206,7 +266,9 @@ else if(addNewPersonalModal)
 
                              <div class="btn-inline">
 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button> 
+                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button>  *@                                
+                                <a href="javascript:void(0)" @onclick="() => RemovePersonalInfo(Personal)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
+                                
                                 
                             </div>
                        }
@@ -232,7 +294,8 @@ else if(addNewPersonalModal)
             <div class="top">
                 <h5>Education History</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm" @onclick="ToggleEducationModalAddNew">Add New</button>                 
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleEducationModalAddNew">Add New</button>    *@
+                    <a href="javascript:void(0)" @onclick="ToggleEducationModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                
                 </div>
             </div>
 
@@ -250,9 +313,11 @@ else if(addNewPersonalModal)
 
                             <div class="btn-inline">
 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveEducation(Education)">Remove</button>
+                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveEducation(Education)">Remove</button> *@
+                                <a href="javascript:void(0)" @onclick="() => RemoveEducation(Education)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
-                                <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button> 
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)" @onclick="() => ToggleEducationModal(Education)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                                 
                             </div>
                           
@@ -280,7 +345,8 @@ else if(addNewPersonalModal)
             <div class="top">
                 <h5>Work History</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm" @onclick="ToggleWorkModalAddNew">Add New</button>                  
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleWorkModalAddNew">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="ToggleWorkModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
                 </div>
             </div>
 
@@ -299,9 +365,10 @@ else if(addNewPersonalModal)
                              
                             <div class="btn-inline">                                
                                 
-                                <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemoveWorkHistory(Work)">Remove</button>
+                                <a href="javascript:void(0)" @onclick="() => RemoveWorkHistory(Work)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
-                                <button type="button" class="btn btn-primary btn-sm ml-1 mt-2"  @onclick="() => ToggleWorkModal(Work)" >Edit</button> 
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)"  @onclick="() => ToggleWorkModal(Work)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
                                 
                             </div>
                           
@@ -328,7 +395,17 @@ else if(addNewPersonalModal)
             <div class="top">
                 <h5>Profiles and Portfolios</h5>
                 <div class="btn-container">
-                    <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button>
+                @if(AdditionalInfos == null || AdditionalInfos.Count <= 0)
+                {
+                    @* <button class="btn btn-success btn-sm" @onclick="TogglePortfoiloAddNewModal">Add New</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePortfoiloAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
+                }
+                else
+                {
+                    @* <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button> *@
+                    <a href="javascript:void(0)" @onclick="TogglePorfoliosModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
+                }
+                    
                 </div>
             </div>
 
@@ -336,10 +413,29 @@ else if(addNewPersonalModal)
 
                 <div class="details">
 
-                    <span>www.github.com</span>
-                    <span>www.linkedin.com</span>
-                    <span>www.facebook.com</span>
-                    <span>www.personalsite.com</span>
+                    @if(AdditionalInfos != null && AdditionalInfos.Count > 0)
+                    {
+                        @foreach(var URL in AdditionalInfos)
+                        {
+                            <span>@URL.GitHubLink</span>
+                            <span>@URL.LinkedInLink</span>
+                            <span>@URL.FacebookLink</span>
+                            <span>@URL.PersonalWebsiteUrl</span>
+
+                            <div class="btn-inline">                                
+                               
+                                <a href="javascript:void(0)" @onclick="() => RemoveSocialLinks(URL)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
+                                
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                            <span>GitHubLink: N/A</span>
+                            <span>LinkedInLink: N/A</span>
+                            <span>FacebookLink: N/A</span>
+                            <span>PersonalWebsiteUrl: N/A</span>
+                    }                     
 
                 </div>
 
@@ -352,8 +448,8 @@ else if(addNewPersonalModal)
             <div class="top">
                 <h5>Documents</h5>
                 <div class="btn-container">
-                    <button class="btn btn-success btn-sm">Upload</button>
-                    <button class="btn btn-primary btn-sm" @onclick="ToggleDocumentsModal">Edit</button>
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleDocumentAddNewModal">Upload</button> *@
+                    <a href="javascript:void(0)" @onclick="ToggleDocumentAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
                 </div>
             </div>
 
@@ -361,7 +457,32 @@ else if(addNewPersonalModal)
 
                 <div class="details">
 
-                    <span>No documents uploaded</span>
+                    @if(Documents != null && Documents.Count > 0)
+                    {
+                        @foreach(var Document in Documents)
+                        {
+                             <span>@Document.DocumentName</span> 
+                             <span>@Document.DocumentUrl</span>                             
+                              
+
+                            <div class="btn-inline">                                
+                                
+
+                                <a href="javascript:void(0)" @onclick="() => RemoveDocument(Document)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
+
+                                @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
+                                <a href="javascript:void(0)"  @onclick="() => ToggleDocumentsModal(Document)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
+
+                            </div>
+                          
+                            <div class="line"></div>
+                        }
+                    }
+                    else
+                    {
+                        <span>No Documents Uploaded</span>
+                       
+                    }
 
                 </div>
 
@@ -373,23 +494,22 @@ else if(addNewPersonalModal)
     </div>
 
     <div class="right">
-    @State.Id - @State.UserEmail - @State.Role
-
+   
         <div class="content">
 
             <ul>
                
-                <li style="color:@personalProgress">Personal Information</li>
-                <li style="color:@educationProgress">Education History</li>
-                <li style="color:@workProgress">Work History</li>
-                <li>Profiles and Portfolios</li>
-                <li>Documents:</li>
+                <li style="color:@personalProgress">Personal Information &nbsp; <img src="img\@GetProgressIcon(personalProgress)" height="20px"></li>
+                <li style="color:@educationProgress">Education History &nbsp; <img src="img\@GetProgressIcon(educationProgress)" height="20px"></li>
+                <li style="color:@workProgress">Work History &nbsp; <img src="img\@GetProgressIcon(workProgress)" height="20px"></li>
+                <li style="color:@porfolioProgress">Profiles and Portfolios &nbsp; <img src="img\@GetProgressIcon(porfolioProgress)" height="20px"></li>
+                <li style="color:@documentsColor">Documents: @uploadCount &nbsp; <img src="img\@GetProgressIcon(documentsColor)" height="20px"></li>
 
                 <ul>
-                    <li class="document-type">Updated C.V</li>
-                    <li class="document-type">Academic Transcript</li>
-                    <li class="document-type">Certified Copy of I.D/Passport</li>
-                    <li class="document-type">Cover Letter</li>                   
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Updated C.V</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Academic Transcript</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Certified Copy of I.D/Passport</li>
+                    <li style="color:@documentsColor; margin-bottom: 5px;" class="document-type">Cover Letter</li>                   
                 </ul>
 
             </ul>
@@ -401,24 +521,32 @@ else if(addNewPersonalModal)
 
 
 </div>
-
+}
 @code
 {
-
 
     
     IList<PersonalTestInfo> Personals;
     IList<EducationTest> Educations;
     IList<WorkHistoryTest> WorkHistories;
+    IList<AdditionalInformationTest> AdditionalInfos;
+    IList<Document> Documents;   
 
+    string educationProgress = "#6c85a3";
+    string workProgress = "#6c85a3";
+    string personalProgress = "#6c85a3"; 
+    string porfolioProgress = "#6c85a3";
+    string documentsColor = "#6c85a3";
+    
+    string uploadCount = string.Empty;
 
-    WorkHistoryTest WorkHistory;
+    bool personalModal = false;
+    bool educationModal = false;
+    bool workModal = false;
+    bool documentsModal = false;
+    bool portfolioModal = false;
 
-    AdditionalInformationTest AdditionalInformationTest;
-
-    string educationProgress = "green";
-    string workProgress = "green";
-    string personalProgress = "green"; 
+    bool loadSpinner = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -433,181 +561,181 @@ else if(addNewPersonalModal)
             State.Id = Int32.Parse(userdetails[3]);          
 
         }
-
-        /*
-        The problem is putting multiple asyncronous calls inside the try
-        It works when its just one call        
-        */
+ 
         try
         {
             Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
             Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
             WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
-        }
-        catch(Exception ex)
-        {
+
+            AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
+
+            Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
 
         }
+        catch(Exception ex){}         
 
-           if(Educations != null && Educations.Count > 0)
-            {
-                educationProgress = "green";
+            educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
+            workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
+            personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
+            porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);
+
+
+            int docCount = Documents == null ? 0 : Documents.Count; 
+            uploadCount = $"{docCount}/4";
+            if(docCount < 4)            
+                documentsColor = "#9a9c9a";            
+            else            
+                documentsColor = "#6c85a3";
             
-            }
-            else
-            {
-                educationProgress = "red";
-                
-            }
-
-            if(WorkHistories != null && WorkHistories.Count > 0)
-            {
-                workProgress = "green";
-            
-            }
-            else
-            {
-                workProgress = "red";
-                
-            }
-
-            if(Personals != null && Personals.Count > 0)
-            {
-                personalProgress = "green";
-            }
-            else
-            {
-                personalProgress = "red";
-            } 
-       
+            string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+            State.IsUserProfileComplete = IsProfileComplete(colors);             
 
     }
 
 
     private async Task RemoveEducation(EducationTest education)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/EducationTest/{education.Id}");
         Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
+        educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
 
-        if(Educations != null && Educations.Count > 0)
-        {
-            educationProgress = "green";
-            
-        }
-        else
-        {
-            educationProgress = "red";
-           
-        }
-
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
     }
 
     private async Task RemoveWorkHistory(WorkHistoryTest work)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/WorkHistoryTest/{work.Id}");
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
 
-        if(WorkHistories != null && WorkHistories.Count > 0)
-        {
-            workProgress = "green";
-            
-        }
-        else
-        {
-            workProgress = "red";
-           
-        }
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
+    }    
 
-    }
-
-
-     private async Task RemovePersonalInfo(PersonalTestInfo personal)
+    private async Task RemovePersonalInfo(PersonalTestInfo personal)
     {
+        loadSpinner = true;
         await httpClient.DeleteAsync($"api/PersonalsTest/{personal.Id}");
-        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
+        Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");      
+        personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
 
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-            
-        }
-        else
-        {
-            personalProgress = "red";
-           
-        }
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
+    }
+
+    
+     private async Task RemoveSocialLinks(AdditionalInformationTest Portfolio)
+    {
+        loadSpinner = true;
+        await httpClient.DeleteAsync($"api/AdditionalInformationTest/{Portfolio.Id}");
+        AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
+        porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);      
+
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;        
 
     }
 
-    bool personalModal = false;
-    bool educationModal = false;
-    bool workModal = false;
-    bool documentsModal = false;
+    private async Task RemoveDocument(Document document)
+    {
+        loadSpinner = true;
+        await httpClient.DeleteAsync($"api/DocumentTest/{document.Id}");
+        Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
+        ;
+        int docCount = Documents == null ? 0 : Documents.Count; 
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)        
+            documentsColor = "#9a9c9a";        
+        else        
+            documentsColor = "#6c85a3";
 
-    bool portfolioModal = false;
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;     
+                    
+    }
+
+   
+
     private async Task TogglePersonalModal()
     {
+        loadSpinner = true;
         personalModal = !personalModal;
         Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-        }
-        else
-        {
-            personalProgress = "red";
-        }
+        personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
+        loadSpinner = false;
     }       
 
     private async Task ToggleEducationModal(EducationTest Education)
     {
+        loadSpinner = true;
         State.EducationEditId = Education.Id;
         educationModal = !educationModal;
-        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");        
+        Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}"); 
+        loadSpinner = false;       
     }
 
     private async Task ToggleWorkModal(WorkHistoryTest Work)
     {
+        loadSpinner = true;
         State.WorkEditId = Work.Id;
         workModal = !workModal;
         WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
+        loadSpinner = false;
     }
 
-    private void TogglePorfoliosModal()
+    private async Task TogglePorfoliosModal()
     {
+        loadSpinner = true;
         portfolioModal = !portfolioModal;
+        AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
+        loadSpinner = false;
     }
 
-    private void ToggleDocumentsModal()
+    private async Task ToggleDocumentsModal(Document document)
     {
+        loadSpinner = true;        
+        State.DocumentEditId = document.Id;
         documentsModal = !documentsModal;
+        Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
+        int docCount = Documents == null ? 0 : Documents.Count; 
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)        
+            documentsColor = "#9a9c9a";        
+        else        
+            documentsColor = "#6c85a3";
+
+        loadSpinner = false;
+
     }
-
-
+           
     /*add new modals*/
     bool addNewEducationModal = false;
     private async Task ToggleEducationModalAddNew()
     {
+        loadSpinner = true;
         addNewEducationModal = !addNewEducationModal;
         try
         {
             Educations = await httpClient.GetFromJsonAsync<IList<EducationTest>>($"/api/EducationTest/all/{State.Id}");
         }
-        catch(Exception ex)
-        {
-            
-        }
+        catch(Exception ex) { }
 
-        if(Educations != null && Educations.Count > 0)
-        {
-            educationProgress = "green";
-            
-        }
-        else
-        {
-            educationProgress = "red";
-           
-        }
+        educationProgress = ChangeColor<EducationTest>(Educations, educationProgress);
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
         
     }
 
@@ -615,51 +743,84 @@ else if(addNewPersonalModal)
     bool addNewWorkModal = false;
     private async Task ToggleWorkModalAddNew()
     {
+        loadSpinner = true;
         addNewWorkModal = !addNewWorkModal;
         try
         {
             WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistoryTest>>($"/api/WorkHistoryTest/all/{State.Id}");
         }
-        catch(Exception ex)
-        {
+        catch(Exception ex) {}
+        workProgress = ChangeColor<WorkHistoryTest>(WorkHistories, workProgress);
 
-        }
-
-        if(WorkHistories != null && WorkHistories.Count > 0)
-        {
-            workProgress = "green";
-            
-        }
-        else
-        {
-            workProgress = "red";
-           
-        }
-        
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+              
     }
 
     bool addNewPersonalModal = false;
     private async Task TogglePersonalAddNewModal()
     {
+        loadSpinner = true;
         addNewPersonalModal = !addNewPersonalModal;
 
        try
        {
             Personals = await httpClient.GetFromJsonAsync<IList<PersonalTestInfo>>($"/api/PersonalsTest/all/{State.Id}");
        }
-       catch(Exception ex)
+       catch(Exception ex){ }
+
+       personalProgress = ChangeColor<PersonalTestInfo>(Personals, personalProgress);
+
+       string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+       State.IsUserProfileComplete = IsProfileComplete(colors);   
+       loadSpinner = false;   
+        
+    }
+
+    bool addPortfolioModal = false;
+    private async Task TogglePortfoiloAddNewModal()
+    {
+        loadSpinner = true;
+        addPortfolioModal = !addPortfolioModal;
+
+       try
        {
-
+            AdditionalInfos = await httpClient.GetFromJsonAsync<IList<AdditionalInformationTest>>($"/api/AdditionalInformationTest/all/{State.Id}");
        }
+       catch(Exception ex){ }
 
-        if(Personals != null && Personals.Count > 0)
-        {
-            personalProgress = "green";
-        }
-        else
-        {
-            personalProgress = "red";
-        } 
+        porfolioProgress = ChangeColor<AdditionalInformationTest>(AdditionalInfos, porfolioProgress);
+
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+        loadSpinner = false;
+        
+    }
+
+    bool addDocumentModal = false;
+    private async Task ToggleDocumentAddNewModal()
+    {
+        loadSpinner = true;
+        addDocumentModal = !addDocumentModal;
+
+       try
+       {
+           Documents = await httpClient.GetFromJsonAsync<IList<Document>>($"/api/DocumentTest/all/{State.Id}");
+       }
+       catch(Exception ex){ }
+      
+       int docCount = Documents == null ? 0 : Documents.Count; 
+       uploadCount = $"{docCount}/4";
+       if(docCount < 4)       
+           documentsColor = "#9a9c9a";       
+       else       
+           documentsColor = "#6c85a3";
+
+
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors); 
+        loadSpinner = false;           
         
     }
 
