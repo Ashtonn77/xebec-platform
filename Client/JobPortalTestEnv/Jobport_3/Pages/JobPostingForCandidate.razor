@@ -250,7 +250,7 @@
 
     <!--Heading-->
     <div class="header">
-        <h1>Job List Postings</h1>
+        <h4>Job List Postings</h4>
 
         @if (LstJobs != null)
         {
@@ -310,6 +310,7 @@
 
                         @if (LstJobs != null && LstJobs.Count > 0)
                         {
+                            <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                             @foreach (var job in LstJobs)
                             {
                                 <div class="box">
@@ -331,7 +332,6 @@
                                 </div>
 
                             }
-                            <p><strong>Total jobs available: @LstJobs.Count</strong></p>
                         }
                         else
                         {
@@ -352,7 +352,9 @@
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
                                     <button class="btn" @onclick="Apply">Apply</button>
                                     <hr />
-                                    <p>@CurrentJob2.Description</p>
+                                    <div style="height: 270px; overflow-y:auto">
+                                        <p>@CurrentJob2.Description</p>
+                                    </div>
                                 </div>
                             </div>
                         }
