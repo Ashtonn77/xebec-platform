@@ -114,9 +114,9 @@
         width: 40%;
         height: inherit;
         padding: 5px;
-        overflow-x: unset;
+        /*overflow-x: unset;
         overflow-y: auto;
-        /*box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;*/
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;*/
         border-radius: 5px;
         /*background-color: #fff;*/
     }
@@ -253,14 +253,14 @@
 
     <!--Heading-->
     <div class="header">
-        @*<h1>Job Postings</h1>*@
+        <h4>Job Postings</h4>
 
         @if (LstJobs != null)
         {
             <!--Search bar-->
             @*<input type="text" class="form-control w-75 mt-2 mb-3" placeholder="search" @bind-value="searchTerm">*@
             <div class="searchbar">
-                <div class="searchTitle" style="padding-bottom: 10px; padding-left: 15px;">
+                <div class="searchTitle d-flex justify-content-center" style="padding-bottom: 10px; padding-left: 15px;">
                     <span><input type="text" class="form-control col-12" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Job Title/Compensation" @bind="SearchTerm"></span>
                 </div>
                 <div class="searchLocation" style="padding-bottom: 10px; padding-left: 15px;">
@@ -359,7 +359,7 @@
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
                                     <button class="btn" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
                                     <hr />
-                                    <div style="height: 40px; overflow-y:scroll">
+                                    <div style="height: 270px; overflow-y:auto">
                                         <p>@CurrentJob2.Description</p>
                                     </div>
                                 </div>

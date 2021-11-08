@@ -101,16 +101,16 @@
         <!--Heading-->
         <div class="row" style="background-color: #b4c0d0">
             <div class="col">
-                <h1 class="text-center" style="font-size:50px">Candidates</h1>
+                <h4 class="text-center" >Candidates</h4>
             </div>
         </div>
 
         <!--Search Bar-->
         <div class="row" style="background-color: #b4c0d0">
             <div class="col">
-                <div class="input-group">
+                <div class="input-group d-flex justify-content-center">
                     <div class="input-group-prepend" @onclick="NewSearch">
-                        <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+                        <span class="input-group-text" id="inputGroup-sizing-sm" style="cursor:pointer"><i class="fa fa-search"></i></span>
                     </div>
                     <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." value="@SearchTerm" @onchange="@(e => onChange(e))">
                 </div>
