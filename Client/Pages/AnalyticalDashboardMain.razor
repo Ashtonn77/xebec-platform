@@ -310,11 +310,12 @@
         flex-direction: column;
 
         height: 80%;
-        justify-content: center;
+        justify-content: flex-start;
         color:white;
 
         overflow:hidden;
         overflow-y: scroll;
+        margin-top: 1rem;
     }
 
     .home{
@@ -341,16 +342,17 @@
     <div id="testNav" class="dashboard-nav">
         <a href="javascript:void(0)" class="closebtn" style="font-size: 4vh;" @onclick="CloseMenu">&times;</a>
         <header>
-            <a href="#" class="dashboard-nav-item home">
+            <a href="/jobpostforcandidate" class="dashboard-nav-item home">
                 <i class="fas fa-home"></i><span class="tab"></span><span>Home</span>
             </a>
+
             @if (string.IsNullOrEmpty(State.UserEmail))
             {
                 <a href="/loginbeta"><i class="fas fa-user-slash"></i><span>Not logged</span> </a>
             }
             else
             {
-                <a href="/loginbeta"><i class="fas fa-user" style="color:aquamarine;"></i><span style="font-size:10px;">  @State.UserEmail</span> </a>
+                <a href="/profile_"><i class="fas fa-user" style="color:aquamarine;"></i>&nbsp;<span style="font-size:10px;">  @State.UserEmail</span> </a>
             }
         </header>
 
@@ -362,7 +364,7 @@
                     <a><i class="fas fa-briefcase"></i><span class="tab"></span> Job Board </a>
                     <div class="cross"></div>
                 </label>
-                <div class="content">Job stuff </div>
+                <div class="content"><a href="/jobpostforcandidate">View Jobs</a></div>
             </div>
 
 
@@ -430,7 +432,8 @@
 
                 </div>
             </div>
-
+            
+            @* 
             <div class="page">
                 <input class="in" type="radio" id="gamified" name="tabs">
                 <label class="item" for="gamified">
@@ -438,7 +441,7 @@
                     <div class="cross"></div>
                 </label>
                 <div class="content">Job stuff </div>
-            </div>
+            </div> *@
 
             <div class="nav-item-divider"></div>
 

@@ -94,20 +94,18 @@
             <div id="testNav" class="sidenav">
 
                 <a href="javascript:void(0)" class="closebtn" style="font-size: 36px;" @onclick="CloseMenu">&times;</a>
-                <a href="/profile" class="mb-2">@State.UserEmail</a>
-                <a href="#">Home</a>
-                <a href="#">Analytical Dashboard</a>
-                <a href="#">Job Board</a>
+                <a href="/profile_" class="mb-2">@State.UserEmail</a>
+                <a href="/jobpostforcandidate">Home</a>
+                <a href="/testdashboard">Analytical Dashboard</a>
+                <a href="/jobpostforcandidate">Job Board</a>
                 <a href="/testlogout">Logout</a>
 
                 <hr style="width:90%; margin:0 auto" />
+            
+                <a href="/jobpostforcandidate" @onclick="@CandidateView">View Jobs</a>
+                <a href="/jobpostingsexp">View Posted Jobs</a>
+                <a href="/addposts2">Post a Job</a>
 
-                @* <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
-            <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
-            <a href="javascript:void(0)" @onclick="@us3Action">Site Traffic</a>
-            <a href="javascript:void(0)" @onclick="@us4Action">Time to Fill</a>
-            <a href="javascript:void(0)" @onclick="@us5Action">Time to Hire</a> *@
-                <a href="javascript:void(0)" @onclick="@CandidateView">Candidate's Job Board</a>
             </div>
 
             <div class="nav">
@@ -145,9 +143,25 @@
 
 @code {
 
-    protected override void OnInitialized()
+    @* protected override void OnInitialized()
     {
         base.OnInitialized();
+
+    } *@
+
+    protected override async Task OnInitializedAsync()
+    {
+       
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);          
+
+        }
 
     }
 

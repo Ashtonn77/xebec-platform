@@ -83,12 +83,12 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private static List<Job> SearchResults = LstJobs;
 
         // Apply Function
-        private async Task Apply()
-        {
-            await httpClient.PostAsJsonAsync("api/Application", CurrentJob2);
-            await jsr.InvokeVoidAsync("alert", "You Have Applied Successfully");
-            IsShown = !IsShown;
-        }
+        // private async Task Apply()
+        // {
+        //     await httpClient.PostAsJsonAsync("api/Application", CurrentJob2);
+        //     await jsr.InvokeVoidAsync("alert", "You Have Applied Successfully");
+        //     IsShown = !IsShown;
+        // }
 
         private bool IsClicked = false;
 
