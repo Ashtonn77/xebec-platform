@@ -299,8 +299,8 @@
                                     @foreach (var items in jobPlatform)
                                     {
                                         <span>
-                                            @if (items.PlatformName != "LinkedIn")
-                                            {<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName
+                                            @if (jobPlatform.Count > 4)
+                                            {<span>&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName
                                         </span>
                                     }
                                 </div>

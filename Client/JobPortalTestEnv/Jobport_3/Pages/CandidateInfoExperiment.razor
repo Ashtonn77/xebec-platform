@@ -16,7 +16,7 @@
         /*display: flex;
         flex-direction: column;
         align-items: center;*/
-        background-color: white;
+        background-color: #6c85a3
     }
 
     .add-job-container {
@@ -98,7 +98,7 @@
     .filterSection {
         display: flex;
         flex-direction: row;
-        padding-left: 50px;
+        /*padding-left: 50px;*/
     }
 
     .filterpill {
@@ -129,18 +129,18 @@
     }*/
 </style>
 
-<div class="container-fluid">
+<div class="container-fluid" style="background-color: #6c85a3">
     <!--Entire page as a flexbox-->
     <div class="wrapper-job">
 
         <!--Heading-->
         <div class="row" style="background-color: #b4c0d0">
             <div class="col-12">
-                <h1 class="text-center" style="font-size:50px">Candidates</h1>
+                <h4 class="text-center">Candidates</h4>
             </div>
 
             <div class="col-12">
-                <div class="input-group">
+                <div class="d-flex justify-content-center input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm" @onclick="RealSearch"><i class="fa fa-search"></i></span>
                     </div>
@@ -151,7 +151,7 @@
             <br />
             <br />
             <div class="col-12">
-                <div class="filterSection">
+                <div class="d-flex justify-content-center filterSection d-flex align-items-center">
 
                     <select class="form-control filterEthinic" @onchange="@onValChanged">
                         <option value="0" disabled selected> Filter Race</option>
@@ -178,7 +178,7 @@
             <br />
         </div>
 
-        <div class="row" style="background-color: #6c85a3">
+        <div class="row">
             <div class="col-12">
                 @if (RealCandidatesInfo != null)
                 {
