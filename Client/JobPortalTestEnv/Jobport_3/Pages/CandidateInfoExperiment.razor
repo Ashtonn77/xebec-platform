@@ -14,8 +14,8 @@
         width: 100%;
         height: 86vh;
         /*display: flex;
-        flex-direction: column;
-        align-items: center;*/
+                                                                                    flex-direction: column;
+                                                                                    align-items: center;*/
         background-color: #6c85a3
     }
 
@@ -124,9 +124,9 @@
         }
 
     /*.filterEthinic {
-        height: 75%;
-        width: 65%;
-    }*/
+                                                                                    height: 75%;
+                                                                                    width: 65%;
+                                                                                }*/
 
     /*POP UP Styling*/
 
@@ -173,60 +173,222 @@
 </style>
 <!--Popup window Start-->
 <!-- Trigger/Open The popup -->
-<divs class="popup" style="display: @popupDisplay;">
+<div class="popup" style="display: @popupDisplay;">
 
     <!-- popup content -->
     <div class="popup-content">
-        
+
         <div>
             <form>
                 <div class="form-row">
                     <span class="close" @onclick="ClosePopUp">&times;</span>
                 </div>
                 <div class="form-row">
-                    <div class="col">
-                        <label for="comments">Comments</label>
-                        <textarea class="form-control" id="comments" rows="5"></textarea>
-                    </div>
-                    <div class="col">
-                        <label class="my-1 mr-2" for="apphase">Application Phase</label>
-                        <select class="custom-select my-1 mr-sm-2" id="apphase">
-                            <option selected>Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-
-                        <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
-                        <select class="custom-select my-1 mr-sm-2" id="phaseStatus">
-                            <option selected>Choose...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
+                    <label class="my-1 mr-2" for="apphase">Change Status</label>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-primary mb-2">Save</button>
+                    
+                    <div class="form-group col-md-6">
+                        <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
+
+                        <option selected>Choose...</option>
+
+                        @if (statuses != null && applicationPhaseHelpers != null)
+                        {
+                            @if (applicationPhaseHelpers[ind].ApplicationPhase == null)
+                            {
+                                applicationPhaseHelpers[ind].ApplicationPhase = new ApplicationPhase
+                    {
+                        Description = ""
+                    };
+                            }
+                            <select id="phases" @bind="applicationPhaseHelpers[ind].ApplicationPhase.Description" class="custom-select my-1 mr-sm-2">
+
+                                <option selected>Choose...</option>
+                                @foreach (var phase in applicationPhases)
+                                        {
+                                    <option value="@phase.Description">@phase.Description</option>
+                                        }
+                            </select>
+
+                        }
+                        else
+                        {
+                            <option selected>Loading...</option>
+                        }
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
+
+                        <option selected>Choose...</option>
+
+                        @if (statuses != null && applicationPhaseHelpers != null)
+                        {
+                            @if (applicationPhaseHelpers[ind].Status == null)
+                            {
+                                applicationPhaseHelpers[ind].Status = new Status
+                    {
+                        Description = ""
+                    };
+                            }
+                            <select id="phase" @bind="applicationPhaseHelpers[ind].Status.Description" class="custom-select my-1 mr-sm-2">
+
+                                <option selected>Choose...</option>
+                                @foreach (var status in statuses)
+                                {
+                                    <option value="@status.Description">@status.Description</option>
+                                }
+                            </select>
+
+                        }
+                        else
+                        {
+                            <option selected>Loading...</option>
+                        }
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments">Comments</label>
+                    @if (applicationPhaseHelpers != null)
+                    {
+                        <input type="text" class="form-control" id="comments" placeholder="Empty" @bind-value="@applicationPhaseHelpers[ind].Comments">
+                    }
+
+                </div>
+
+                <!--Testing-->
+                <div class="form-row">
+                    @if (AppPhases != null)
+                    {
+                        <ul>
+                            @for (int i = 0; i < AppPhases.Count(); i++)
+                            {
+                                var ph = AppPhases[i];
+                                @if (ph.ApplicationPhase != null && ph.Status.Description != null)
+                                {
+                                    <li>Phase : @ph.ApplicationPhase.Description</li>
+                                    <li>Status : @ph.Status.Description</li>
+                                }
+                                else
+                                {
+
+                                }
+
+                                <li>Time @ph.TimeMoved</li>
+                                <li>Comments : @ph.Comments</li>
+                            }
+                        </ul>
+                    }
+                </div>
+                <!--/Testing-->
+                <div class="form-row">
+                    <button type="submit" onc class="btn btn-primary mb-2" @onclick="ClosePopUp">Save</button>
                 </div>
             </form>
-    </div>
+        </div>
     </div>
 
-</divs>
+</div>
 
 <!--Pop up functionality-->
-@functions{
+@functions {
     private string popupDisplay = "none";
 
     private void ShowPopUp()
     {
+
         popupDisplay = "block";
+        //EditForm
     }
 
     private void ClosePopUp()
     {
         popupDisplay = "none";
+    }
+}
+
+@functions {
+    public ApplicationPhaseHelper TempPhaseHelper { get; set; } = new ApplicationPhaseHelper();
+    public Status tempStatus { get; set; } = new Status();
+    public ApplicationPhase tempPhase { get; set; } = new ApplicationPhase();
+
+
+
+    IList<ApplicationPhaseHelper> AppPhases { get; set; }
+    //Pass required Info to popup form
+    int ind = 0;
+    private async Task PassInfoAsync(PersonalInformation Candidate, int index = 0)
+    {
+        //Show PopUp
+        ShowPopUp();
+        ind = index;
+
+
+        //Get App User ID of candidate
+        int AppUserId = Candidate.AppUserId;
+
+        //Get All ApplicationPhases Associated with candidate's appuserid
+        //this will get it from the api's database
+        AppPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>($"api/ApplicationPhaseHelper/UserId={AppUserId}");
+
+        //Get Latest Phase Helpers Info > required by form
+        //This latest application phase for the current candidate
+        ApplicationPhaseHelper LastPhaseInfo = GetLastestPhaseInfo(AppPhases);
+
+        //Get status for candidate
+
+        //Get required info required by form >
+        string firstname = Candidate.FirstName;
+        string lastName = Candidate.LastName;
+
+
+        //TempPhaseHelper = LastPhaseInfo;
+
+        // Save changes if any
+        //Save any edits to temporary location
+
+        // if it's application phase or status changes >
+        //// add new application phase helper to db
+        //// http add
+
+        //if only comments change but application phase or status changes
+        //// update current application phase helper's comment and time
+        //// http up date
+
+        //if revert or discard
+        //DON'T SAVE ANY THING TO THE DATABASE
+        //Maybe revert to old changes
+
+        //close page
+    }
+
+
+    /// <summary>
+    /// Uses linear search to find the latest date
+    /// If we might not need this
+    /// the latest date will always be th last date in  the ApplicationPhaseHelper table
+    ///  </summary>
+    /// <param name="applicationPhaseHelpers"></param>
+    /// <returns></returns>
+    private ApplicationPhaseHelper GetLastestPhaseInfo(IList<ApplicationPhaseHelper> applicationPhaseHelpers)
+    {
+        DateTime lastestdate = applicationPhaseHelpers[0].TimeMoved;
+        int pos = 0;
+
+        for (int i = 0; i < applicationPhaseHelpers.Count; i++)
+        {
+            DateTime ObservedDate = applicationPhaseHelpers[i].TimeMoved;
+            //https://docs.microsoft.com/en-us/dotnet/api/system.datetime.compare?view=net-5.0
+            if (DateTime.Compare(lastestdate, ObservedDate) < 0)
+            {
+                lastestdate = ObservedDate;
+                pos = i;
+            }
+        }
+
+        return applicationPhaseHelpers[pos];
     }
 }
 <!--/Pop up functionality-->
@@ -313,10 +475,10 @@
                             }
                         </div>
                         <!--Div containing the functionality-->
-                        <div class="inner-wrapper m-0">
+                    <div class="inner-wrapper m-0">
 
                             <!--Boxes on the left/summary boxes-->
-                            <div class="left m-2">
+                        <div class="left m-2">
                                 <div class="">
                                     <table class="table table-sm table-striped">
                                         <thead>
@@ -331,28 +493,33 @@
                                             @if (RealCandidatesInfo.Count > 0)
                                             {
                                                 int num = 1;
-                                                @foreach (var candidate in RealCandidatesInfo)
+                                                @for (int i = 0; i < RealCandidatesInfo.Count; i++)
                                                 {
+                                                    var candidate = RealCandidatesInfo[i];
                                                     <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
                                                         <td scope="row">@(num++)</td>
                                                         <td scope="row">@candidate.FirstName @candidate.LastName</td>
-                                                        <td scope="row">@applicationPhases[0].Description</td>
+
+                                                        <td scope="row">@applicationPhases[i].Description</td>
                                                         <td scope="row" class="">
-                                                            <a @onclick="ShowPopUp"><i class="fa fa-edit"></i></a>
+
+                                                            <a @onclick="e => PassInfoAsync(candidate)"><i class="fa fa-edit"></i></a>
                                                         </td>
                                                     </tr>
+
                                                 }
                                             }
+
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
 
                             <!--Box on the right/Details box + buttons-->
-                            <div class="right  col-6 m-2" style="background-color:white">
+                        <div class="right  col-6 m-2" style="background-color:white">
 
                                 <!--Details box-->
-                                <div class="profile rounded shadow-sm ">
+                            <div class="profile rounded shadow-sm ">
                                     <div class="container col-12">
                                         <div class="row text-center">
 
@@ -388,6 +555,7 @@
                             </div>
                         </div>
                     </div>
+
                 }
                 else
                 {
