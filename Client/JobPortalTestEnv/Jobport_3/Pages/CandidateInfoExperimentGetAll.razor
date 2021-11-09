@@ -1,4 +1,4 @@
-﻿@page "/candidateinfoexp/{JobId}"
+﻿@page "/candidateinfoexp"
 @layout JobPortalLayout
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
@@ -219,7 +219,7 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Full Name</th>
-                                                <th scope="col">Phase</th>
+                                                <th scope="col">Status</th>
                                                 <th scope="col">Change status</th>
                                             </tr>
                                         </thead>
@@ -232,7 +232,7 @@
                                                     <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
                                                         <td scope="row">@(num++)</td>
                                                         <td scope="row">@candidate.FirstName @candidate.LastName</td>
-                                                        <td scope="row">@applicationPhases[0].Description</td>
+                                                        <td scope="row">CEO Interview</td>
                                                         <td scope="row" class="">
                                                             <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
                                                         </td>
@@ -266,15 +266,10 @@
                                                         <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
                                                         <hr>
                                                         <div>
-                                                            <span class="small text-uppercase text-muted">APPLICATION STATUS</span>
-                                                            <br />
-                                                            @applicationPhases[0].Description (@statuses[0].Description)
                                                             @*<ProgressBarComp />*@
                                                         </div>
-                                                        <hr />
                                                         <span class="small text-uppercase text-muted">More Info</span>
-                                                        <p>@applicationPhaseHelpers[0].Comments</p>
-                                                        @*<p>@CurrentCandidate.ExtraInfo</p>*@
+                                                        <p>@CurrentCandidate.ExtraInfo</p>
                                                     }
                                                 </div>
                                             </div>
@@ -304,10 +299,6 @@
     private PersonalInformation RealUserPersonalInfo { get; set; }
     private List<WorkHistory> RealUserExperience { get; set; }
     private List<Education> RealUserEducation { get; set; }
-    private List<ApplicationPhase> applicationPhases { get; set; }
-    private List<ApplicationPhaseHelper> applicationPhaseHelpers { get; set; }
-    private List<Status> statuses { get; set; }
-    private ApplicationPhaseHelper displayAPH { get; set; }
 
     [Parameter]
     public string JobId { get; set; }
@@ -320,9 +311,6 @@
         try
         {
             RealCandidates = await httpClient.GetFromJsonAsync<List<AppUser>>($"api/CandidateTest/?JobId={JobId}");
-            applicationPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhase>>("api/ApplicationPhase");
-            applicationPhaseHelpers = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>("api/ApplicationPhaseHelper");
-            statuses = await httpClient.GetFromJsonAsync<List<Status>>("api/Status");
 
             if (RealCandidates.Count > 0)
             {
