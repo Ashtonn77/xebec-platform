@@ -19,6 +19,11 @@ namespace XebecPortal.Shared
         public Status Status { get; set; }
         public DateTime TimeMoved { get; set; }
         public string Comments { get; set; }
-        
+
+        public override string ToString()
+        {
+            return $"{nameof(Id)}={Id.ToString()} \n {nameof(ApplicationId)}={ApplicationId.ToString()} \n {nameof(Application)}={Application} \n {nameof(ApplicationPhaseId)}={ApplicationPhaseId.ToString()} \n {nameof(ApplicationPhase)}={ApplicationPhase} \n {nameof(StatusId)}={StatusId.ToString()} \n {nameof(Status)}={Status} \n {nameof(TimeMoved)}={TimeMoved.ToString()} \n {nameof(Comments)}={Comments}";
+        }
     }
+
 }
