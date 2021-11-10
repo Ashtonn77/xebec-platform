@@ -32,8 +32,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
     }
 
         .header h5 {
@@ -243,6 +241,31 @@
     .select-details p span {
         font-weight: bold;
     }
+
+   /*loading test*/
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+} 
+
 </style>
 
 <!--Entire page as a flexbox-->
@@ -346,7 +369,7 @@
                         {
                             <div class="rightbox">
                                 <!--Details box-->
-                                <div class="select-details position-fixed">
+                                <div class="select-details position-fixed" style="padding: 10px;">
                                     <h2>@CurrentJob2.Title</h2>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
@@ -363,23 +386,21 @@
             }
             else
             {
-                <br /> <br /> <br />
-                <h4 style="color:#fff">Could not retrive the records you are looking for</h4>
+                <div class="spinner"></div>
             }
         </div>
 
     }
     else
     {
-        <br /> <br /> <br />
-        <h2>Loading...</h2>
+        <div class="spinner"></div>
     }
 </div>
 
 @code{
 
       private async Task Apply()
-      {
+      {            
 
             if(State.IsUserProfileComplete)
             {

@@ -66,6 +66,7 @@ namespace XebecPortal.Server
 
             /*newly added*/
             services.AddSingleton<State>();
+            
 
             services.AddTransient<IUserDb, UserDb>();
 

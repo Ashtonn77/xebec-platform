@@ -24,9 +24,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
-
-
             try
             {
                 LstJobs = await httpClient.GetFromJsonAsync<List<Job>>("api/Job");
