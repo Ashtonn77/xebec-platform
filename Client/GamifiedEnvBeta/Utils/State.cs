@@ -25,6 +25,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public bool IsUserProfileComplete { get; set; }
 
+        public int JobPostEditId { get; set; } = -1;
+
     }
 
 }

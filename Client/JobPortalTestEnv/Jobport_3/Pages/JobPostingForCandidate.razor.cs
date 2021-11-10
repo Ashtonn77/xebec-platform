@@ -24,9 +24,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await base.OnInitializedAsync();
-
-
             try
             {
                 LstJobs = await httpClient.GetFromJsonAsync<List<Job>>("api/Job");
@@ -83,12 +80,12 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private static List<Job> SearchResults = LstJobs;
 
         // Apply Function
-        private async Task Apply()
-        {
-            await httpClient.PostAsJsonAsync("api/Application", CurrentJob2);
-            await jsr.InvokeVoidAsync("alert", "You Have Applied Successfully");
-            IsShown = !IsShown;
-        }
+        // private async Task Apply()
+        // {
+        //     await httpClient.PostAsJsonAsync("api/Application", CurrentJob2);
+        //     await jsr.InvokeVoidAsync("alert", "You Have Applied Successfully");
+        //     IsShown = !IsShown;
+        // }
 
         private bool IsClicked = false;
 

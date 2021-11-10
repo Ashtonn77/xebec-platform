@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Authentication;
 using XebecPortal.Client.GamifiedEnvBeta.Utils;
 
 using XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories;
-
+using Server.Configurations;
 
 namespace XebecPortal.Server
 {
@@ -60,10 +60,13 @@ namespace XebecPortal.Server
 
 
             services.AddSingleton<State>();
+
+            services.AddAutoMapper(typeof(MapperInitializer_));
             services.AddAutoMapper(typeof(MapperInitializer));
 
             /*newly added*/
             services.AddSingleton<State>();
+            
 
             services.AddTransient<IUserDb, UserDb>();
 

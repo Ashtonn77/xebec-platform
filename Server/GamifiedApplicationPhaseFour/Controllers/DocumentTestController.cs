@@ -113,7 +113,6 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 return BadRequest(ModelState);
             }
 
-
             try
             {
 

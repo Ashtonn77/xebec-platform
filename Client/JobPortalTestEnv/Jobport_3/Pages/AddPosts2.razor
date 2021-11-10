@@ -22,41 +22,18 @@
         width: 100%;
     }
 
-    /*.nav {
-        height: 10vh;
-        background-color: white;
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-        width: 100%;
-        display: flex;
-    }*/
-
+    
     .main-body {
         height: 86vh;
         width: 100%;
         margin: auto;
     }
 
-    /*  .progress-img {
-        height: 100%;
-        width: 10%;
-        text-align: center;
-        margin-top: 0px;
-    }
-
-    .progress-line {
-        height: 100%;
-        width: 20%;
-        text-align: center;
-    }*/
-
+    
     .form-div {
         height: 95%;
         margin-bottom: 5%;
-        width: 100%;
-        /*display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;*/
+        width: 100%;      
     }
 
     .heading {
@@ -64,15 +41,25 @@
         margin-bottom: 5%;
     }
 
+    .header{
+        height: 20%;
+        width: 90%;  
+        max-width: 1100px;    
+        margin:0 auto;
+        background-color: #b4c0d0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .main-form {
-        height: 100%;
-        margin-bottom: 2%;
-        width: 80%;
-        margin-left: 10%;
-        margin-right: 10%;
-        background-color: white;
-        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-        border-radius: 5px;
+        height: 78%;
+        width: 90%;
+        max-width: 1100px;
+        max-height: 430px;
+        margin:0 auto;
+        background-color: #6c85a3;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -133,85 +120,6 @@
         height: auto;
     }
 
-    /*h1 {
-        font-size: 30px;
-        text-align: center;
-    }
-
-       .material-icon {
-        font-size: 50px;
-        text-align: center;
-        margin: 0;
-    }
-
-    .material-line {
-        font-size: 50px;
-        display: inline-block;
-        width: 100%;
-        text-align: center;
-        margin: 0;
-        height: 100%;
-        background-color: maroon;
-    }
-
-    .no-material-line {
-        font-size: 50px;
-        display: inline-block;
-        width: 100%;
-        text-align: center;
-        margin: 0;
-        background-color: white;
-    }
-
-    .material-color {
-        font-size: 50px;
-        text-align: center;
-        margin: 0;
-        color: purple;
-    }
-
-    .material-none {
-        font-size: 50px;
-        text-align: center;
-        margin: 0;
-    }
-
-    .no-form-icon {
-        color: lightgrey;
-    }
-
-    .form-icon {
-        color: black;
-    }
-
-    .labels-div {
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
-        margin-top: 5px;
-        display: flex;
-        height: 30px;
-    }
-
-    label {
-        margin-top: 5px;
-        color: black;
-        font-size: 15px;
-    }
-
-    .mini-label1 {
-        width: 40%;
-        display: inline-block;
-        margin-right: 9%;
-        margin-left: 1%;
-    }
-
-    .mini-label2 {
-        display: inline-block;
-        width: 40%;
-        margin-left: 4.5%;
-    }*/
-
     h2 {
         text-decoration: none;
         font-size: 20px;
@@ -241,23 +149,10 @@
     }
 </style>
 
-<div class="container-fluid">
-    <br />
-    <br />
-    <br />
-    <div class="row" style="background-color: #6c85a3">
 
-        <!--Heading-->
-        <div class="col-12" style="background-color: #b4c0d0">
-            <h1 class="text-center">Add Post</h1>
-        </div>
-
-        <!--Body-->
-        <div class="col-12">
-            <br />
-            <div class="main-body">
-                <div class="form-div">
-
+                    <div class="header">
+                    <h3 style="font-weight: bold; font-size:25px;">Post a Job</h3>
+                    </div>
                     <form class="main-form">
 
                         <div class="form-group top-div">
@@ -300,7 +195,7 @@
                                     {
                                         <span>
                                             @if (jobPlatform.Count > 4)
-                                            {<span>&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName
+                                            {<span>&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;<span style="font-size:14px;">@items.PlatformName</span>
                                         </span>
                                     }
                                 </div>
@@ -315,8 +210,4 @@
                             <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
                         </div><br />
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+   

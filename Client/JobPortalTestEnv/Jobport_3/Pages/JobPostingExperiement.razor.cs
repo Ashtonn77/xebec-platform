@@ -13,31 +13,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
     {
 
         #region Component Lifeycle Methods
-
-        //Initialising
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-
-            try
-            {
-                LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
-                JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
-
-                  if (LstJobs != null)
-                  {
-                        CurrentJob2 = LstJobs[0];
-                  }
-
-            }
-            catch (Exception ex)
-            {
-                LstJobs = new List<Job>();
-                JobTypes = new List<JobType>();
-            }
-
-          
-        }
+             
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
