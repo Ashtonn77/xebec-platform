@@ -174,9 +174,12 @@
 
     </div>
 
-    <div class="btn-container">       
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>       
-    </div>
+<div class="btn-container">
+
+    <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+    <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
+ </div>
 
 </form>
 
@@ -228,19 +231,14 @@
 
         }
 
-        @* AdditionalInfo.DocumentUrl = null;        *@
         State.IsSaved = false;
     }
 
     private async Task Save()
     {
-        
-        @* string[] url = AdditionalInfo.DocumentUrl != null ? AdditionalInfo.DocumentUrl.Split('\\') : null;
-        AdditionalInfo.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
-        //await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); 
-        State.IsSaved = true;
-        AdditionalInfo = new AdditionalInformationTest(); *@
+        await http.PutAsJsonAsync($"api/AdditionalInformationTest/{AdditionalInfo.Id}", AdditionalInfo); 
+        State.IsSaved = true;     
 
     }
 

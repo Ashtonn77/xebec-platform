@@ -18,10 +18,12 @@ namespace Server.Controllers
     public class PersonalInformationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUsersCustomRepo usersCustomRepo;
 
-        public PersonalInformationController(IUnitOfWork unitOfWork)
+        public PersonalInformationController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo)
         {
             _unitOfWork = unitOfWork;
+            usersCustomRepo = _usersCustomRepo;
         } 
 
         // GET: api/<PersonalInformationController>
@@ -53,6 +55,62 @@ namespace Server.Controllers
             {
                 var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.Id == id);
                 return Ok(PersonalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<PersonalInformationController>/email=test@test.com
+        [HttpGet("email={email}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersonalInfoByEmail(string email)
+        {
+            try
+            {
+                var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.Email == email);
+                return Ok(PersonalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<PersonalInformationController>candidates/15
+        [HttpGet("candidates/{jobId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> SearchApplicants(string jobId, [FromQuery] string SearchQuery, [FromQuery] string ethnicityFiler, [FromQuery] string GenderFilter, [FromQuery] string disabilityFilter)
+        {
+            try
+            {
+                int jobIdInt = int.Parse(jobId);
+                var applicantsInfo = await usersCustomRepo.SearchApplicants(jobIdInt, SearchQuery, ethnicityFiler, GenderFilter, disabilityFilter);
+
+                return Ok(applicantsInfo);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET api/<PersonalInformationController>/additional?disability=disabled
+        [HttpGet("additional")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPersonalInfoByAdditionalInfo([FromQuery] string disability, [FromQuery] string gender, [FromQuery] string ehtnicity)
+        {
+            try
+            {
+                var userInfo = await usersCustomRepo.GetPersonalByAdditional(disability,gender,ehtnicity);
+
+                return Ok(userInfo);
+
             }
             catch (Exception e)
             {

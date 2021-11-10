@@ -1,4 +1,4 @@
-﻿@page "/HRJobsFinal"
+﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
@@ -11,7 +11,6 @@
     * {
         font-family: 'Montserrat', sans-serif;
     }
-
 
     .wrapper {
         height: 100vh;
@@ -39,8 +38,6 @@
         align-items: center;
         @* background-color: pink; *@
     }
-
-
 
     /*FOOTER*/
     .footer-container {
@@ -84,72 +81,66 @@
         color: #333;
     }
 
-
     @@media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
-
-
-
 </style>
 
 <div class="wrapper">
+    
+    <div class="row">
+        <div class="col">
+            <div id="testNav" class="sidenav">
 
-    <div id="testNav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" style="font-size: 36px;" @onclick="CloseMenu">&times;</a>
+                <a href="/profile" class="mb-2">@State.UserEmail</a>
+                <a href="#">Home</a>
+                <a href="#">Analytical Dashboard</a>
+                <a href="#">Job Board</a>
+                <a href="/testlogout">Logout</a>
 
-        <a href="javascript:void(0)" class="closebtn" style="font-size: 36px;" @onclick="CloseMenu">&times;</a>
-        <a href="/profile" class="mb-2">@State.UserEmail</a>
-        <a href="#">Home</a>
-        <a href="#">Analytical Dashboard</a>
-        <a href="#">Job Board</a>
-        <a href="/testlogout">Logout</a>
+                <hr style="width:90%; margin:0 auto" />
 
-        <hr style="width:90%; margin:0 auto" />
+                @* <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
+            <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
+            <a href="javascript:void(0)" @onclick="@us3Action">Site Traffic</a>
+            <a href="javascript:void(0)" @onclick="@us4Action">Time to Fill</a>
+            <a href="javascript:void(0)" @onclick="@us5Action">Time to Hire</a> *@
+                <a href="javascript:void(0)" @onclick="@CandidateView">Candidate's Job Board</a>
+            </div>
 
-        @* <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
-        <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
-        <a href="javascript:void(0)" @onclick="@us3Action">Site Traffic</a>
-        <a href="javascript:void(0)" @onclick="@us4Action">Time to Fill</a>
-        <a href="javascript:void(0)" @onclick="@us5Action">Time to Hire</a> *@
-        <a href="javascript:void(0)" @onclick="@CandidateView">Candidate's Job Board</a>
-    </div>
+            <div class="nav">
 
-    <div class="nav">
+                <div class="nav-title">
+                    <h5 style="color:#fff;">Xebec Platform</h5>
+                </div>
 
-        <div class="nav-title">
-            <h5 style="color:#fff;">Xebec Platform</h5>
+                <div class="nav-icons">
+
+                    <span style="font-size:30px;cursor:pointer; color:#fff" @onclick="ShowMenu">&#9776;</span>
+                </div>
+            </div>
+
         </div>
+    </div>
 
-        <div class="nav-icons">
-
-
-            <span style="font-size:30px;cursor:pointer; color:#fff" @onclick="ShowMenu">&#9776;</span>
-
+    <div class="row">
+        <div class="col">
+            <div class="main-body">
+                @Body
+            </div>
         </div>
-
-
     </div>
 
+    <div class="row">
+        <div class="col">
+            <div class="footer-container">
 
-    <div class="main-body">
-
-        <!--BEGIN NEW CONTENT-->
-        <!--END NEW CONTENT-->
-        <JobPostingExperiement/>
-
-
+                <span>Nebula 2021 &reg;</span>
+            </div>
+        </div>
     </div>
-
-
-
-
-    <div class="footer-container">
-
-        <span>Nebula 2021 &reg;</span>
-
-    </div>
-
 </div>
 
 @code {

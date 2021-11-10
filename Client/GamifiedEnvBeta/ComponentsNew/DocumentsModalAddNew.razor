@@ -137,7 +137,7 @@
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleDocumentsModal.InvokeAsync(Document))">Close</button>
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleDocumentAddNewModal.InvokeAsync())">Close</button>
     </div>
 
     <div class="lower">
@@ -148,7 +148,7 @@
             <div class="inline-inner">
                 <label for="documents">Documents:</label>
                 <input type="file" id="documents" @bind="Document.DocumentUrl">
-            </div>
+            </div> 
 
             <div class="btn-container">
 
@@ -167,7 +167,7 @@
 @code
 {
     Document Document = new Document();
-    [Parameter] public EventCallback<Document> ToggleDocumentsModal { get; set; }
+    [Parameter] public EventCallback<int> ToggleDocumentAddNewModal { get; set; }
 
     /*
 
@@ -190,31 +190,19 @@
             State.Id = Int32.Parse(userdetails[3]);
          
         }
-
-           try
-            {
-                Document = await http.GetFromJsonAsync<Document>($"api/DocumentTest/{State.Id}");
-                Document.DocumentUrl = null;
-            }
-            catch (Exception ex)
-            {
                 Document = new Document();
                 Document.AppUserId = State.Id;
-            }
+        
 
         State.IsSaved = false;
     }
 
     private async Task Save()
-    {        
+    {
+        string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
+        Document.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
-        if(Document.DocumentUrl != null)
-        {
-            string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
-            Document.DocumentName = url != null ? url[url.Length - 1] : "";
-            await http.PutAsJsonAsync($"api/DocumentTest/{Document.Id}", Document);
-        }
-        
+        await http.PostAsJsonAsync("api/DocumentTest", Document);
         State.IsSaved = true;        
 
     }

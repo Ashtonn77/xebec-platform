@@ -60,6 +60,23 @@ namespace Server.Controllers
             }
         }
 
+        // GET api/<LoginHelperController>/userId=1
+        [HttpGet("userId={userId}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetLoggedInInfoByUserId(int userId)
+        {
+            try
+            {
+                var loginHeler = await _unitOfWork.LoginHelpers.GetAll(q => q.AppUserId == userId);
+                return Ok(loginHeler);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<LoginHelpersController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

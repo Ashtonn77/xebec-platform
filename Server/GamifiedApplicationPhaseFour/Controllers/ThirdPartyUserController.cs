@@ -131,6 +131,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 if (users == null)
                 {
                     AppUser newuser = await userDb.AddUser(reg.Email, reg.Password, reg.Role);
+                    
                 }
                 else
                 {
@@ -138,6 +139,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
                 }
 
             }
+
 
             HttpContext.Response.Redirect("/profile_");
 

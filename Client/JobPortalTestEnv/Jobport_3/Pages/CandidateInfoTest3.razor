@@ -1,7 +1,7 @@
 ﻿@page "/candidateinfothree"
+@layout JobPortalLayout
 @inject IJSRuntime jsr
 @using XebecPortal.Client.JobPortalTestEnv.Models
-
 
 <style>
 
@@ -11,18 +11,18 @@
 
     .wrapper-job {
         width: 100%;
-        height: 100vh;
-        display: flex;
+        height: 86vh;
+        /*display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center;*/
         background-color: white;
     }
 
     .add-job-container {
-        padding: 20px;
+        /*padding: 20px;*/
         width: 90%;
         margin: auto auto 5% auto;
-        height: 90%;
+        height: 81%;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -68,122 +68,134 @@
         cursor: pointer;
     }
 
-
     .input:focus {
         outline: none !important;
         border: 1px solid red;
         box-shadow: 0 0 10px #719ECE;
     }
+
     .right {
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         overflow-y: scroll;
         border-radius: 5px;
+        background-color: white
     }
 
-    .right::-webkit-scrollbar {
-        width: 12px;
-    }
+        .right::-webkit-scrollbar {
+            width: 12px;
+        }
 
-    .right::-webkit-scrollbar-track {
-        background-color: #EAF2F8;
-    }
+        .right::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+        }
 
-    .right::-webkit-scrollbar-thumb {
-        background-color: #95A5A6;
-        border-radius: 20px;
-        border: 3px solid #EAF2F8;
-    }
-
+        .right::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border-radius: 20px;
+            border: 3px solid #EAF2F8;
+        }
 </style>
-
-
-
-
-<!--Entire page as a flexbox-->
-<div class="wrapper-job">
-
-    <!--Heading-->
-    <h1 class="mt-5 p-" style="margin-bottom: -5px; font-size:50px;">Candidates</h1>
-
-    <!--Div in the center of the page-->
-    <div class="add-job-container">
-        <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend" @onclick="NewSearch">
-                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+<div class="container-fluid">
+    <!--Entire page as a flexbox-->
+    <div class="wrapper-job">
+        <!--Heading-->
+        <div class="row" style="background-color: #b4c0d0">
+            <div class="col">
+                <h4 class="text-center" >Candidates</h4>
             </div>
-            <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." value="@SearchTerm" @onchange="@(e => onChange(e))">
         </div>
-        <!--Div containing the functionality-->
-        <div class="inner-wrapper m-0">
 
-            <!--Boxes on the left/summary boxes-->
-            <div class="left m-2">
-                <div class="">
-                    <table class="table table-sm table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Full Name</th>
-                                <th scope="col">Job Applied for</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Change status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (DisplayItems != null && DisplayItems.Count > 0)
-                            {
-                                int num = 1;
-                                @foreach (var candidate in DisplayItems)
-                                {
-                                    <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
-                                        <td scope="row">@(num++)</td>
-                                        <td scope="row">@candidate.Name</td>
-                                        <td scope="row">@candidate.JobAppliedFor</td>
-                                        <td scope="row">CEO Interview</td>
-                                        <td scope="row" class="">
-                                            <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-
-
-                        </tbody>
-                    </table>
+        <!--Search Bar-->
+        <div class="row" style="background-color: #b4c0d0">
+            <div class="col">
+                <div class="input-group d-flex justify-content-center">
+                    <div class="input-group-prepend" @onclick="NewSearch">
+                        <span class="input-group-text" id="inputGroup-sizing-sm" style="cursor:pointer"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" class="form-control col-5" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search: Name, Status, job appl...." value="@SearchTerm" @onchange="@(e => onChange(e))">
                 </div>
             </div>
+            <br />
+            <br />
+        </div>
 
-            <!--Box on the right/Details box + buttons-->
-            <div class="right  col-6 m-2">
+        <!--Div in the center of the page-->
+        <div class="row" style="background-color: #6c85a3">
+            <div class="col">
+                <div class="add-job-container">
+                    <!--Div containing the functionality-->
+                    <div class="inner-wrapper m-0">
 
-                <!--Details box-->
-                <div class="profile rounded shadow-sm ">
-                    <div class="container col-12">
-                        <div class="row text-center">
+                        <!--Boxes on the left/summary boxes-->
+                        <div class="left m-2">
+                            <div class="">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Full Name</th>
+                                            <th scope="col">Job Applied for</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Change status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (DisplayItems != null && DisplayItems.Count > 0)
+                                        {
+                                            int num = 1;
+                                            @foreach (var candidate in DisplayItems)
+                                            {
+                                                <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
+                                                    <td scope="row">@(num++)</td>
+                                                    <td scope="row">@candidate.Name</td>
+                                                    <td scope="row">@candidate.JobAppliedFor</td>
+                                                    <td scope="row">CEO Interview</td>
+                                                    <td scope="row" class="">
+                                                        <a href="#" data-tip="edit"><i class="fa fa-edit"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                            <div class="col-xl-12 col-sm-12 mb-1">
-                                <div class="py-5 px-4 select-details">
-                                    @if (CurrentCandidate != null)
-                                    {
-                                        <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                        <h5 class="mb-0">@CurrentCandidate.Name</h5>
-                                        <hr />
-                                        <span class="small text-uppercase text-muted">Applied for</span>
-                                        <p>@CurrentCandidate.JobAppliedFor</p>
-                                        <hr>
-                                        <p><span class="small text-uppercase text-muted">Years Experience:</span> @CurrentCandidate.YearsOfExp</p>
-                                        <hr>
-                                        <div>
-                                            <ProgressBarComp />
+                        <!--Box on the right/Details box + buttons-->
+                        <div class="right  col-6 m-2">
+
+                            <!--Details box-->
+                            <div class="profile rounded shadow-sm ">
+                                <div class="container col-12">
+                                    <div class="row text-center">
+
+                                        <div class="col-xl-12 col-sm-12 mb-1">
+                                            <div class="py-5 px-4 select-details">
+                                                @if (CurrentCandidate != null)
+                                                {
+                                                    <img src="/img/Guy.png" alt="" width="70" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                                    <h5 class="mb-0">@CurrentCandidate.Name</h5>
+                                                    <hr />
+                                                    <span class="small text-uppercase text-muted">Applied for</span>
+                                                    <p>@CurrentCandidate.JobAppliedFor</p>
+                                                    <hr>
+                                                    <p><span class="small text-uppercase text-muted">Years Experience:</span> @CurrentCandidate.YearsOfExp</p>
+                                                    <hr>
+                                                    <div>
+                                                        <ProgressBarComp />
+                                                    </div>
+                                                    <span class="small text-uppercase text-muted">More Info</span>
+                                                    <p>@CurrentCandidate.ExtraInfo</p>
+                                                }
+                                            </div>
                                         </div>
-                                        <span class="small text-uppercase text-muted">More Info</span>
-                                        <p>@CurrentCandidate.ExtraInfo</p>
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -228,7 +240,6 @@
 
     // Search variable
 
-
     private static List<CandidateTest> DisplayItems = Candidates;
 
     private CandidateTest CurrentCandidate = new CandidateTest();
@@ -241,7 +252,6 @@
             DisplayItems = Candidates;
             CurrentCandidate = Candidates[0];
         }
-
 
     }
 
@@ -265,7 +275,6 @@
     //Data
     private static List<CandidateTest> Candidates = new List<CandidateTest>
 {
-
 
         new CandidateTest
         {
@@ -308,7 +317,5 @@
         }
 
     };
-
-
-
+    
 }

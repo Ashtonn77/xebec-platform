@@ -20,7 +20,7 @@ namespace Server.GamifiedApplicationPhaseFour
             CreateMap<EducationTest, EducationTestDto>().ReverseMap();
             CreateMap<WorkHistoryTest, WorkHistoryTestDto>().ReverseMap();
             CreateMap<PersonalTestInfo, PersonalTestDto>().ReverseMap();
-            CreateMap<DocumentTest, DocumentTestDto>().ReverseMap();
+            CreateMap<Document, DocumentTestDto>().ReverseMap();
             CreateMap<AdditionalInformationTest, AdditionalInformationTestDto>().ReverseMap();
 
         }

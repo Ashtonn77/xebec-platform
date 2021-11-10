@@ -596,7 +596,7 @@
                     loginHelper.AppUserId = result.Id;
                     await httpClient.PostAsJsonAsync("/api/LoginHelper", loginHelper);
 
-                    NavManager.NavigateTo("/mainapp");
+                    NavManager.NavigateTo("/jobpostforcandidate");
 
                 }
             }

@@ -1,11 +1,12 @@
 @page "/addposts2"
+@layout JobPortalLayout
 @inject HttpClient httpClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @using System.Net.Http
 @inject State State
 
-@code{ 
+@code{
     int i = 0;
 }
 <style>
@@ -21,18 +22,17 @@
         width: 100%;
     }
 
-    .nav {
+    /*.nav {
         height: 10vh;
         background-color: white;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
         width: 100%;
         display: flex;
-    }
+    }*/
 
     .main-body {
-        height: 90vh;
-        width: 90%;
-        max-width: 1000px;
+        height: 86vh;
+        width: 100%;
         margin: auto;
     }
 
@@ -65,8 +65,8 @@
     }
 
     .main-form {
-        height: 70%;
-        margin-bottom: 5%;
+        height: 100%;
+        margin-bottom: 2%;
         width: 80%;
         margin-left: 10%;
         margin-right: 10%;
@@ -133,12 +133,12 @@
         height: auto;
     }
 
-    h1 {
+    /*h1 {
         font-size: 30px;
         text-align: center;
     }
 
-    /*   .material-icon {
+       .material-icon {
         font-size: 50px;
         text-align: center;
         margin: 0;
@@ -241,74 +241,82 @@
     }
 </style>
 
-<div class="wrapper">
+<div class="container-fluid">
+    <br />
+    <br />
+    <br />
+    <div class="row" style="background-color: #6c85a3">
 
-    <div class="main-body">
+        <!--Heading-->
+        <div class="col-12" style="background-color: #b4c0d0">
+            <h1 class="text-center">Add Post</h1>
+        </div>
 
-        <div class="form-div">
+        <!--Body-->
+        <div class="col-12">
+            <br />
+            <div class="main-body">
+                <div class="form-div">
 
-            <div class="heading">
-                <h1>Add Post</h1>
-            </div>
+                    <form class="main-form">
 
-            <form class="main-form">
+                        <div class="form-group top-div">
+                            <div class="form-group left-div">
 
-                <div class="form-group top-div">
-                    <div class="form-group left-div">
+                                <div class="form-group-others">
+                                    <input type="text" class="form-control form-control-style" placeholder="Job Title" @bind="job.Title">
+                                </div>
 
-                        <div class="form-group-others">
-                            <input type="text" class="form-control form-control-style" placeholder="Job Title" @bind="job.Title">
+                                <div class="form-group-others">
+                                    <input type="text" class="form-control form-control-style" placeholder="Location" @bind="job.Location">
+                                </div>
+
+                                <div class="form-group-others">
+                                    <input type="text" class="form-control form-control-style" placeholder="Compensation" @bind="job.Compensation">
+                                </div>
+                            </div>
+                            <div class="form-group right-div">
+
+                                <div class="form-group-others">
+                                    <select class="custom-select right-input" id="inputGroupSelect01" @onchange="OnDepartmentChanged">
+                                        <option selected disabled>--Select Department--</option>
+                                        <option value="Accounting">Accounting</option>
+                                        <option value="Legal">Legal</option>
+                                        <option value="IT">IT</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group-others">
+                                    <select class="custom-select right-input select2Multi" id="select2DDB" multiple="multiple">
+                                        @foreach (var items in jobTypes)
+                                        {
+                                            <option value="@items.Id">@items.Type</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group-others">
+                                    @foreach (var items in jobPlatform)
+                                    {
+                                        <span>
+                                            @if (jobPlatform.Count > 4)
+                                            {<span>&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName
+                                        </span>
+                                    }
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group-others">
-                            <input type="text" class="form-control form-control-style" placeholder="Location" @bind="job.Location">
-                        </div>
+                        <div class="form-group form-check-inline form-group-text-area">
+                            <textarea class="form-control input textarea" rows="5" @bind="job.Description" placeholder="Job Description" />
+                        </div><br />
 
-                        <div class="form-group-others">
-                            <input type="text" class="form-control form-control-style" placeholder="Compensation" @bind="job.Compensation">
-                        </div>
-                    </div>
-                    <div class="form-group right-div">
-
-                        <div class="form-group-others">
-                            <select class="custom-select right-input" id="inputGroupSelect01" @onchange="OnDepartmentChanged">
-                                <option selected disabled>--Select Department--</option>
-                                <option value="Accounting">Accounting</option>
-                                <option value="Legal">Legal</option>
-                                <option value="IT">IT</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group-others">
-                            <select class="custom-select right-input select2Multi" id="select2DDB" multiple="multiple">
-                                @foreach (var items in jobTypes)
-                                {
-                                    <option value="@items.Id">@items.Type</option>
-                                }
-                            </select>
-                        </div>
-                        
-                        <div class="form-group-others">
-                            @foreach (var items in jobPlatform)
-                            {
-                            <span>@if (items.PlatformName != "LinkedIn"){<span>&nbsp;&nbsp;&nbsp;</span>}<input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }">&nbsp;@items.PlatformName</span>
-                                <input type="checkbox" value="@items.Id" @onchange="eventArgs => { CheckboxClicked(items.Id, eventArgs.Value); }"> @items.PlatformName
-
-                            }
-                        </div>
-                    </div>
+                        <div class="form-group add-button-div">
+                            <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
+                        </div><br />
+                    </form>
                 </div>
-
-                <div class="form-group form-check-inline form-group-text-area">
-                    <textarea class="form-control input textarea" rows="5" @bind="job.Description" placeholder="Job Description" />
-                </div><br />
-
-                <div class="form-group add-button-div">
-                    <button type="button" style="width:150px" @onclick="SendData" class="btn btn-outline-info btn-sm">Add</button>
-                </div><br />
-            </form>
-
-            <h1>@State.Id</h1>
+            </div>
         </div>
     </div>
 </div>

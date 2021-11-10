@@ -1,7 +1,6 @@
-﻿@inject HttpClient http
-@inject IJSRuntime jsRuntime
-@inject NavigationManager NavigationManager
 @inject State State
+@inject IJSRuntime jsRuntime
+@inject HttpClient http
 
 <style>
     @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -13,19 +12,47 @@
         font-family: 'Montserrat', sans-serif;
     }
 
-    /*new*/
+    .modal-wrapper {
+
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.9);
+
+    }
+
+    .upper button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .lower {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 10px;
+    }
+
+    /*form styles*/
     .input-form {
         background-color: #fff;
         padding: 10px;
         height: 90%;
         width: 90%;
         margin: auto;
-        max-width: 600px;
-        max-height: 350px;
+        max-width: 700px;
+        max-height: 270px;
         display: flex;
         flex-direction: column;
         border-radius: 5px;
-        background-color: #b4c0d0;
+        overflow-y: auto;
+        background-color: #283747;
         box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 
@@ -54,7 +81,7 @@
 
     .inline-inner {
         width: 45%;
-        margin: auto;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
     }
@@ -64,11 +91,12 @@
         font-weight: bold;
         margin-top: 1rem;
         margin-bottom: 0px;
+        color: #fff;
     }
 
     .inline-inner input,
     select {
-        padding: 3px 5px;
+        padding: 5px 7px;
         border-radius: 5px;
         border: 0.5px solid #7C7C7C;
         font-size: 13px;
@@ -82,7 +110,19 @@
         box-shadow: 0 0 10px #719ECE;
     }
 
+    .address-inner {
+        width: 80%;
+    }
 
+    .address-inner textarea {
+        height: 150px;
+        padding: 5px 10px;
+        resize: none;
+        border-radius: 5px;
+        border: 0.5px solid #7C7C7C;
+    }
+
+    .btn-container,
     .form-title {
         padding: 1rem 0;
         width: 90%;
@@ -92,36 +132,29 @@
         align-items: center;
 
     }
-
-    .btn-container
-    {
-        padding: 1rem 0.9rem;
-        width: 90%;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 </style>
 
-<form class="input-form">
+<div class="modal-wrapper">
 
-
-    <div class="form-title">
-        <h4>Education History</h4>
+    <div class="upper">
+        <button class="btn btn-danger btn-sm" @onclick="@(() => TogglePortfoiloAddNewModal.InvokeAsync())">Close</button>
     </div>
+
+    <div class="lower">
+
+       <form class="input-form">
 
 
     <div class="inline">
 
         <div class="inline-inner">
-            <label for="institution">Institution:</label>
-            <input type="text" id="institution" @bind="Education.Insitution">
+            <label for="github">GitHub:</label>
+            <input type="text" id="github" @bind="AdditionalInfo.GitHubLink">
         </div>
 
         <div class="inline-inner">
-            <label for="qualification">Qualification:</label>
-            <input type="text" id="qualification" @bind="Education.Qualification">
+            <label for="facebook">Facebook:</label>
+            <input type="text" id="facebook" @bind="AdditionalInfo.FacebookLink">
         </div>
 
 
@@ -130,42 +163,42 @@
     <div class="inline">
 
         <div class="inline-inner">
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" @bind="Education.StartDate">
+            <label for="linkedin">LinkedIn:</label>
+            <input type="text" id="linkedin" @bind="AdditionalInfo.LinkedInLink">
         </div>
 
         <div class="inline-inner">
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" @bind="Education.EndDate">
+            <label for="website">Website:</label>
+            <input type="text" id="website" @bind="AdditionalInfo.PersonalWebsiteUrl">
         </div>
 
     </div>
 
     <div class="btn-container">
-        <div class="left">
-            <button type="button" class="btn btn-primary btn-sm mr-1"
-            @onclick="@(() => Decrement.InvokeAsync())">Prev</button>
-        <button type="button" class="btn btn-success btn-sm ml-1 mr-1" @onclick="Save">Save</button>
-        <button type="button" class="btn btn-primary btn-sm ml-1"
-            @onclick="@(() => Increment.InvokeAsync())">Next</button>
-        </div>
-        <div class="right">
-            <button type="button" class="btn btn-info btn-sm" @onclick="AddNew">Add Another</button>
-        </div>
+
+                <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
     </div>
 
 </form>
 
-<h1>@State.Id</h1>
-<p>@message</p>
+    </div>
 
-@code {
+</div>
 
 
-    private EducationTest Education = new EducationTest();
-    [Parameter] public EventCallback<int> Increment { get; set; }
+@code
+{
+    [Parameter] public EventCallback<int> TogglePortfoiloAddNewModal { get; set; }
 
-    [Parameter] public EventCallback<int> Decrement { get; set; }
+     /*
+    
+    TODO: replace C:\fakepath\ in document url with path ro where file is stored
+    
+    */
+
+    private AdditionalInformationTest AdditionalInfo = new AdditionalInformationTest();
 
     private string message = string.Empty;
 
@@ -180,38 +213,22 @@
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-            try
-            {
-                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/{State.Id}");
-
-            }
-            catch (Exception ex)
-            {
-                Education = new EducationTest();
-                Education.StartDate = DateTime.Now;
-                Education.EndDate = DateTime.Now;
-                Education.AppUserId = State.Id;
-            }
+          
+            AdditionalInfo = new AdditionalInformationTest();
+            AdditionalInfo.AppUserId = State.Id;
+            
 
         }
 
         State.IsSaved = false;
-
     }
-
 
     private async Task Save()
     {
-        @* await http.PostAsJsonAsync("api/EducationTest", Education); *@
         message = "Saved!";
-        State.IsSaved = true;
-    }
+        await http.PostAsJsonAsync("api/AdditionalInformationTest", AdditionalInfo); 
+        State.IsSaved = true;     
 
-    private void AddNew()
-    {
-        Education = new EducationTest();
-        Education.StartDate = DateTime.Now;
-        Education.EndDate = DateTime.Now;
     }
 
 }
