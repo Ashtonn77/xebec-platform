@@ -17,6 +17,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         int[] jobPlatformHelper = new int[0];
         string[] jobPlatformHelperText = new string[0];
         int[] jobTypeHelper = new int[0];
+        string[] jobTypeHelperText = new string[0];
 
         private static Action<string> jobTypeAction;
         private static Action<string> jobPlatformAction;
@@ -72,25 +73,18 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         }
         private void jobTypeModelData(string value)
         {
-            if(value != "")
-            {
-                int i = 0;
-                string[] numbers = value.Split(',');
-                int[] splitNumbers = new int[numbers.Length];
-                Array.Resize(ref jobTypeHelper, numbers.Length);
+            string[] fullMixedValue = value.Split(',');
+            int arrayLength = fullMixedValue.Length;
+            Array.Resize(ref jobTypeHelper, arrayLength/2);
+            Array.Resize(ref jobTypeHelperText, arrayLength/2);
 
-                foreach (var items in numbers)
-                {
-                    splitNumbers[i] = int.Parse(items);
-                    i++;
-                }
-                jobTypeHelper = splitNumbers;
-            }
-            else
-            {
-                jobTypeHelper = null;
-            }
-            StateHasChanged();
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobTypeHelper[i] = int.Parse(fullMixedValue[i]);
+
+            Array.Reverse(fullMixedValue);
+
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobTypeHelperText[i] = fullMixedValue[i];
         }
 
         private void jobPlatformModelData(string value)
@@ -107,8 +101,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
             for (int i = 0; i < arrayLength / 2; i++)
                 jobPlatformHelperText[i] = fullMixedValue[i];
-
-            JsRuntime.InvokeVoidAsync("console.log", Array.IndexOf(jobPlatformHelperText, "Twitter"));
         }
 
         [JSInvokable]

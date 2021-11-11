@@ -1,5 +1,5 @@
 ﻿function jobElement() {
-    var items1;
+    var items1 = [[]];
     var items2 = [[]];
 
     $(".jobTypeSelect2").select2({
@@ -11,7 +11,12 @@
     });
 
     $("#jobType").on("select2:select select2:unselect", function () {
-        items1 = $(this).val();
+        var textString = [];
+        items1[0] = $(this).val();
+        $("#jobType option:selected").each(function (index, content) {
+            textString.push(content.textContent);
+        });
+        items1[1] = textString;
         DotNet.invokeMethodAsync('XebecPortal.Client', 'jobTypeModel', items1.toString());
     })
 
