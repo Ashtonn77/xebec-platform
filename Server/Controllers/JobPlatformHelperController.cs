@@ -1,42 +1,43 @@
 ﻿using AutoMapper;
+using Server.Data;
+using Server.IRepository;
+using XebecPortal.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Server.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using XebecPortal.Server.DTOs;
-using XebecPortal.Shared;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace XebecPortal.Server.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class JobPlatformController : ControllerBase
+    public class JobPlatformHelperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper mapper;
 
-        public JobPlatformController (IUnitOfWork unitOfWork, IMapper mapper)
+        public JobPlatformHelperController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        // GET: api/<JobPlatformController>
+        // GET: api/<JobPlatformHelpersController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetJobPlatform()
+        public async Task<IActionResult> GetJobPlatformHelpers()
         {
             try
             {
-                var jobPlatforms = await _unitOfWork.JobPlatforms.GetAll();
-                return Ok(jobPlatforms);
+                var JobPlatformHelpers = await _unitOfWork.JobPlatformHelpers.GetAll();
+             
+                return Ok(JobPlatformHelpers);
 
             }
             catch (Exception e)
@@ -45,16 +46,16 @@ namespace XebecPortal.Server.Controllers
             }
         }
 
-        // GET api/<JobPlatformController>/5
+        // GET api/<JobPlatformHelpersController>/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetJobPlatform(int id)
+        public async Task<IActionResult> GetJobPlatformHelper(int id)
         {
             try
             {
-                var jobPlatforms = await _unitOfWork.JobPlatforms.GetT(q => q.Id == id);
-                return Ok(jobPlatforms);
+                var JobPlatformHelper = await _unitOfWork.JobPlatformHelpers.GetT(q => q.Id == id);
+                return Ok(JobPlatformHelper);
             }
             catch (Exception e)
             {
@@ -62,14 +63,13 @@ namespace XebecPortal.Server.Controllers
             }
         }
 
-        // POST api/<JobPlatformController>
+        // POST api/<JobPlatformHelpersController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateJobPlatform(int[] listOfId)
+        public async Task<IActionResult> CreateJobPlatformHelper([FromBody] JobPlatformHelper JobPlatformHelper)
         {
-            List<JobPlatformHelper> jobPlatformHelper = new List<JobPlatformHelper>();
 
             if (!ModelState.IsValid)
             {
@@ -80,24 +80,11 @@ namespace XebecPortal.Server.Controllers
 
             try
             {
-                var jobs = _unitOfWork.Jobs.GetAll();
-                var job = jobs.Result.LastOrDefault();
-                foreach(var items in listOfId)
-                {
-                    if(items != 0)
-                    {
-                        jobPlatformHelper.Add(new JobPlatformHelper
-                        {
-                            JobID = job.Id,
-                            JobPlatformId = items
-                        });
-                    }
-                }
-                await _unitOfWork.JobPlatformHelpers.InsertRange(jobPlatformHelper);
 
+                await _unitOfWork.JobPlatformHelpers.Insert(JobPlatformHelper);
                 await _unitOfWork.Save();
 
-                return NoContent();
+                return CreatedAtAction("GetJobPlatformHelper", new { id = JobPlatformHelper.Id }, JobPlatformHelper);
 
             }
             catch (Exception e)
@@ -111,9 +98,9 @@ namespace XebecPortal.Server.Controllers
         }
 
 
-        // PUT api/<JobPlatformController>/5
+        // PUT api/<JobPlatformHelpersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateJobPlatform(int id, [FromBody] JobPlatformDTO jobPlatform)
+        public async Task<IActionResult> UpdateJobPlatformHelper(int id, [FromBody] JobPlatformHelperDTO JobPlatformHelper)
         {
             if (!ModelState.IsValid)
             {
@@ -122,14 +109,14 @@ namespace XebecPortal.Server.Controllers
 
             try
             {
-                var originalJobType = await _unitOfWork.JobTypes.GetT(q => q.Id == id);
+                var originalJobPlatformHelper = await _unitOfWork.JobPlatformHelpers.GetT(q => q.Id == id);
 
-                if (originalJobType == null)
+                if (originalJobPlatformHelper == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                mapper.Map(jobPlatform, originalJobType);
-                _unitOfWork.JobTypes.Update(originalJobType);
+                mapper.Map(JobPlatformHelper, originalJobPlatformHelper);
+                _unitOfWork.JobPlatformHelpers.Update(originalJobPlatformHelper);
                 await _unitOfWork.Save();
 
                 return NoContent();
@@ -143,12 +130,12 @@ namespace XebecPortal.Server.Controllers
         }
 
 
-        // DELETE api/<JobPlatformController>/5
+        // DELETE api/<JobPlatformHelpersController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteJobPlatform(int id)
+        public async Task<IActionResult> DeleteJobPlatformHelper(int id)
         {
             if (id < 1)
             {
@@ -157,14 +144,14 @@ namespace XebecPortal.Server.Controllers
 
             try
             {
-                var JobType = await _unitOfWork.JobTypes.GetT(q => q.Id == id);
+                var JobPlatformHelper = await _unitOfWork.JobPlatformHelpers.GetT(q => q.Id == id);
 
-                if (JobType == null)
+                if (JobPlatformHelper == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
 
-                await _unitOfWork.JobTypes.Delete(id);
+                await _unitOfWork.JobPlatformHelpers.Delete(id);
                 await _unitOfWork.Save();
 
                 return NoContent();

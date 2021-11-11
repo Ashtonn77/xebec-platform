@@ -192,8 +192,8 @@
 
 @code
 {    
-    private EducationTest Education = new EducationTest(); 
-    [Parameter] public EventCallback<EducationTest> ToggleEducationModal { get; set; }
+    private Education Education = new Education(); 
+    [Parameter] public EventCallback<Education> ToggleEducationModal { get; set; }
 
     private string message = string.Empty;
 
@@ -210,12 +210,12 @@
 
             try
             {
-                Education = await http.GetFromJsonAsync<EducationTest>($"api/EducationTest/single/{State.EducationEditId}");
+                Education = await http.GetFromJsonAsync<Education>($"api/Education/single/{State.EducationEditId}");
 
             }
             catch (Exception ex)
             {
-                Education = new EducationTest();
+                Education = new Education();
                 Education.StartDate = DateTime.Now;
                 Education.EndDate = DateTime.Now;
                 Education.AppUserId = State.Id;
@@ -231,7 +231,7 @@
 
     private async Task Save()
     {
-        await http.PutAsJsonAsync($"api/EducationTest/{Education.Id}", Education);
+        await http.PutAsJsonAsync($"api/Education/{Education.Id}", Education);
         message = "Saved!";
         State.IsSaved = true;
     }

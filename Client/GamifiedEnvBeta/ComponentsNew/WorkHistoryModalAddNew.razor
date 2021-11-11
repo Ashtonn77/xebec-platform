@@ -201,7 +201,7 @@
     [Parameter] public EventCallback<int> ToggleWorkModalAddNew { get; set; }
 
     
-   private WorkHistoryTest WorkHistory = new WorkHistoryTest();
+   private WorkHistory WorkHistory = new WorkHistory();
    
    private string message = string.Empty;    
 
@@ -219,7 +219,7 @@
         }
 
   
-                WorkHistory = new WorkHistoryTest();
+                WorkHistory = new WorkHistory();
                 WorkHistory.StartDate = DateTime.Now;
                 WorkHistory.EndDate = DateTime.Now;    
                 WorkHistory.AppUserId = State.Id;
@@ -229,7 +229,7 @@
    
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/WorkHistoryTest", WorkHistory); 
+        await http.PostAsJsonAsync("api/WorkHistory", WorkHistory); 
         message = "Saved!";
         State.IsSaved = true;
          

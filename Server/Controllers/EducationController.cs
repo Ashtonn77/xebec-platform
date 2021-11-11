@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class EducationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public EducationController(IUnitOfWork unitOfWork)
+        public EducationController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<EducationController>
@@ -44,7 +47,7 @@ namespace Server.Controllers
         }
 
         // GET api/<EducationController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEducation(int id)
@@ -61,15 +64,33 @@ namespace Server.Controllers
         }
 
         // GET api/<EducationController>/userId=1
-        [HttpGet("userId={userId}")]
+        [HttpGet("all/{userId}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPersonalInfoByUserId(int userId)
+        public async Task<IActionResult> GetEducationByUserId(int userId)
         {
             try
             {
                 var education = await _unitOfWork.Education.GetAll(q => q.AppUserId == userId);
                 return Ok(education);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserid
+        // GET api/<EducationController>/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleEducationByUserID(int id)
+        {
+            try
+            {
+                var Education = await _unitOfWork.Education.GetT(q => q.AppUserId == id);
+                return Ok(Education);
             }
             catch (Exception e)
             {
@@ -114,7 +135,7 @@ namespace Server.Controllers
 
         // PUT api/<EducationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEducation(int id, [FromBody] Education Education)
+        public async Task<IActionResult> UpdateEducation(int id, [FromBody] EducationDTO Education)
         {
             if (!ModelState.IsValid)
             {
@@ -129,6 +150,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(Education, originalEducation);
                 _unitOfWork.Education.Update(originalEducation);
                 await _unitOfWork.Save();
 

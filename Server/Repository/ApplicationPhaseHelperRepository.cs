@@ -30,5 +30,20 @@ namespace Server.Repository
                          select users;
             return await queryFinal.AsNoTracking().ToListAsync();
         }
+
+        public async Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoDetailed(int AppUserId, int jobId)
+        {
+            IQueryable<ApplicationPhaseHelper> queryFinal;
+            //var job = new SqlParameter("jobId", JobId);
+            //IQueryable<PersonalInformation> queryFinal = _context.PersonalInformations.
+            //    FromSqlRaw("SELECT * from PersonalInformations Where UserId IN (SELECT UserId FROM Applications where JobId = @jobId)", job);
+            queryFinal = from users in _context.ApplicationPhasesHelpers
+                         join applications in _context.Applications.Where(a => a.AppUserId == AppUserId && a.JobId == jobId)
+                             on users.ApplicationId equals applications.Id
+                         select users;
+            queryFinal = queryFinal.Include(a => a.Application).Include(s => s.Status).Include(p => p.ApplicationPhase);
+
+            return await queryFinal.AsNoTracking().ToListAsync();
+        }
     }
 }
