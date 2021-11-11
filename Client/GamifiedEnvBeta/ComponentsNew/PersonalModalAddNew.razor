@@ -296,7 +296,7 @@
     private async Task Save()
     {
         await http.PostAsJsonAsync("api/PersonalsTest", Personal);
-  
+        
         message = "Saved!";
         State.IsSaved = true;
 

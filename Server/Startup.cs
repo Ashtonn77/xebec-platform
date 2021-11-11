@@ -88,7 +88,7 @@ namespace XebecPortal.Server
             })
             .AddCookie(options =>
             {
-                // options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
+                options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
             })
             .AddLinkedIn(Linkedinoptions =>
             {

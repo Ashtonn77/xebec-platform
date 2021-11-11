@@ -403,8 +403,8 @@
       {            
 
             if(State.IsUserProfileComplete)
-            {
-                await httpClient.PostAsJsonAsync("api/Application", CurrentJob2);
+            {                
+                await httpClient.PostAsJsonAsync($"api/Application/{State.Id}", CurrentJob2);
                 await jsr.InvokeVoidAsync("alert", "You Have Applied Successfully");
                 IsShown = !IsShown;
             }

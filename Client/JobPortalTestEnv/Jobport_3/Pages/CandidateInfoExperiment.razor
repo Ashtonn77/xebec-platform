@@ -599,7 +599,7 @@
             if (RealCandidates.Count > 0)
             {
                 Console.WriteLine("we made it here");
-                RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}");
+                RealCandidatesInfo = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/PersonalInformation/candidates/{JobId}");
             }
             if (RealCandidatesInfo.Count > 0)
             {

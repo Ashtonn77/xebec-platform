@@ -207,12 +207,15 @@
 
     private async Task Save()
     {        
+        //TODO: Change controller
+
         message = "Saved!";
         if(Document.DocumentUrl != null)
         {
             string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
             Document.DocumentName = url != null ? url[url.Length - 1] : "";
             await http.PutAsJsonAsync($"api/DocumentTest/{Document.Id}", Document);
+             
         }
         
         State.IsSaved = true;        
