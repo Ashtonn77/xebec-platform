@@ -237,7 +237,7 @@
 
     .cross {
         margin-right: 15px;
-        margin-top: 3px;
+        margin-top: 0px;
     }
 
         .cross:before,
@@ -255,7 +255,7 @@
             margin-top: -2px;
         }
 
-    .content {
+    /*.content {
         box-sizing: border-box;
         font-size: 0.9em;
         margin: 0px 5px 10px 20px;
@@ -263,7 +263,7 @@
         overflow: hidden;
         transition: max-height, .5s;
 
-    }
+    }*/
 
     input:checked ~ .content {
         max-height: 400px;
@@ -282,25 +282,28 @@
     *E.G. dashboard page has multiple reports wrapped in (nav-items) */
     input:checked ~ .nav-items {
         max-height: 400px;
-        border-bottom: 2px solid #3E474F;
+        //border-bottom: 2px solid #3E474F;
         transition: 1s;
+        margin: 0px;
     }
 
     .nav-items {
-        margin: 0px 10px 0px 10px;
+        margin: 0px;
         max-height: 0;
         overflow: hidden;
         transition: max-height, .5s;
     }
     /**Indent Dropdown Items*/
     .nav-item-wrap {
-        margin-left: 10px;
+        margin: 0px;
     }
 
     /***/
     .nav-items .item {
         border: none;
         box-shadow: none;
+        height: auto;
+        margin: 0px;
     }
 
 
@@ -334,6 +337,45 @@
     .tab {
         margin: 10px;
     }
+    .department-item{
+        width: inherit;
+        height: 30px;
+        margin: 0px;
+    }
+    .department-heading {
+        height: 50px;
+        display: flex;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
+    }
+    .department-container {
+        width: inherit;
+        height: auto;
+    }
+    /*.dep-icon{
+        color: black;
+        font-size: 20px;
+        width: 10%;
+        font-weight: 300;
+        margin-top: 10px;
+        text-align: right;
+    }*/
+    .department-name{
+        font-size: 13px;
+        font-weight: 200;
+        background-color: rgb(0,0,0,0.6);
+        color: ivory;
+        padding-left: 30px;
+        margin: 0px;
+    }
+    .department-major-name {
+        font-size: 15px;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        font-weight: 200;
+        cursor: pointer;
+    }
+    
   /******New Nav styling Start*/
 </style>
 
@@ -376,72 +418,65 @@
                 </label>
                 <div class="nav-items">
                     <div class="nav-item-wrap">
-                        <input class="in" type="radio" id="report-1" name="nav-item">
-                        <label class="item" for="report-1" href="javascript:void(0)" @onclick="@us1Action">
-                            <a class="dashboard-nav-dropdown-item">Department Analysis</a>
-                            <div class="cross"></div>
-                        </label>
-                        <div class="content">
-                            You are viewing the report
+                        <div class="department-heading">
+                            <h2 class="department-major-name" @onclick="@depController">Departmental Data</h2>
+                        </div>                        
+                        <div hidden="@depMinus" class="department-container">
+                            <div class="department-item" @onclick="@d1Action">
+                                <h3 class="department-name">Overview</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d2Action">
+                                <h3 class="department-name">Administration</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d3Action">
+                                <h3 class="department-name">Engineering</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d4Action">
+                                <h3 class="department-name">Finance</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d5Action">
+                                <h3 class="department-name">IT</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d6Action">
+                                <h3 class="department-name">Marketing</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d7Action">
+                                <h3 class="department-name">Research</h3>
+                            </div>
+                            <div class="department-item" @onclick="@d8Action">
+                                <h3 class="department-name">Sales</h3>
+                            </div>
+                            
+                        </div>
+                    </div>
+                        
+                    <div class="nav-item-wrap">
+                        <div class="department-heading" @onclick="us2Action">
+                            <h2 class="department-major-name">Registration Data</h2>
                         </div>
                     </div>
 
                     <div class="nav-item-wrap">
-                        <input class="in" type="radio" id="report-2" name="nav-item">
-                        <label class="item" for="report-2" href="javascript:void(0)" @onclick="@us2Action">
-                            <a class="dashboard-nav-dropdown-item">Rate of Registration</a>
-                            <div class="cross"></div>
-                        </label>
-                        <div class="content">
-                            You are viewing the report
+                        <div class="department-heading" @onclick="us3Action">
+                            <h2 class="department-major-name">Site Traffic</h2>
                         </div>
                     </div>
 
                     <div class="nav-item-wrap">
-                        <input class="in" type="radio" id="report-3" name="nav-item">
-                        <label class="item" for="report-3" href="javascript:void(0)" @onclick="@us3Action">
-                            <a class="dashboard-nav-dropdown-item">Site Traffic</a>
-                            <div class="cross"></div>
-                        </label>
-                        <div class="content">
-                            You are viewing the report
+                        <div class="department-heading" @onclick="us4Action">
+                            <h2 class="department-major-name">Time To Fill</h2>
                         </div>
                     </div>
 
                     <div class="nav-item-wrap">
-                        <input class="in" type="radio" id="report-4" name="nav-item">
-                        <label class="item" for="report-4" href="javascript:void(0)" @onclick="@us4Action">
-                            <a class="dashboard-nav-dropdown-item">Time to Fill</a>
-                            <div class="cross"></div>
-                        </label>
-                        <div class="content">
-                            You are viewing the report
-                        </div>
-                    </div>
-
-                    <div class="nav-item-wrap">
-                        <input class="in" type="radio" id="report-5" name="nav-item">
-                        <label class="item" for="report-5" href="javascript:void(0)" @onclick="@us5Action">
-                            <a class="dashboard-nav-dropdown-item">Time to Hire</a>
-                            <div class="cross"></div>
-                        </label>
-                        <div class="content">
-                            You are viewing the report
+                        <div class="department-heading" @onclick="us5Action">
+                            <h2 class="department-major-name">Time To Hire</h2>
                         </div>
                     </div>
 
                 </div>
             </div>
-            
-            @* 
-            <div class="page">
-                <input class="in" type="radio" id="gamified" name="tabs">
-                <label class="item" for="gamified">
-                    <a><i class="fas fa-gamepad"></i><span class="tab"></span>Gamified Experience</a>
-                    <div class="cross"></div>
-                </label>
-                <div class="content">Job stuff </div>
-            </div> *@
+           
 
             <div class="nav-item-divider"></div>
 
@@ -477,9 +512,31 @@
             <div class="main">
 
                 <div class="report">
-                    <div hidden="@us1" class="report-container">
+                    <div hidden="@d1" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
+                    <div hidden="@d2" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=db468e90-eb11-4c2d-8782-851997e8c5ed&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                    <div hidden="@d3" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=0a8a6315-b294-47cd-b433-7ababf71cfb8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                    <div hidden="@d4" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=f1e4e548-6be7-4fb3-8777-17ab55dd2fff&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                    <div hidden="@d5" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=76327f9d-62a6-4c5e-80eb-5faef46d4593&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                    <div hidden="@d6" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=02579638-b666-44ad-b536-46e48cff49a8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+                    </div>
+                    <div hidden="@d7" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=1b374822-d52f-47ae-b8ec-9f31ea25e71c&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                    <div hidden="@d8" class="report-container">
+                        <iframe src="https://app.powerbi.com/reportEmbed?reportId=37a172d0-e363-4067-b1c4-c629bfdc6a5b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+                    </div>
+
                     <div hidden="@us2" class="report-container">
                         <iframe src="https://app.powerbi.com/reportEmbed?reportId=4f4559ec-f3c1-4bc7-860d-b4d47ac134a7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
@@ -508,8 +565,29 @@
 
 <div class="big" hidden="@bigHidden">
     <div class="big-main">
-        <div class="report-container" hidden="@bigus1">
+        <div class="report-container" hidden="@bigd1">
             <iframe src="https://app.powerbi.com/reportEmbed?reportId=a25170fc-316e-4619-b18e-b5433bd70ef8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd2" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=db468e90-eb11-4c2d-8782-851997e8c5ed&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd3" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=0a8a6315-b294-47cd-b433-7ababf71cfb8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd4" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=f1e4e548-6be7-4fb3-8777-17ab55dd2fff&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd5" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=76327f9d-62a6-4c5e-80eb-5faef46d4593&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd6" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=02579638-b666-44ad-b536-46e48cff49a8&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
+        </div>
+        <div hidden="@bigd7" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=1b374822-d52f-47ae-b8ec-9f31ea25e71c&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div hidden="@bigd8" class="report-container">
+            <iframe src="https://app.powerbi.com/reportEmbed?reportId=37a172d0-e363-4067-b1c4-c629bfdc6a5b&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>"
         </div>
         <div class="report-container" hidden="@bigus2">
             <iframe src="https://app.powerbi.com/reportEmbed?reportId=4f4559ec-f3c1-4bc7-860d-b4d47ac134a7&groupId=e7de2534-90ca-418d-8fec-ce9ef17c3cb6&autoAuth=true&ctid=8f4b998c-dd4c-4bb0-b3cf-62b23831b6e6&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
@@ -536,7 +614,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        us1Action();
     }
 
     protected override async void OnAfterRender(bool firstRender)
@@ -559,78 +636,122 @@
         await jsRuntime.InvokeVoidAsync("closeNav");
     }
 
-    private bool us1 { get; set; } = true;
+    private bool depPlus { get; set; } = false;
+    private bool depMinus { get; set; } = true;
+
+    private bool d1 { get; set; } = false;
+    private bool d2 { get; set; } = true;
+    private bool d3 { get; set; } = true;
+    private bool d4 { get; set; } = true;
+    private bool d5 { get; set; } = true;
+    private bool d6 { get; set; } = true;
+    private bool d7 { get; set; } = true;
+    private bool d8 { get; set; } = true;
+
     private bool us2 { get; set; } = true;
     private bool us3 { get; set; } = true;
     private bool us4 { get; set; } = true;
     private bool us5 { get; set; } = true;
 
-    private void us1Action()
+    private void depController()
     {
         topic = "Analytics Department";
-        us2 = true;
-        us3 = true;
-        us4 = true;
-        us5 = true;
-        if (us1)
-        {
-            us1 = !us1;
-        }
+        depMinus = !depMinus;
     }
+
+    private void d1Action()
+    {
+        d1 = !d1;
+        d2=d3=d4=d5=d6=d7=d8=true;
+        us2 = us3 = us4 = true;
+    }
+
+    private void d2Action()
+    {
+        d2 = !d2;
+        d1 = d3 = d4 = d5 = d6 = d7 = d8 = true;
+        us2 = us3 = us4 = true;
+
+    }
+    private void d3Action()
+    {
+        d3 = !d3;
+        d2 = d1 = d4 = d5 = d6 = d7 = d8 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+    private void d4Action()
+    {
+        d4 = !d4;
+        d2 = d1 = d3 = d5 = d6 = d7 = d8 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+    private void d5Action()
+    {
+        d5 = !d5;
+        d2 = d1 = d4 = d3 = d6 = d7 = d8 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+    private void d6Action()
+    {
+        d6 = !d6;
+        d2 = d1 = d4 = d5 = d3 = d7 = d8 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+    private void d7Action()
+    {
+        d7 = !d7;
+        d2 = d1 = d4 = d5 = d6 = d3 = d8 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+    private void d8Action()
+    {
+        d8 = !d8;
+        d2 = d1 = d4 = d5 = d6 = d7 = d3 = true;
+        us2 = us3 = us4 = us5 = true;
+    }
+
 
     private void us2Action()
     {
-        topic = "Rate of Registration";
-        us1 = true;
-        us3 = true;
-        us4 = true;
-        us5 = true;
-        if (us2)
-        {
-            us2 = !us2;
-        }
+        topic = "Registration Data";
+        us2 = !us2;
+        d2 = d1 = d4 = d5 = d6 = d7 = d3 = d8 = true;
+        us3 = us4 = us5 = true;
     }
 
     private void us3Action()
     {
         topic = "Site Traffic";
-        us1 = true;
-        us2 = true;
-        us4 = true;
-        us5 = true;
-        if (us3)
-        {
-            us3 = !us3;
-        }
+        us3 = !us3;
+        d2 = d1 = d4 = d5 = d6 = d7 = d3 = d8 = true;
+        us2 = us4 = us5 = true;
     }
 
     private void us4Action()
     {
         topic = "Time to Fill";
-        us1 = true;
-        us3 = true;
-        us2 = true;
-        us5 = true;
-        if (us4)
-        {
-            us4 = !us4;
-        }
+        us4 = !us4;
+        d2 = d1 = d4 = d5 = d6 = d7 = d3 = d8 = true;
+        us3 = us2 = us5 = true;
     }
 
     private void us5Action()
     {
         topic = "Time to Hire";
-        us1 = true;
-        us3 = true;
-        us4 = true;
-        us2 = true;
-        if (us5)
-        {
-            us5 = !us5;
-        }
+        us2 = !us2;
+        d2 = d1 = d4 = d5 = d6 = d7 = d3 = d8 = true;
+        us3 = us4 = us2 = true;
     }
+
     private bool bigHidden { get; set; } = true;
-    private bool bigus1 { get; set; } = true;
+    private bool bigd1 { get; set; } = true;
+    private bool bigd2 { get; set; } = true;
+    private bool bigd3 { get; set; } = true;
+    private bool bigd4 { get; set; } = true;
+    private bool bigd5 { get; set; } = true;
+    private bool bigd6 { get; set; } = true;
+    private bool bigd7 { get; set; } = true;
+    private bool bigd8 { get; set; } = true;
     private bool bigus2 { get; set; } = true;
     private bool bigus3 { get; set; } = true;
     private bool bigus4 { get; set; } = true;
@@ -640,9 +761,38 @@
     {
         bigHidden = false;
 
-        if (us1 == false)
+        if (d1 == false)
         {
-            bigus1 = false;
+            bigd1 = false;
+        }
+        else if (d2 == false)
+        {
+            bigd2 = false;
+        }
+        else if (d3 == false)
+        {
+            bigd3 = false;
+        }
+        else if (d4 == false)
+        {
+            bigd4 = false;
+        }
+        else if (d5 == false)
+        {
+            bigd5 = false;
+        }
+        else if (d6 == false)
+        {
+            bigd6 = false;
+        }
+        else if (d7 == false)
+        {
+            bigd7 = false;
+        }
+        else if (d8 == false)
+        {
+            bigd8 = false;
+
         }
         else if (us2 == false)
         {
@@ -667,9 +817,38 @@
     {
         bigHidden = true;
 
-        if (us1 == false)
+        if (d1 == false)
         {
-            bigus1 = true;
+            bigd1 = true;
+        }
+        else if (d2 == false)
+        {
+            bigd2 = true;
+        }
+        else if (d3 == false)
+        {
+            bigd3 = true;
+        }
+        else if (d4 == false)
+        {
+            bigd4 = true;
+        }
+        else if (d5 == false)
+        {
+            bigd5 = true;
+        }
+        else if (d6 == false)
+        {
+            bigd6 = true;
+        }
+        else if (d7 == false)
+        {
+            bigd7 = true;
+        }
+        else if (d8 == false)
+        {
+            bigd8 = true;
+
         }
         else if (us2 == false)
         {
