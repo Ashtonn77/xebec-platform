@@ -34,10 +34,11 @@
 
     .inner-wrapper {
         width: 100%;
-        max-height: 90%;
+        /*max-height: 90%;*/
         margin: auto;
         display: flex;
-        /*background-color: aliceblue;*/
+        background-color: aliceblue;
+        padding: 10px;
     }
 
     .left {
@@ -75,30 +76,22 @@
         box-shadow: 0 0 10px #719ECE;
     }
 
-    .right {
+    .profile {
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-        overflow-y: scroll;
         border-radius: 5px;
+        background-color: white;
     }
-
-        .right::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .right::-webkit-scrollbar-track {
-            background-color: #EAF2F8;
-        }
-
-        .right::-webkit-scrollbar-thumb {
-            background-color: #95A5A6;
-            border-radius: 20px;
-            border: 3px solid #EAF2F8;
-        }
 
     .filterSection {
         display: flex;
         flex-direction: row;
         /*padding-left: 50px;*/
+    }
+
+    .bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .filterpill {
@@ -187,7 +180,7 @@
                     <label class="my-1 mr-2" for="apphase">Change Status</label>
                 </div>
                 <div class="form-row">
-                    
+
                     <div class="form-group col-md-6">
                         <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
 
@@ -198,17 +191,17 @@
                             @if (applicationPhaseHelpers[ind].ApplicationPhase == null)
                             {
                                 applicationPhaseHelpers[ind].ApplicationPhase = new ApplicationPhase
-                    {
-                        Description = ""
-                    };
+                                {
+                                    Description = ""
+                                };
                             }
                             <select id="phases" @bind="applicationPhaseHelpers[ind].ApplicationPhase.Description" class="custom-select my-1 mr-sm-2">
 
                                 <option selected>Choose...</option>
                                 @foreach (var phase in applicationPhases)
-                                        {
+                                {
                                     <option value="@phase.Description">@phase.Description</option>
-                                        }
+                                }
                             </select>
 
                         }
@@ -228,9 +221,9 @@
                             @if (applicationPhaseHelpers[ind].Status == null)
                             {
                                 applicationPhaseHelpers[ind].Status = new Status
-                    {
-                        Description = ""
-                    };
+                                {
+                                    Description = ""
+                                };
                             }
                             <select id="phase" @bind="applicationPhaseHelpers[ind].Status.Description" class="custom-select my-1 mr-sm-2">
 
@@ -405,7 +398,9 @@
                 @*<h4 class="text-center">Candidates</h4>*@
             </div>
 
-            <div class="col-12">
+
+
+            <div class="col-12 bar">
                 <div class="d-flex justify-content-center input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm" @onclick="RealSearch"><i class="fa fa-search"></i></span>
@@ -415,31 +410,32 @@
                 </div>
             </div>
             <br />
-            <br />
+
+
             @*<div class="col-12">
-            <div class="d-flex justify-content-center filterSection d-flex align-items-center">
+                    <div class="d-flex justify-content-center filterSection d-flex align-items-center">
 
-                <select class="form-control filterEthinic" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter Race</option>
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Indian">Indian</option>
-                    <option value="Coloured">Coloured</option>
-                </select>
+                        <select class="form-control filterEthinic" @onchange="@onValChanged">
+                            <option value="0" disabled selected> Filter Race</option>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Indian">Indian</option>
+                            <option value="Coloured">Coloured</option>
+                        </select>
 
-                <select class="form-control filterGender" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter By Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
+                        <select class="form-control filterGender" @onchange="@onValChanged">
+                            <option value="0" disabled selected> Filter By Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
 
-                <select class="form-control filterDisability" @onchange="@onValChanged">
-                    <option value="0" disabled selected> Filter By Disability</option>
-                    <option value="disabled">disabled</option>
-                    <option value="abled">Not Disabled</option>
-                </select>
-            </div>
-        </div>*@
+                        <select class="form-control filterDisability" @onchange="@onValChanged">
+                            <option value="0" disabled selected> Filter By Disability</option>
+                            <option value="disabled">disabled</option>
+                            <option value="abled">Not Disabled</option>
+                        </select>
+                    </div>
+                </div>*@
             <br />
             <br />
         </div>
@@ -475,10 +471,10 @@
                             }
                         </div>
                         <!--Div containing the functionality-->
-                    <div class="inner-wrapper m-0">
+                        <div class="inner-wrapper m-0">
 
                             <!--Boxes on the left/summary boxes-->
-                        <div class="left m-2">
+                            <div class="left m-2">
                                 <div class="">
                                     <table class="table table-sm table-striped">
                                         <thead>
@@ -516,12 +512,12 @@
                             </div>
 
                             <!--Box on the right/Details box + buttons-->
-                        <div class="right  col-6 m-2" style="background-color:white">
+                            <div class="right  col-6 m-2">
 
                                 <!--Details box-->
-                            <div class="profile rounded shadow-sm ">
-                                    <div class="container col-12">
-                                        <div class="row text-center">
+                                <div class="profile rounded ">
+                                    <div class="col-12">
+                                        <div class="text-center">
 
                                             <div class="col-xl-12 col-sm-12 mb-1">
                                                 <div class="py-5 px-4 select-details">
