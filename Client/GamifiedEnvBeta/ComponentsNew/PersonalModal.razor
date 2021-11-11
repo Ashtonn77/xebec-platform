@@ -182,14 +182,14 @@
                     <input type="text" id="idNumber" @bind="Personal.IdNumber">
                 </div>
 
-                <div class="inline-inner">
+                @* <div class="inline-inner">
                     <label for="ethnicity">Ethnicity:</label>
                     <input type="text" id="ethnicity" @bind="Additional.Ethnicity">
-                </div>
+                </div> *@
 
             </div>
 
-            <div class="inline">
+            @* <div class="inline">
 
                 <div class="inline-inner">
 
@@ -215,7 +215,7 @@
 
                 </div>
 
-            </div>
+            </div> *@
 
             <div class="inline">
                 <div class="inline-inner address-inner">
@@ -276,8 +276,8 @@
         try
         {
             //TODO get the data into the modal
-            Personal = await http.GetFromJsonAsync<PersonalInformation>($"api/PersonalInformation/single/{State.Id}");
-            Additional = await http.GetFromJsonAsync<AdditionalInformation>($"api/AdditionalInformation/{State.Id}");
+            Personal = await http.GetFromJsonAsync<PersonalInformation>($"api/PersonalInformation/{State.Id}");
+            @* Additional = await http.GetFromJsonAsync<AdditionalInformation>($"api/AdditionalInformation/{State.Id}"); *@
         }
         catch (Exception ex)
         {
@@ -306,12 +306,10 @@
 
     private async Task Save()
     {
-
         await http.PutAsJsonAsync($"api/PersonalInformation/{Personal.Id}", Personal);
-        await http.PutAsJsonAsync($"api/AdditionalInformation/{Personal.Id}", Additional);
+        @* await http.PutAsJsonAsync($"api/AdditionalInformation/{Personal.Id}", Additional); *@
         message = "Saved!";
         State.IsSaved = true;
-
     }
 
 }

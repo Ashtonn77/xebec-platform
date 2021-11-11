@@ -182,14 +182,14 @@
                     <input type="text" id="idNumber" @bind="Personal.IdNumber">
                 </div>
 
-                <div class="inline-inner">
+                @* <div class="inline-inner">
                     <label for="ethnicity">Ethnicity:</label>
                     <input type="text" id="ethnicity" @bind="Additional.Ethnicity">
-                </div>
+                </div> *@
 
             </div>
 
-            <div class="inline">
+            @* <div class="inline">
 
                 <div class="inline-inner">
 
@@ -215,7 +215,7 @@
 
                 </div>
 
-            </div>
+            </div> *@
 
             <div class="inline">
                 <div class="inline-inner address-inner">
@@ -299,7 +299,7 @@
     private async Task Save()
     {
         await http.PostAsJsonAsync("api/PersonalInformation", Personal);
-        await http.PostAsJsonAsync($"api/AdditionalInformation/", Additional);
+        
 
         message = "Saved!";
         State.IsSaved = true;
