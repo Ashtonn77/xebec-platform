@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +20,13 @@ namespace Server.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IApplicationPhaseHelperRepository applicationPhaseHelperRepository;
+        private readonly IMapper mapper;
 
-        public ApplicationPhaseHelperController(IUnitOfWork unitOfWork, IApplicationPhaseHelperRepository applicationPhaseHelperRepository)
+        public ApplicationPhaseHelperController(IUnitOfWork unitOfWork, IApplicationPhaseHelperRepository applicationPhaseHelperRepository, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.applicationPhaseHelperRepository = applicationPhaseHelperRepository;
+            this.mapper = mapper;
         }
 
         // GET: api/<ApplicationPhaseHelpersController>
@@ -99,7 +102,7 @@ namespace Server.Controllers
 
         // PUT api/<ApplicationPhaseHelpersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateApplicationPhaseHelper(int id, [FromBody] ApplicationPhaseHelper ApplicationPhaseHelper)
+        public async Task<IActionResult> UpdateApplicationPhaseHelper(int id, [FromBody] ApplicationPhaseHelperDTO ApplicationPhaseHelper)
         {
             if (!ModelState.IsValid)
             {
@@ -114,6 +117,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(ApplicationPhaseHelper, originalApplicationPhaseHelper);
                 _unitOfWork.ApplicationPhaseHelpers.Update(originalApplicationPhaseHelper);
                 await _unitOfWork.Save();
 
@@ -171,6 +175,25 @@ namespace Server.Controllers
             try
             {
                 var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfo(AppUserId);
+
+                return Ok(ApplicationPhaseHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        // GET: api/<ApplicationPhaseHelpersController>
+        [HttpGet("appPhase")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicationPhaseDetailse([FromQuery]int AppUserId, [FromQuery]int jobId)
+        {
+            try
+            {
+                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfoDetailed(AppUserId, jobId);
 
                 return Ok(ApplicationPhaseHelpers);
 

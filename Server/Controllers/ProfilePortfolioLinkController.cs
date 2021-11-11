@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class ProfilePortfolioLinkController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public ProfilePortfolioLinkController(IUnitOfWork unitOfWork)
+        public ProfilePortfolioLinkController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<ProfilePortfolioLinksController>
@@ -53,6 +56,24 @@ namespace Server.Controllers
             {
                 var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetT(q => q.Id == id);
                 return Ok(ProfilePortfolioLink);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet("all/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProfilePortfolioLinksAppUserId(int id)
+        {
+            try
+            {
+                var AdditionalInformationTests = await _unitOfWork.ProfilePortfolioLinks.GetAll(q => q.AppUserId == id);
+
+                return Ok(AdditionalInformationTests);
+
             }
             catch (Exception e)
             {
@@ -98,7 +119,7 @@ namespace Server.Controllers
 
         // PUT api/<ProfilePortfolioLinksController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateJob(int id, [FromBody] ProfilePortfolioLink profilePortfolioLink)
+        public async Task<IActionResult> UpdateJob(int id, [FromBody] ProfilePortfolioLinkDTO profilePortfolioLink)
         {
             if (!ModelState.IsValid)
             {
@@ -113,6 +134,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(profilePortfolioLink, originalProfilePortfolioLink);
                 _unitOfWork.ProfilePortfolioLinks.Update(originalProfilePortfolioLink);
                 await _unitOfWork.Save();
 
