@@ -47,14 +47,29 @@ namespace Server.Controllers
         }
 
         // GET api/<ProfilePortfolioLinksController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetProfilePortfolioLink(int id)
+        public async Task<IActionResult> GetSingleProfilePortfolioLink(int id)
         {
             try
             {
                 var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetT(q => q.Id == id);
+                return Ok(ProfilePortfolioLink);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleProfilePortfolioLinkByUserId(int id)
+        {
+            try
+            {
+                var ProfilePortfolioLink = await _unitOfWork.ProfilePortfolioLinks.GetT(q => q.AppUserId == id);
                 return Ok(ProfilePortfolioLink);
             }
             catch (Exception e)
