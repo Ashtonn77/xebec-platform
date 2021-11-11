@@ -184,7 +184,7 @@
 
                 <div class="inline-inner">
                     <label for="ethnicity">Ethnicity:</label>
-                    <input type="text" id="ethnicity" @bind="Personal.Ethnicity">
+                    <input type="text" id="ethnicity" @bind="Additional.Ethnicity">
                 </div>
 
             </div>
@@ -242,8 +242,9 @@
 {
     [Parameter] public EventCallback<int> TogglePersonalAddNewModal { get; set; }
 
-  
-    private PersonalTestInfo Personal = new PersonalTestInfo();
+
+    private PersonalInformation Personal = new PersonalInformation();
+    private AdditionalInformation Additional = new AdditionalInformation();
 
     private string message = string.Empty;
 
@@ -273,30 +274,33 @@
 
         }
 
-   
-        Personal = new PersonalTestInfo();
-        Personal.AppUserId = State.Id;     
+        Additional = new AdditionalInformation();
+        Additional.AppUserId = State.Id;
+
+        Personal = new PersonalInformation();
+        Personal.AppUserId = State.Id;
 
         State.IsSaved = false;
     }
 
     private Task OnDisabilityChanged(ChangeEventArgs e)
     {
-        Personal.Disability = e.Value.ToString();
-        return DisabilityChanged.InvokeAsync(Personal.Disability);
+        Additional.Disability = e.Value.ToString();
+        return DisabilityChanged.InvokeAsync(Additional.Disability);
     }
 
 
     private Task OnGenderChanged(ChangeEventArgs e)
     {
-        Personal.Gender = e.Value.ToString();
-        return GenderChanged.InvokeAsync(Personal.Gender);
+        Additional.Gender = e.Value.ToString();
+        return GenderChanged.InvokeAsync(Additional.Gender);
     }
 
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/PersonalsTest", Personal);
-  
+        await http.PostAsJsonAsync("api/PersonalInformation", Personal);
+        await http.PostAsJsonAsync($"api/AdditionalInformation/", Additional);
+
         message = "Saved!";
         State.IsSaved = true;
 

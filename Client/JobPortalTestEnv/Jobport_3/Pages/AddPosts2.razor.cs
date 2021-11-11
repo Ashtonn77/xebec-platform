@@ -14,11 +14,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         List<JobPlatform> jobPlatform { get; set; } = new List<JobPlatform>();
         List<JobType> jobTypes { get; set; } = new List<JobType>();
 
-        List<int> jobPlatformHelper = new List<int>();
-
+        int[] jobPlatformHelper = new int[0];
+        string[] jobPlatformHelperText = new string[0];
         int[] jobTypeHelper = new int[0];
+        string[] jobTypeHelperText = new string[0];
 
-        private static Action<string> countryAction;
+        private static Action<string> jobTypeAction;
+        private static Action<string> jobPlatformAction;
         protected override async Task OnInitializedAsync()
         {            
 
@@ -34,12 +36,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             }
 
             job.CreationDate = DateTime.Now;
-            countryAction = UpdateModelData;
+            jobTypeAction = jobTypeModelData;
+            jobPlatformAction = jobPlatformModelData;
             await base.OnInitializedAsync();
         }
         protected override async void OnAfterRender(bool firstRender)
         {
-            await JsRuntime.InvokeVoidAsync("select2");
+            await JsRuntime.InvokeVoidAsync("jobElement");
             base.OnAfterRender(firstRender);
         }
 
@@ -68,64 +71,66 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             job.Department = e.Value.ToString();
             return ValueChanged.InvokeAsync(job.Department);
         }
-        private void UpdateModelData(string value)
+        private void jobTypeModelData(string value)
         {
-            if(value != "")
-            {
-                int i = 0;
-                string[] numbers = value.Split(',');
-                int[] splitNumbers = new int[numbers.Length];
-                Array.Resize(ref jobTypeHelper, numbers.Length);
+            string[] fullMixedValue = value.Split(',');
+            int arrayLength = fullMixedValue.Length;
+            Array.Resize(ref jobTypeHelper, arrayLength/2);
+            Array.Resize(ref jobTypeHelperText, arrayLength/2);
 
-                foreach (var items in numbers)
-                {
-                    splitNumbers[i] = int.Parse(items);
-                    i++;
-                }
-                jobTypeHelper = splitNumbers;
-            }
-            else
-            {
-                jobTypeHelper = null;
-            }
-            StateHasChanged();
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobTypeHelper[i] = int.Parse(fullMixedValue[i]);
+
+            Array.Reverse(fullMixedValue);
+
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobTypeHelperText[i] = fullMixedValue[i];
+        }
+
+        private void jobPlatformModelData(string value)
+        {
+            string[] fullMixedValue = value.Split(',');
+            int arrayLength = fullMixedValue.Length;
+            Array.Resize(ref jobPlatformHelper, arrayLength/2);
+            Array.Resize(ref jobPlatformHelperText, arrayLength/2);
+
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobPlatformHelper[i] = int.Parse(fullMixedValue[i]);
+
+            Array.Reverse(fullMixedValue);
+
+            for (int i = 0; i < arrayLength / 2; i++)
+                jobPlatformHelperText[i] = fullMixedValue[i];
         }
 
         [JSInvokable]
-        public static void UpdateModel(string value)
+        public static void jobTypeModel(string value)
         {
-            countryAction.Invoke(value);
+            jobTypeAction.Invoke(value);
         }
 
-        private void CheckboxClicked(int idPlatform, object checkedValue)
+        [JSInvokable]
+        public static void jobPlatformModel(string value)
         {
-            int i = 0;
-            int[] list = new int[4];
-
-            if ((bool)checkedValue)
-            {
-                if (!jobPlatformHelper.Contains(idPlatform))
-                {
-                    jobPlatformHelper.Add(idPlatform);
-                }
-            }
-            else
-            {
-                if (jobPlatformHelper.Contains(idPlatform))
-                {
-                    jobPlatformHelper.Remove(idPlatform);
-                }
-            }
+            jobPlatformAction.Invoke(value);
         }
+
         private async Task SendData()
         {
             await httpClient.PostAsJsonAsync("api/Job", job);
             await httpClient.PostAsJsonAsync("api/JobPlatform", jobPlatformHelper);
             if(jobTypeHelper != null)
                 await httpClient.PostAsJsonAsync("api/JobTypeHelper", jobTypeHelper);
+
+            if(Array.IndexOf(jobPlatformHelperText, "Facebook") != -1)
+                await httpClient.PostAsJsonAsync("https://prod-170.westeurope.logic.azure.com:443/workflows/49a8ebc95f394b97a948dd59dfdcef24/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Fm6VYnJ8pqgyoJD8v26j8ZICGlR6p82_pjgQbPGoQT4", job);
+
+            if (Array.IndexOf(jobPlatformHelperText, "LinkedIn") != -1)
+                await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
+
+            //if (Array.IndexOf(jobPlatformHelperText, "Twitter") != -1)
+
             await JsRuntime.InvokeVoidAsync("alert", "Successfully Posted A New Job Post");
-            /*await httpClient.PostAsJsonAsync("https://prod-43.westeurope.logic.azure.com:443/workflows/8cbad277b9d84caf9121b54eb2652dba/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=o6pIiibRSUm7H6RS_BQgElgY9PWnzjqSTqkCMULIn_0", job);
-            await httpClient.PostAsJsonAsync("https://prod-170.westeurope.logic.azure.com:443/workflows/49a8ebc95f394b97a948dd59dfdcef24/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Fm6VYnJ8pqgyoJD8v26j8ZICGlR6p82_pjgQbPGoQT4", job);*/
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.IRepository;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 using XebecPortal.Shared;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,10 +19,12 @@ namespace XebecPortal.Server.Controllers
     public class JobPlatformController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public JobPlatformController (IUnitOfWork unitOfWork)
+        public JobPlatformController (IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<JobPlatformController>
@@ -109,7 +113,7 @@ namespace XebecPortal.Server.Controllers
 
         // PUT api/<JobPlatformController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateJobPlatform(int id, [FromBody] JobPlatform jobPlatform)
+        public async Task<IActionResult> UpdateJobPlatform(int id, [FromBody] JobPlatformDTO jobPlatform)
         {
             if (!ModelState.IsValid)
             {
@@ -124,6 +128,7 @@ namespace XebecPortal.Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(jobPlatform, originalJobType);
                 _unitOfWork.JobTypes.Update(originalJobType);
                 await _unitOfWork.Save();
 
