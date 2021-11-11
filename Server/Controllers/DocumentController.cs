@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class DocumentController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public DocumentController(IUnitOfWork unitOfWork)
+        public DocumentController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<DocumentsController>
@@ -44,10 +47,10 @@ namespace Server.Controllers
         }
 
         // GET api/<DocumentsController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetDocument(int id)
+        public async Task<IActionResult> GetSingleDocumentById(int id)
         {
             try
             {
@@ -61,7 +64,7 @@ namespace Server.Controllers
         }
 
         // GET api/<DocumentController>/userId=1
-        [HttpGet("userId={userId}")]
+        [HttpGet("all/{userId}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDocumentsByUserId(int userId)
@@ -70,6 +73,24 @@ namespace Server.Controllers
             {
                 var documents = await _unitOfWork.Documents.GetAll(q => q.AppUserId == userId);
                 return Ok(documents);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserid
+        // GET api/<DocumentController>/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleDocumentByUserID(int id)
+        {
+            try
+            {
+                var Document = await _unitOfWork.Documents.GetT(q => q.AppUserId == id);
+                return Ok(Document);
             }
             catch (Exception e)
             {
@@ -114,7 +135,7 @@ namespace Server.Controllers
 
         // PUT api/<DocumentsController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument(int id, [FromBody] Document Document)
+        public async Task<IActionResult> UpdateDocument(int id, [FromBody] DocumentsDTO Document)
         {
             if (!ModelState.IsValid)
             {
@@ -129,6 +150,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(Document, originalDocument);
                 _unitOfWork.Documents.Update(originalDocument);
                 await _unitOfWork.Save();
 

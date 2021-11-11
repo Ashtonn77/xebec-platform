@@ -184,7 +184,7 @@
 
                 <div class="inline-inner">
                     <label for="ethnicity">Ethnicity:</label>
-                    <input type="text" id="ethnicity" @bind="Personal.Ethnicity">
+                    <input type="text" id="ethnicity" @bind="Additional.Ethnicity">
                 </div>
 
             </div>
@@ -241,8 +241,9 @@
 {
     [Parameter] public EventCallback<int> TogglePersonalModal { get; set; }
 
-  
-    private PersonalTestInfo Personal = new PersonalTestInfo();
+
+    private PersonalInformation Personal = new PersonalInformation();
+    private AdditionalInformation Additional = new AdditionalInformation();
 
     private string message = string.Empty;
 
@@ -272,38 +273,41 @@
 
         }
 
-         try
-            {
-                Personal = await http.GetFromJsonAsync<PersonalTestInfo>($"api/PersonalsTest/{State.Id}"); 
-                
-            }
-            catch (Exception ex)
-            {
-                Personal = new PersonalTestInfo();
-                Personal.AppUserId = State.Id;
-            }
+        try
+        {
+            Personal = await http.GetFromJsonAsync<PersonalInformation>($"api/PersonalInformation/{State.Id}");
+            Additional = await http.GetFromJsonAsync<AdditionalInformation>($"api/AdditionalInformation/{State.Id}");
+        }
+        catch (Exception ex)
+        {
+            Personal = new PersonalInformation();
+            Additional = new AdditionalInformation();
+
+            Personal.AppUserId = State.Id;
+            Additional.AppUserId = State.Id;
+        }
 
         State.IsSaved = false;
     }
 
     private Task OnDisabilityChanged(ChangeEventArgs e)
     {
-        Personal.Disability = e.Value.ToString();
-        return DisabilityChanged.InvokeAsync(Personal.Disability);
+        Additional.Disability = e.Value.ToString();
+        return DisabilityChanged.InvokeAsync(Additional.Disability);
     }
 
 
     private Task OnGenderChanged(ChangeEventArgs e)
     {
-        Personal.Gender = e.Value.ToString();
-        return GenderChanged.InvokeAsync(Personal.Gender);
+        Additional.Gender = e.Value.ToString();
+        return GenderChanged.InvokeAsync(Additional.Gender);
     }
 
     private async Task Save()
     {
-   
-        await http.PutAsJsonAsync($"api/PersonalsTest/{Personal.Id}", Personal);
-             
+
+        await http.PutAsJsonAsync($"api/PersonalInformation/{Personal.Id}", Personal);
+        await http.PutAsJsonAsync($"api/AdditionalInformation/{Personal.Id}", Additional);
         message = "Saved!";
         State.IsSaved = true;
 

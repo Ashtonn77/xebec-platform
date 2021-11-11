@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class AdditionalInformationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public AdditionalInformationController(IUnitOfWork unitOfWork)
+        public AdditionalInformationController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         } 
 
         // GET: api/<AdditionalInformationController>
@@ -97,7 +100,7 @@ namespace Server.Controllers
 
         // PUT api/<AdditionalInformationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAdditionalInformation(int id, [FromBody] AdditionalInformation AdditionalInformation)
+        public async Task<IActionResult> UpdateAdditionalInformation(int id, [FromBody] AdditionalInformationDTO AdditionalInformation)
         {
             if (!ModelState.IsValid)
             {
@@ -106,13 +109,14 @@ namespace Server.Controllers
 
             try
             {
-                var originalAdditionalInformation = await _unitOfWork.AdditionalInformation.GetT(q => q.Id == id);
+                var originalAdditionalInformation = await _unitOfWork.AdditionalInformationTests.GetT(q => q.Id == id);
 
                 if (originalAdditionalInformation == null)
                 {
                     return BadRequest("Submitted data is invalid");
                 }
-                _unitOfWork.AdditionalInformation.Update(originalAdditionalInformation);
+                mapper.Map(AdditionalInformation, originalAdditionalInformation);
+                _unitOfWork.AdditionalInformationTests.Update(originalAdditionalInformation);
                 await _unitOfWork.Save();
 
                 return NoContent();

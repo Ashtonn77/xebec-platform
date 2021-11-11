@@ -1,9 +1,8 @@
+@inject HttpClient HttpClient
 @inject State State
-@inject IJSRuntime jsRuntime
-@inject HttpClient http
 
 <style>
-    @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+ @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
     * {
         margin: 0;
@@ -11,15 +10,15 @@
         box-sizing: border-box;
         font-family: 'Montserrat', sans-serif;
     }
-
+    
     .modal-wrapper {
 
         width: 100%;
-        height: 100%;
-        position: absolute;
+        height: 100vh;
+        position: fixed;
         top: 0;
         left: 0;
-        z-index: 1;
+        z-index: 10;
         background-color: rgba(0, 0, 0, 0.9);
 
     }
@@ -47,7 +46,7 @@
         width: 90%;
         margin: auto;
         max-width: 700px;
-        max-height: 450px;
+        max-height: 600px;
         display: flex;
         flex-direction: column;
         border-radius: 5px;
@@ -132,12 +131,32 @@
         align-items: center;
 
     }
+
+    .btn-close, .btn-save{
+        outline: none;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-close{
+        background-color: #ff4045;
+    }
+
+    .btn-close:hover, .btn-save:hover{
+        background-color: #cf2ec4;
+    }
+
+    .btn-save{
+        background-color: #698ad6;
+    }
+
+
 </style>
 
 <div class="modal-wrapper">
 
     <div class="upper">
-        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleWorkModalAddNew.InvokeAsync())">Close</button>
+        <button class="btn btn-danger btn-sm btn-close" @onclick="@(() => ToggleModal.InvokeAsync(Job))">Close</button>
     </div>
 
     <div class="lower">
@@ -149,27 +168,51 @@
 
         <div class="inline-inner">
             <label for="companyName">Company Name:</label>
-            <input type="text" id="companyName" @bind="WorkHistory.CompanyName">
+            <input type="text" id="companyName" @bind="Job.Company">
         </div>
 
         <div class="inline-inner">
             <label for="jobTitle">Job Title:</label>
-            <input type="text" id="jobTitle" @bind="WorkHistory.JobTitle">
+            <input type="text" id="jobTitle" @bind="Job.Title">
         </div>
 
 
     </div>
 
+    
     <div class="inline">
 
         <div class="inline-inner">
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" @bind="WorkHistory.StartDate">
+            <label for="location">Location:</label>
+            <input type="text" id="location" @bind="Job.Location">
         </div>
 
         <div class="inline-inner">
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" @bind="WorkHistory.EndDate">
+            <label for="department">Department:</label>
+            <input type="text" id="department" @bind="Job.Department">
+        </div>
+
+    </div>
+
+    <div class="inline">       
+
+        <div class="inline-inner">
+            <label for="dueDate">Due Date:</label>
+            <input type="date" id="dueDate" @bind="Job.DueDate">
+        </div>
+
+        <div class="inline-inner">
+            <label for="creationDate">Creation Date:</label>
+            <input type="date" id="creationDate" @bind="Job.CreationDate">
+        </div>
+
+    </div>
+
+     <div class="inline">
+
+        <div class="inline-inner">
+            <label for="compensation">Compensation:</label>
+            <input type="text" id="compensation" placeholder="$" @bind="Job.Compensation">
         </div>
 
     </div>
@@ -177,13 +220,13 @@
     <div class="inline">
         <div class="inline-inner address-inner">
             <label for="description">Description:</label>
-            <textarea id="description" @bind="WorkHistory.Description"></textarea>
+            <textarea id="description" @bind="Job.Description"></textarea>
         </div>
     </div>
 
-   <div class="btn-container">
+    <div class="btn-container">
 
-                <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                <button type="button" class="btn btn-success btn-sm mt-2 btn-save" @onclick="Save">Save</button>
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
 
             </div>
@@ -194,47 +237,32 @@
 
 </div>
 
+@code{
 
+    [Parameter] public EventCallback<Job> ToggleModal { get; set; } 
 
-@code
-{
-    [Parameter] public EventCallback<int> ToggleWorkModalAddNew { get; set; }
+    public Job Job { get; set; } = new Job();
+    string message = string.Empty;
 
-    
-   private WorkHistory WorkHistory = new WorkHistory();
-   
-   private string message = string.Empty;    
-
-      protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
-        if (!string.IsNullOrWhiteSpace(userdata))
-        {
-            string[] userdetails = userdata.Split(';');
-            State.UserEmail = userdetails[0];
-            State.Role = userdetails[1].ToLower();
-            State.Id = Int32.Parse(userdetails[3]);      
+        try{
+
+            Job = await HttpClient.GetFromJsonAsync<Job>($"api/job/{State.JobPostEditId}");
+
+        }
+        catch(Exception){
+
+            Job = new Job();
 
         }
 
-  
-                WorkHistory = new WorkHistory();
-                WorkHistory.StartDate = DateTime.Now;
-                WorkHistory.EndDate = DateTime.Now;    
-                WorkHistory.AppUserId = State.Id;
- 
-        State.IsSaved = false;
     }
-   
+
     private async Task Save()
     {
-        await http.PostAsJsonAsync("api/WorkHistory", WorkHistory); 
-        message = "Saved!";
-        State.IsSaved = true;
-         
-    }    
-
-
+        await HttpClient.PutAsJsonAsync($"api/job/{Job.Id}", Job);
+        message = "Saved";
+    }
 
 }

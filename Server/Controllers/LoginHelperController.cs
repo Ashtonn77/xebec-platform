@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class LoginHelperController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public LoginHelperController(IUnitOfWork unitOfWork)
+        public LoginHelperController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<LoginHelpersController>
@@ -114,7 +117,7 @@ namespace Server.Controllers
 
         // PUT api/<LoginHelpersController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLoginHelper(int id, [FromBody] LoginHelper LoginHelper)
+        public async Task<IActionResult> UpdateLoginHelper(int id, [FromBody] LoginHelperDTO LoginHelper)
         {
             if (!ModelState.IsValid)
             {
@@ -129,6 +132,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(LoginHelper, originalLoginHelper);
                 _unitOfWork.LoginHelpers.Update(originalLoginHelper);
                 await _unitOfWork.Save();
 

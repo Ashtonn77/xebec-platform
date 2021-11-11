@@ -3,6 +3,8 @@
 @inject IJSRuntime jsr
 @inject HttpClient HttpClient
 @inject NavigationManager NavManager
+@inject State State
+
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
@@ -32,8 +34,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
     }
 
         .header h5 {
@@ -246,8 +246,71 @@
     .select-details p span {
         font-weight: bold;
     }
+
+
+    /*edit/delete styles*/
+    .primary-container{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-remove, .btn-edit{
+        outline: none;
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-remove{
+        background-color: #ff4045;
+    }
+
+    .btn-remove:hover, .btn-edit:hover{
+        background-color: #cf2ec4;
+    }
+
+    .btn-edit{
+        background-color: #698ad6;
+    }
+
+/*loading test*/
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: 20;
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
 </style>
 
+
+@if(loadSpinner)
+{
+    <div class="spinner"></div>
+}
+
+@if(IsModalOpened)
+{
+    <EditJobModal ToggleModal="ToggleModal"></EditJobModal>
+}
+
+@if(State.UserEmail != null){
 
 <!--Entire page as a flexbox-->
 <div class="wrapper-job">
@@ -354,8 +417,19 @@
                         {
                             <div class="rightbox">
                                 <!--Details box-->
-                                <div class="select-details position-fixed">
-                                    <h2>@CurrentJob2.Title</h2>
+                                <div class="select-details position-fixed" style="padding: 10px;">
+                                    
+                                    <div class="primary-container">
+                                    
+                                        <h2>@CurrentJob2.Title</h2> 
+                                        <div class="inner-btn-container">
+                                            <button class="btn btn-danger btn-sm btn-remove" @onclick="() => RemoveJob(CurrentJob2)">Remove</button>
+                                            <button class="btn btn-primary btn-sm btn-edit" @onclick="() => ToggleModal(CurrentJob2)">Edit</button>                                   
+                                        </div>
+
+
+                                    </div>
+
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
                                     <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
                                     <button class="btn" @onclick="() => ViewCandidates(CurrentJob2)">View Candidates</button>
@@ -386,7 +460,71 @@
     }
     else
     {
-        <br /> <br /> <br />
-        <h2>Loading...</h2>
+        <div class="spinner"></div>
     }
 </div>
+}
+else
+{
+    <UnauthorizedComponent/>
+}
+@code{
+
+    bool loadSpinner = false;
+    bool IsModalOpened = false;
+
+
+      protected override async Task OnInitializedAsync()
+      {
+            await base.OnInitializedAsync();
+            var userdata = await jsr.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(userdata))
+            {
+                string[] userdetails = userdata.Split(';');
+                State.UserEmail = userdetails[0];
+                State.Role = userdetails[1].ToLower();
+                State.Id = Int32.Parse(userdetails[3]);        
+
+            }
+
+            try
+            {
+                LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+                JobTypes = await HttpClient.GetFromJsonAsync<List<JobType>>("api/jobtype");
+
+                  if (LstJobs != null)
+                  {
+                        CurrentJob2 = LstJobs[0];
+                  }
+
+            }
+            catch (Exception ex)
+            {
+                LstJobs = new List<Job>();
+                JobTypes = new List<JobType>();
+            }
+
+          
+        }
+
+
+    private async Task ToggleModal(Job Job)
+    {
+        loadSpinner = true;
+        State.JobPostEditId = Job.Id;
+        IsModalOpened = !IsModalOpened; 
+        LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+        ViewJob(LstJobs[0]);
+        loadSpinner = false;      
+    }
+
+     private async Task RemoveJob(Job Job)
+    {   
+        loadSpinner = true;
+        await HttpClient.DeleteAsync($"api/job/{Job.Id}");        
+        LstJobs = await HttpClient.GetFromJsonAsync<List<Job>>("api/job");
+        ViewJob(LstJobs[0]);        
+        loadSpinner = false;      
+    }
+
+}

@@ -170,111 +170,19 @@
 
     <!-- popup content -->
     <div class="popup-content">
-
-        <div>
-            <form>
-                <div class="form-row">
-                    <span class="close" @onclick="ClosePopUp">&times;</span>
-                </div>
-                <div class="form-row">
-                    <label class="my-1 mr-2" for="apphase">Change Status</label>
-                </div>
-                <div class="form-row">
-
-                    <div class="form-group col-md-6">
-                        <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
-
-                        <option selected>Choose...</option>
-
-                        @if (TempPhaseHelper != null && applicationPhaseHelpers != null)
-                        {
-
-                            <select id="phases" @bind="TempPhaseHelper.ApplicationPhase.Description" class="custom-select my-1 mr-sm-2">
-
-                                <option selected>Choose...</option>
-                                @foreach (var phase in applicationPhases)
-                                {
-                                    <option value="@phase.Description">@phase.Description</option>
-                                }
-                            </select>
-
-                        }
-                        else
-                        {
-                            <option selected>Loading...</option>
-                        }
-
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="my-1 mr-2" for="phaseStatus">Phase Status</label>
-
-                        <option selected>Choose...</option>
-
-                        @if (TempPhaseHelper != null)
-                        {
-
-                            <select id="phase" @bind="TempPhaseHelper.Status.Description" class="custom-select my-1 mr-sm-2">
-
-                                <option selected>Choose...</option>
-                                @foreach (var status in statuses)
-                                {
-                                    <option value="@status.Description">@status.Description</option>
-                                }
-                            </select>
-                            <!--Testing-->
-                            <p>TempPhaseHelper.Status.Description</p>
-                            <!--/Testing-->
-
-                        }
-                        else
-                        {
-                            <option selected>Loading...</option>
-                        }
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="comments">Comments</label>
-                    @if (TempPhaseHelper != null)
-                    {
-                        <input type="text" class="form-control" id="comments" placeholder="Empty" @bind-value="@TempPhaseHelper.Comments">
-                        <!--Testing-->
-                        <p>@TempPhaseHelper.Comments</p>
-                        <!--/Testing-->
-                    }
-
-                </div>
-
-                <!--Testing-->
-                <div class="form-row">
-                    @if (AppPhases != null)
-                    {
-                        <ul>
-                            @for (int i = 0; i < AppPhases.Count(); i++)
-                            {
-                                var ph = AppPhases[i];
-                                @if (ph.ApplicationPhase != null && ph.Status.Description != null)
-                                {
-                                    <li>Phase : @ph.ApplicationPhase.Description</li>
-                                    <li>Status : @ph.Status.Description</li>
-                                }
-                                else
-                                {
-
-                                }
-
-                                <li>Time @ph.TimeMoved</li>
-                                <li>Comments : @ph.Comments</li>
-                            }
-                        </ul>
-                    }
-                </div>
-                <!--/Testing-->
-                <div class="form-row">
-                    <button type="submit" onc class="btn btn-primary mb-2" @onclick="ClosePopUp">Save</button>
-                </div>
-            </form>
-        </div>
+        <!--Testing-->
+        <p>Application phases for user</p>
+        <ul>
+            @if (CandidateAppPhases != null)
+            {
+                @foreach (var tst in CandidateAppPhases)
+                {
+                    <li>tst</li>
+                }
+            }
+        </ul>
+        <!--/Testing-->
+        
     </div>
 
 </div>
@@ -303,13 +211,13 @@
 }
 
 @functions {
-    
+
     public Status tempStatus { get; set; } = new Status();
     public ApplicationPhase tempPhase { get; set; } = new ApplicationPhase();
 
 
 
-    IList<ApplicationPhaseHelper> AppPhases { get; set; }
+    IList<ApplicationPhaseHelper> CandidateAppPhases { get; set; }
     //Pass required Info to popup form
     int ind = 0;
     private async Task PassInfoAsync(PersonalInformation Candidate, int jobId = 0)
@@ -324,12 +232,6 @@
 
         //Get All ApplicationPhases Associated with candidate's appuserid
         //this will get it from the api's database
-        //AppPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>($"api/ApplicationPhaseHelper/UserId={AppUserId}");
-
-        //Get Latest Phase Helpers Info > required by form
-        //This latest application phase for the current candidate
-        ApplicationPhaseHelper LastPhaseInfo = GetLastestPhaseInfo(AppPhases);
-
         //Get status for candidate
 
         //Get required info required by form >
@@ -337,7 +239,8 @@
         string lastName = Candidate.LastName;
 
 
-        //TempPhaseHelper = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>($"api/<>/?AppUserId={AppUserId}")&JobId={JobId}; ;
+        CandidateAppPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>($"api/ApplicationPhaseHelper/appPhase?AppUserId=14&jobId=33");
+
 
 
     }

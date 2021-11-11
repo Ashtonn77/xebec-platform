@@ -1,5 +1,3 @@
-
-
 using System.Collections.Generic;
 
 namespace XebecPortal.Client.GamifiedEnvBeta.ComponentsNew
