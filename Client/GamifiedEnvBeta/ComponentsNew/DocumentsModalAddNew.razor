@@ -203,7 +203,7 @@
         string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
         Document.DocumentName = url != null ? url[url.Length - 1] : "";
         message = "Saved!";
-        await http.PostAsJsonAsync("api/DocumentTest", Document);
+        await http.PostAsJsonAsync("api/Document", Document);
         State.IsSaved = true;        
 
     }

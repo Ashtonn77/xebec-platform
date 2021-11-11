@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,18 +20,20 @@ namespace Server.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUsersCustomRepo usersCustomRepo;
+        private readonly IMapper mapper;
 
-        public PersonalInformationController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo)
+        public PersonalInformationController(IUnitOfWork unitOfWork, IUsersCustomRepo _usersCustomRepo, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             usersCustomRepo = _usersCustomRepo;
+            this.mapper = mapper;
         } 
 
         // GET: api/<PersonalInformationController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetPersonalInformation()
+        public async Task<IActionResult> GetPersonalInformations()
         {
             try
             {
@@ -46,7 +49,7 @@ namespace Server.Controllers
         }
 
         // GET api/<PersonalInformationController>/5
-        [HttpGet("{id}")]
+        [HttpGet("single/{id}")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPersonalInformation(int id)
@@ -54,6 +57,42 @@ namespace Server.Controllers
             try
             {
                 var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.Id == id);
+                return Ok(PersonalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserId
+        // GET api/<PersonalInformationController>/5
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSibglePersonalInformationByUserID(int id)
+        {
+            try
+            {
+                var PersonalInformation = await _unitOfWork.PersonalInformation.GetT(q => q.AppUserId == id);
+                return Ok(PersonalInformation);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+        //get by appuserId
+        // GET api/<PersonalInformationController>/5
+        [HttpGet("all/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPersonalInformationsByUserID(int id)
+        {
+            try
+            {
+                var PersonalInformation = await _unitOfWork.PersonalInformation.GetAll(q => q.AppUserId == id);
                 return Ok(PersonalInformation);
             }
             catch (Exception e)
@@ -155,7 +194,7 @@ namespace Server.Controllers
 
         // PUT api/<PersonalInformationController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalInformation PersonalInformation)
+        public async Task<IActionResult> UpdatePersonalInformation(int id, [FromBody] PersonalInformationDTO PersonalInformation)
         {
             if (!ModelState.IsValid)
             {
@@ -170,6 +209,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(PersonalInformation, originalPersonalInformation);
                 _unitOfWork.PersonalInformation.Update(originalPersonalInformation);
                 await _unitOfWork.Save();
 

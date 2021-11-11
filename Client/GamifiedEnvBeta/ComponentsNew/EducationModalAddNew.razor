@@ -193,7 +193,7 @@
     [Parameter] public EventCallback<int> ToggleEducationModalAddNew { get; set; }
 
 
-    private EducationTest Education = new EducationTest();     
+    private Education Education = new Education();     
    
 
     private string message = string.Empty;
@@ -211,7 +211,7 @@
 
         }
 
-        Education = new EducationTest();
+        Education = new Education();
         Education.StartDate = DateTime.Now;
         Education.EndDate = DateTime.Now;
         Education.AppUserId = State.Id;
@@ -223,8 +223,7 @@
 
     private async Task Save()
     {
-        //TODO: Change controller
-        await http.PostAsJsonAsync("api/EducationTest", Education); 
+        await http.PostAsJsonAsync("api/Education", Education); 
        
         message = "Saved!";
         State.IsSaved = true;

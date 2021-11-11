@@ -149,12 +149,12 @@
 
         <div class="inline-inner">
             <label for="github">GitHub:</label>
-            <input type="text" id="github" @bind="AdditionalInfo.GitHubLink">
+            <input type="text" id="github" @bind="PortfolioLink.GitHubLink">
         </div>
 
         <div class="inline-inner">
             <label for="facebook">Facebook:</label>
-            <input type="text" id="facebook" @bind="AdditionalInfo.FacebookLink">
+            <input type="text" id="facebook" @bind="PortfolioLink.TwitterLink">
         </div>
 
 
@@ -164,12 +164,12 @@
 
         <div class="inline-inner">
             <label for="linkedin">LinkedIn:</label>
-            <input type="text" id="linkedin" @bind="AdditionalInfo.LinkedInLink">
+            <input type="text" id="linkedin" @bind="PortfolioLink.LinkedInLink">
         </div>
 
         <div class="inline-inner">
             <label for="website">Website:</label>
-            <input type="text" id="website" @bind="AdditionalInfo.PersonalWebsiteUrl">
+            <input type="text" id="website" @bind="PortfolioLink.PersonalWebsiteUrl">
         </div>
 
     </div>
@@ -192,13 +192,13 @@
 {
     [Parameter] public EventCallback<int> TogglePorfoliosModal { get; set; }
 
-     /*
-    
-    TODO: replace C:\fakepath\ in document url with path ro where file is stored
-    
-    */
+    /*
 
-    private AdditionalInformationTest AdditionalInfo = new AdditionalInformationTest();
+   TODO: replace C:\fakepath\ in document url with path ro where file is stored
+
+   */
+
+    private ProfilePortfolioLink PortfolioLink = new ProfilePortfolioLink();
 
     private string message = string.Empty;
 
@@ -217,17 +217,17 @@
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
 
-             
+
 
             try
             {
-                AdditionalInfo = await http.GetFromJsonAsync<AdditionalInformationTest>($"api/AdditionalInformationTest/{State.Id}");
-            }   
+                PortfolioLink = await http.GetFromJsonAsync<ProfilePortfolioLink>($"api/ProfilePortfolioLink/{State.Id}");
+            }
             catch(Exception ex)
             {
-                AdditionalInfo = new AdditionalInformationTest();
-                AdditionalInfo.AppUserId = State.Id;
-            }  
+                PortfolioLink = new ProfilePortfolioLink();
+                PortfolioLink.AppUserId = State.Id;
+            }
 
         }
 
@@ -237,8 +237,8 @@
     private async Task Save()
     {
         message = "Saved!";
-        await http.PutAsJsonAsync($"api/AdditionalInformationTest/{AdditionalInfo.Id}", AdditionalInfo); 
-        State.IsSaved = true;     
+        await http.PutAsJsonAsync($"api/ProfilePortfolioLink/{PortfolioLink.Id}", PortfolioLink);
+        State.IsSaved = true;
 
     }
 

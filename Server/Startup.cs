@@ -59,8 +59,6 @@ namespace XebecPortal.Server
             services.AddTransient<IApplicationPhaseHelperRepository, ApplicationPhaseHelperRepository>();
 
 
-            services.AddSingleton<State>();
-
             services.AddAutoMapper(typeof(MapperInitializer_));
             services.AddAutoMapper(typeof(MapperInitializer));
 

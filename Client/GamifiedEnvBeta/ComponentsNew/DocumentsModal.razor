@@ -166,15 +166,16 @@
 
 @code
 {
-    Document Document = new Document();
+
     [Parameter] public EventCallback<Document> ToggleDocumentsModal { get; set; }
 
+    Document Document = new Document();
     /*
 
     TODO: replace C:\fakepath\ in document url with path ro where file is stored
 
     */
-   
+
 
     private string message = string.Empty;
 
@@ -188,37 +189,36 @@
             State.UserEmail = userdetails[0];
             State.Role = userdetails[1].ToLower();
             State.Id = Int32.Parse(userdetails[3]);
-         
+
         }
 
-           try
-            {
-                Document = await http.GetFromJsonAsync<Document>($"api/DocumentTest/{State.Id}");
-                Document.DocumentUrl = null;
-            }
-            catch (Exception ex)
-            {
-                Document = new Document();
-                Document.AppUserId = State.Id;
-            }
+        try
+        {
+            Document = await http.GetFromJsonAsync<Document>($"api/Document/{State.Id}");
+            Document.DocumentUrl = null;
+        }
+        catch (Exception ex)
+        {
+            Document = new Document();
+            Document.AppUserId = State.Id;
+        }
 
         State.IsSaved = false;
     }
 
     private async Task Save()
-    {        
-        //TODO: Change controller
-
+    {
         message = "Saved!";
         if(Document.DocumentUrl != null)
         {
             string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
             Document.DocumentName = url != null ? url[url.Length - 1] : "";
-            await http.PutAsJsonAsync($"api/DocumentTest/{Document.Id}", Document);
-             
+
+            await http.PutAsJsonAsync($"api/Document/{Document.Id}", Document);
+
         }
-        
-        State.IsSaved = true;        
+
+        State.IsSaved = true;
 
     }
 

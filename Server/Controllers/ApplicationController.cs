@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,12 @@ namespace Server.Controllers
     public class ApplicationController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper mapper;
 
-        public ApplicationController(IUnitOfWork unitOfWork)
+        public ApplicationController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: api/<ApplicationsController>
@@ -94,7 +97,7 @@ namespace Server.Controllers
 
         // PUT api/<ApplicationsController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateApplication(int id, [FromBody] Application Application)
+        public async Task<IActionResult> UpdateApplication(int id, [FromBody] ApplicationDTO Application)
         {
             if (!ModelState.IsValid)
             {
@@ -109,6 +112,7 @@ namespace Server.Controllers
                 {
                     return BadRequest("Submitted data is invalid");
                 }
+                mapper.Map(Application, originalApplication);
                 _unitOfWork.Applications.Update(originalApplication);
                 await _unitOfWork.Save();
 

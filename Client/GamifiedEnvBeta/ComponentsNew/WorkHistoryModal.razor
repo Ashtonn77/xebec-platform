@@ -199,10 +199,10 @@
 @code
 {
     
-    [Parameter] public EventCallback<WorkHistoryTest> ToggleWorkModal { get; set; }
+    [Parameter] public EventCallback<WorkHistory> ToggleWorkModal { get; set; }
 
     
-   private WorkHistoryTest WorkHistory = new WorkHistoryTest();
+   private WorkHistory WorkHistory = new WorkHistory();
 
 
    private string message = string.Empty;    
@@ -222,11 +222,11 @@
 
          try
             {
-                WorkHistory = await http.GetFromJsonAsync<WorkHistoryTest>($"api/WorkHistoryTest/{State.Id}");
+                WorkHistory = await http.GetFromJsonAsync<WorkHistory>($"api/WorkHistory/single/{State.WorkEditId}");
             }
             catch(Exception ex)
             {
-                WorkHistory = new WorkHistoryTest();
+                WorkHistory = new WorkHistory();
                 WorkHistory.StartDate = DateTime.Now;
                 WorkHistory.EndDate = DateTime.Now;    
                 WorkHistory.AppUserId = State.Id;
@@ -237,8 +237,7 @@
    
     private async Task Save()
     {
-        //TODO: Change controller
-        await http.PutAsJsonAsync($"api/WorkHistoryTest/{WorkHistory.Id}", WorkHistory);
+        await http.PutAsJsonAsync($"api/WorkHistory/{WorkHistory.Id}", WorkHistory);
         message = "Saved!";
         State.IsSaved = true;
          
