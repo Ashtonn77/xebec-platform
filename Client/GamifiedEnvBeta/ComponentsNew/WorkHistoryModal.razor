@@ -222,7 +222,7 @@
 
          try
             {
-                WorkHistory = await http.GetFromJsonAsync<WorkHistory>($"api/WorkHistory/{State.Id}");
+                WorkHistory = await http.GetFromJsonAsync<WorkHistory>($"api/WorkHistory/single/{State.WorkEditId}");
             }
             catch(Exception ex)
             {

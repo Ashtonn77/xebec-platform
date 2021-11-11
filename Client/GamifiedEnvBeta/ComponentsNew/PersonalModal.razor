@@ -275,7 +275,8 @@
 
         try
         {
-            Personal = await http.GetFromJsonAsync<PersonalInformation>($"api/PersonalInformation/{State.Id}");
+            //TODO get the data into the modal
+            Personal = await http.GetFromJsonAsync<PersonalInformation>($"api/PersonalInformation/single/{State.Id}");
             Additional = await http.GetFromJsonAsync<AdditionalInformation>($"api/AdditionalInformation/{State.Id}");
         }
         catch (Exception ex)

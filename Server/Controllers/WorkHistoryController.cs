@@ -80,6 +80,22 @@ namespace Server.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetSingleWorkHistoryByUserId(int id)
+        {
+            try
+            {
+                var ProfilePortfolioLink = await _unitOfWork.WorkHistory.GetT(q => q.AppUserId == id);
+                return Ok(ProfilePortfolioLink);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<WorkHistoryController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

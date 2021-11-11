@@ -299,7 +299,7 @@
     private async Task Save()
     {
         await http.PostAsJsonAsync("api/PersonalInformation", Personal);
-        await http.PutAsJsonAsync($"api/AdditionalInformation/{Personal.Id}", Additional);
+        await http.PostAsJsonAsync($"api/AdditionalInformation/", Additional);
 
         message = "Saved!";
         State.IsSaved = true;
