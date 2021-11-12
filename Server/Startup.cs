@@ -59,8 +59,6 @@ namespace XebecPortal.Server
             services.AddTransient<IApplicationPhaseHelperRepository, ApplicationPhaseHelperRepository>();
 
 
-            services.AddSingleton<State>();
-
             services.AddAutoMapper(typeof(MapperInitializer_));
             services.AddAutoMapper(typeof(MapperInitializer));
 
@@ -88,7 +86,7 @@ namespace XebecPortal.Server
             })
             .AddCookie(options =>
             {
-                // options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
+                options.LoginPath = "/api/ThirdPartyUser/GoogleSignIn";
             })
             .AddLinkedIn(Linkedinoptions =>
             {

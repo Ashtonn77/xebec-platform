@@ -97,7 +97,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         [HttpGet("GitHubSignIn")]
         public async Task<IActionResult> GitHubSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("GithubResponse") }, "Github");
         }
 
 
@@ -198,7 +198,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         [HttpGet("TwitterSignIn")]
         public async Task<IActionResult> TwitterSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("TwitterResponse") }, "Twitter");
 
         }
 
@@ -247,7 +247,7 @@ namespace Server.GamifiedApplicationPhaseFour.Controllers
         [HttpGet("LinkedInSignIn")]
         public async Task<IActionResult> LinkedInSignIn()
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "Google");
+            return Challenge(new AuthenticationProperties { RedirectUri = Url.Action("LinkedInResponse") }, "LinkedIn");
 
         }
 

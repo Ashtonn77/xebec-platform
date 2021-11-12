@@ -213,7 +213,9 @@
         {
             string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
             Document.DocumentName = url != null ? url[url.Length - 1] : "";
+
             await http.PutAsJsonAsync($"api/Document/{Document.Id}", Document);
+
         }
 
         State.IsSaved = true;

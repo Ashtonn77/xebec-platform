@@ -1,4 +1,4 @@
-@page "/profile_"
+@page "/jobposting"
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
@@ -88,6 +88,7 @@
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+
 </style>
 
 <div class="wrapper">
@@ -97,10 +98,13 @@
         <a href="/profile_" class="mb-2">@State.UserEmail</a>
         <a href="/jobpostforcandidate">Home</a>        
         <a href="/testdashboard">Analytical Dashboard</a>
+        <a href="/testlogout">Logout</a> 
+
+        <hr style="width:90%; margin:0 auto" />
+            
         <a href="/jobboard">View Jobs</a>
         <a href="/jobposting">View Posted Jobs</a>
-        <a href="/addpost2">Post a Job</a>
-        <a href="/testlogout">Logout</a> 
+        <a href="/addposts2">Post a Job</a>
         
     </div>
 
@@ -124,7 +128,7 @@
     <div class="main-body">
 
         
-<UserProfileComponent_/>
+<JobPostingSubComponent/>
 
   </div>
 

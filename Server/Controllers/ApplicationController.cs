@@ -63,11 +63,11 @@ namespace Server.Controllers
         }
 
         // POST api/<ApplicationsController>
-        [HttpPost]
+        [HttpPost("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] Job jobTest, int userId)
+        public async Task<IActionResult> CreateApplication([FromBody] Job jobTest, int id)
         {
             Application application = new Application();
 
@@ -79,7 +79,7 @@ namespace Server.Controllers
             try
             {
                 application.JobId = jobTest.Id;
-                application.AppUserId = userId;
+                application.AppUserId = id;
                 application.TimeApplied= DateTime.Now;
                 await _unitOfWork.Applications.Insert(application);
                 //await _unitOfWork.Applications.Insert(Application);
