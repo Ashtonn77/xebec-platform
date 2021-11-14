@@ -38,7 +38,8 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private void ViewCandidates(Job selectedJob)
         {
-            NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
+             //NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
+            NavManager.NavigateTo($"candidateinfoprimary/{selectedJob.Id}");
         }
 
 

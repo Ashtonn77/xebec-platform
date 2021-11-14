@@ -2,7 +2,6 @@
 @inject State State
 @inject IJSRuntime jsRuntime
 @inject NavigationManager NavManager
-@using XebecPortal.Client.JobPortalTestEnv.Models
 @using XebecPortal.Shared.Security
 
 <style>
@@ -13,7 +12,7 @@
         flex-grow: 1;
         display: flex;
         justify-content: space-evenly;
-        align-items: center;
+        align-items: flex-start;
         overflow: auto;
         min-height: 0;
     }
@@ -31,23 +30,14 @@
   background-color: #a9baba;
 }
 
-    .left {
-        width: 45%;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-    }
-
-    .right {
-        width: 50%;
+    .left, .right {
+        width: 46%;
         height: 100%;
         margin: auto;
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0;        
+        display: flex;
+        justify-content: center;        
     }
+
 
     .content {
         width: 100%;
@@ -58,121 +48,6 @@
         max-width: 550px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;        
     }
-
-    .right .content
-    {
-        max-width: 600px;
-        max-height: 400px; 
-        padding: 15px;
-        font-size: 15px;  
-        overflow-y: auto;
-    }
-
-.right .content::-webkit-scrollbar {
-  width: 0;
-}
-
-.right .content::-webkit-scrollbar-thumb {
-  background-color: #fff;  
-}
-
-    .right .content ul
-    {
-        margin: 5px 0 0 0;
-        padding: 0;
-    }
-
-    .right .content ul li{
-        list-style: none;
-        margin-bottom: 10px;
-        font-weight: bold;
-        color: green;
-    }
-
-    .document-type
-    {
-        font-size: 13px;
-        margin-left: 10px;        
-    }
-
-    .personal {
-        display: flex;
-        flex-direction: column;
-    }
-
-    h5 {
-        font-weight: bold;
-    }
-
-    .top {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid lightgray;
-    }
-
-    .bottom {
-        position: relative;
-        display: flex;
-        padding: 10px 5px;
-        margin: 0.8rem 0;
-    }
-
-    .image img {
-        max-width: 180px;
-        max-height: 180px;
-    }
-
-    .details {
-        width: 100%;
-        height: inherit;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 0 10px;
-    }
-
-    .details span {
-        font-size: 14px;
-        margin-bottom: 5px;
-        letter-spacing: 0.3px;
-    }
-
-    .education .details {
-        padding: 0;
-    }
-
-    .line
-    {
-        width: 100%;
-        height: 1px;
-        background-color: #cad2dd;
-        margin: 1rem auto;
-    }
-
-    .btn-inline
-    {
-        display: flex;
-    }
-
-    .icon-btn{
-        cursor:pointer;
-        transition:0.3s;
-    }
-
-    .icon-btn:hover
-    {
-        transform:scale(110%);
-    }
-
-    .icon-btn:active
-    {
-        transform:scale(90%);
-    }
-
 
 /*loading test*/
 .spinner {
@@ -241,13 +116,13 @@
     display: flex;
     margin-top: 22px;
 }
-.personal{
+@* .personal{
     border: 0.5px solid #fff;
     transition: all 0.5s ease;
 }
 .personal:hover{
     border: 0.5px solid #6c85a3;
-}
+} *@
 
 
 .header-container{
@@ -275,8 +150,38 @@
 
       <div class="personal content">
 
-            
-        
+         <table class="table table-sm table-striped">
+             <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                     <th scope="col">Phase</th>
+                     <th scope="col">Change status</th>
+                 </tr>
+            </thead>
+            <tbody>
+                 @if (RealCandidatesInfo != null && RealCandidatesInfo.Count > 0)
+                {
+                    int num = 1;
+                    @for (int i = 0; i < RealCandidatesInfo.Count; i++)
+                    {
+                         var candidate = RealCandidatesInfo[i];
+                         <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
+                            <td scope="row">@(num++)</td>
+                            <td scope="row">@candidate.FirstName @candidate.LastName</td>
+
+                            <td scope="row">@applicationPhases[i].Description</td>
+                            <td scope="row" class="">            
+                                 <a><i class="fa fa-edit"></i></a>
+                            </td>
+                         </tr>
+
+                    }
+                }
+
+             </tbody>
+        </table>
+                             
       </div>
        
 
@@ -286,6 +191,32 @@
    
         <div class="content">
 
+         <div class="py-5 px-4 select-details">
+              @if (RealUserPersonalInfo != null)
+             {
+                 <img src="/img/Guy.png" alt="" width="70" lass="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                 <h5 class="mb-0">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
+                  <hr />
+                  <span class="small text-uppercase text-muted">Gender</span>
+                  <hr>
+                  <span class="small text-uppercase text-muted">Contact Info</span>
+                  <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
+                  <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
+                  <hr>
+                  <div>
+                     <span class="small text-uppercase text-muted">APPLICATION STATUS</span>
+                     <br />
+                      @applicationPhases[0].Description (@statuses[0].Description)
+                      @*<ProgressBarComp />*@
+                  </div>
+                   <hr />
+                   <span class="small text-uppercase text-muted">More Info</span>
+                   <p>@applicationPhaseHelpers[0].Comments</p>
+                    @*<p>@CurrentCandidate.ExtraInfo</p>*@
+             }
+            </div>
+                                     
+                                                
             
         
         </div>
@@ -475,59 +406,6 @@
     }
 
     #endregion
-
-    //==============================================================================================================================================================
-
-    //TestModels
-    @* private static List<CandidateTest> DisplayItems = Candidates;
-
-    private CandidateTest CurrentCandidate = new CandidateTest();
-
-    //Data
-    private static List<CandidateTest> Candidates = new List<CandidateTest>
-{
-
-    new CandidateTest
-    {
-        Id = 1,
-        Name = "Johnathan Snow",
-        JobAppliedFor = "Developer",
-        YearsOfExp = 2,
-        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
-
-    },
-
-    new CandidateTest
-    {
-        Id = 2,
-        Name = "Edward Stark",
-        JobAppliedFor = "Lawyer",
-        YearsOfExp = 8,
-        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
-
-    },
-
-    new CandidateTest
-    {
-        Id = 3,
-        Name = "Peter Parker",
-        JobAppliedFor = "Developer",
-        YearsOfExp = 1,
-        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
-
-    },
-
-    new CandidateTest
-    {
-        Id = 4,
-        Name = "Bruce Banner",
-        JobAppliedFor = "Cloud Engineer",
-        YearsOfExp = 5,
-        ExtraInfo = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure laborum nesciunt unde iusto quas rerumores quaerat eum velit totam!"
-
-    }
-
-    }; *@
 
    
 }
