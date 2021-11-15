@@ -22,7 +22,7 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
             //Search parameters
             if (!string.IsNullOrEmpty(SearchQuery))
             {
-                query =  query.Where(j => j.Title.Contains(SearchQuery) || j.Compensation.Contains(SearchQuery));
+                query =  query.Where(j => j.Title.Contains(SearchQuery));
             }
             if (!string.IsNullOrEmpty(SearchLocation))
             {

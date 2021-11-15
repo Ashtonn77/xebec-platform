@@ -341,7 +341,7 @@
 
                                         <h5 class="box-title">@job.Title </h5>
                                         <p><i class="fas fa-map-marker-alt"></i> &nbsp; @job.Location</p>
-                                        <p><span> @job.Compensation</span></p>
+                                        
                                         @if (job.Description.Length > 200)
                                         {
                                             string shortented = job.Description.Substring(0, 200) + "...";
@@ -372,7 +372,7 @@
                                 <div class="select-details position-fixed" style="padding: 10px;">
                                     <h2>@CurrentJob2.Title</h2>
                                     <p><i class="fas fa-map-marker-alt"></i> &nbsp; @CurrentJob2.Location</p>
-                                    <p><span>Compensation: </span>@CurrentJob2.Compensation</p>
+                                    
                                     <button class="btn" @onclick="Apply">Apply</button>
                                     <hr />
                                     <div style="height: 270px; overflow-y:auto">
