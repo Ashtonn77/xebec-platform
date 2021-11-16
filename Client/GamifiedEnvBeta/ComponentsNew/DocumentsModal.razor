@@ -209,18 +209,22 @@
     }
 
     private async Task Save()
-    {
-        message = "Saved!";
+    {        
         if(Document.DocumentUrl != null)
         {
             string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
             Document.DocumentName = url != null ? url[url.Length - 1] : "";
 
             await http.PutAsJsonAsync($"api/Document/{Document.Id}", Document);
+            message = "Saved!";
+            State.IsSaved = true;
 
         }
-
-        State.IsSaved = true;
+        else
+        {
+            await jsRuntime.InvokeVoidAsync("alert", "Please select a document before you save!");
+        }
+        
 
     }
 
