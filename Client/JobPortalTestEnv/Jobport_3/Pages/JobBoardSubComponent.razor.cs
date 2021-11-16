@@ -10,6 +10,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 {
     public partial class JobBoardSubComponent
     {
+        #region Declared Variables
+
+        bool Spinner { get; set; } = false;
+        bool NoData { get; set; } = true;
+
+        #endregion
+
         //Show and Hide Element
         private bool IsShown { get; set; } = false;
 
@@ -147,6 +154,11 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             if (SearchedJobs.Count > 0)
             {
                 CurrentJob2 = SearchedJobs[0];
+            }
+            else
+            {
+                Spinner = true;
+                NoData = false;
             }
             DisplayJobs = SearchedJobs;
             InvokeAsync(StateHasChanged);
