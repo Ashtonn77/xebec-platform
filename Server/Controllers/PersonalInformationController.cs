@@ -157,6 +157,23 @@ namespace Server.Controllers
             }
         }
 
+        // GET api/<UserController>/role=candidate
+        [HttpGet("Test/{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUsersByRole(int id)
+        {
+            try
+            {
+                var users = await usersCustomRepo.GetCandidateDetails(id);
+                return Ok(users);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
         // POST api/<PersonalInformationController>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
