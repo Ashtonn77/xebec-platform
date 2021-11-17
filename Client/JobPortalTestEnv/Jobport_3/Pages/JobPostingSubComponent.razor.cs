@@ -1,18 +1,24 @@
-
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.JSInterop;
 using XebecPortal.Shared;
 
 namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 {
     public partial class JobPostingSubComponent
     {
+        #region Declared Variables
+
+        bool Spinner { get; set; } = false;
+        bool NoData { get; set; } = true;
+
+        #endregion
 
         #region Component Lifeycle Methods
-             
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -21,8 +27,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             }
         }
 
-        #endregion
-
+        #endregion Component Lifeycle Methods
 
         #region Mainparts
 
@@ -35,16 +40,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             CurrentJob2 = JobToView;
         }
 
-
         private void ViewCandidates(Job selectedJob)
         {
-             //NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
+            //NavManager.NavigateTo($"candidateinfoexp/{selectedJob.Id}");
             NavManager.NavigateTo($"candidateinfoprimary/{selectedJob.Id}");
         }
 
-
-        #endregion
-
+        #endregion Mainparts
 
         #region Searching and Filtering
 
@@ -53,7 +55,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private string JobFilter { get; set; } = String.Empty;
         private bool jobFilterApplied = false;
         private List<Job> SearchedJobs { get; set; } = new List<Job>();
-
+       
         private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
             JobFilter = args.Value.ToString();
@@ -70,16 +72,11 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private void RealSearch()
         {
-
             SearchEvent();
-
         }
 
         private async Task<List<Job>> SearchEvent()
         {
-
-
-
             try
             {
                 SearchedJobs = await httpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&searchLocation={SearchLocation}&jobtypeQuery={JobFilter}");
@@ -93,12 +90,16 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             {
                 CurrentJob2 = SearchedJobs[0];
             }
+            else
+            {
+                Spinner = true;
+                NoData = false;
+            }
             LstJobs = SearchedJobs;
             InvokeAsync(StateHasChanged);
             return LstJobs;
         }
 
-        #endregion
+        #endregion Searching and Filtering
     }
-
 }

@@ -393,7 +393,7 @@
 
         if (RealCandidates.Count > 0)
         {
-            SearchedCandidates = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/CandidateTest/candidates/?Job={JobId}&SearchQuery={SearchTerm}&ethnicityFiler={EthnicFilter}&GenderFilter={GenderFilter}&disabilityFilter={DisabilityFilter}");
+            SearchedCandidates = await httpClient.GetFromJsonAsync<List<PersonalInformation>>($"api/PersonalInformation/candidates/{JobId}?SearchQuery={SearchTerm}&ethnicityFiler={EthnicFilter}&GenderFilter={GenderFilter}&disabilityFilter={DisabilityFilter}");
         }
 
         if (SearchedCandidates.Count > 0)
