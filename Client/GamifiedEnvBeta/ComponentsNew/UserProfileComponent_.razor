@@ -803,6 +803,7 @@ else
     bool addDocumentModal = false;
     private async Task ToggleDocumentAddNewModal()
     {
+        
         loadSpinner = true;
         addDocumentModal = !addDocumentModal;
 
@@ -814,8 +815,6 @@ else
 
         int docCount = Documents == null ? 0 : Documents.Count;
 
-        if(docCount <= 4)
-        {
             uploadCount = $"{docCount}/4";
             if(docCount < 4)
                 documentsColor = "#9a9c9a";
@@ -824,9 +823,8 @@ else
 
 
             string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
-            State.IsUserProfileComplete = IsProfileComplete(colors);
-            
-        }
+            State.IsUserProfileComplete = IsProfileComplete(colors);           
+    
         
         loadSpinner = false;
 

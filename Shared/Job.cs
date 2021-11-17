@@ -14,7 +14,7 @@ namespace XebecPortal.Shared
 
         public string Description { get; set; }
 
-        public string Company { get; set; }
+        // public string Company { get; set; }
 
         public string Location { get; set; }
 
