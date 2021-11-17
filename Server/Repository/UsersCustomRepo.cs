@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs.ViewModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -16,6 +17,32 @@ namespace Server.Repository
         public UsersCustomRepo(ApplicationDbContext context) : base(context)
         {
         }
+
+        #region Experiemental Queries
+        public async Task<List<CandidateViewModel>> GetCandidateDetails(int JobId)
+        {
+            IQueryable<CandidateViewModel> queryPI = null;
+            IQueryable<AppUser> queryUsers = from users in _context.AppUser
+                                             join applications in _context.Applications.Where(a => a.JobId == JobId)
+                                             on users.Id equals applications.AppUserId
+                                             select users;
+
+
+
+            IQueryable<WorkHistory> works = from users in queryUsers
+                                            join work in _context.WorkHistories
+                                            on users.Id equals work.AppUserId
+                                            select work;
+
+            //GetApplicants for sepecific job
+            queryPI = from users in queryUsers
+                      join personal in _context.PersonalInformations
+                      on users.Id equals personal.AppUserId
+                      select new CandidateViewModel() { WorkHistories = works.ToList(), PersonalInfo = personal };
+
+            return await queryPI.AsNoTracking().ToListAsync();
+        }
+        #endregion
         #region Tshego's queries
         public async Task<List<PersonalInformation>> GetApplicantsDetailsByJobId(int JobId)
         {

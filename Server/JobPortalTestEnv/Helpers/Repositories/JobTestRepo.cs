@@ -33,13 +33,13 @@ namespace XebecPortal.Server.JobPortalTestEnv.Helpers.Repositories
                 int sdf = 0;
                 switch (jobtypeQuery)
                 {
-                    case "Full-time":
+                    case "Contract":
                         sdf = 1;
                         break;
-                    case "Part-time":
+                    case "Part Time":
                         sdf = 2;
                         break;
-                    case "Internship":
+                    case "Permanent":
                         sdf = 3;
                         break;
                     default:
