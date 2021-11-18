@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/login"
 @inject IJSRuntime jsr
 @inject HttpClient httpClient
 @using XebecPortal.Shared.Security
@@ -7,7 +7,7 @@
 
 <style>
     .valid.modified:not([type=checkbox]) {
-        outline: 1px solid #26b050;
+        outline: none;
         border-radius: 55px;
         padding-left: 0.4rem;
     }
@@ -565,7 +565,7 @@
         if (firstRender)
             await jsr.InvokeVoidAsync("initializeLogin");
 
-        reg.Role = "Candidate";
+        reg.Role = "HRAdmin";
     }
 
     //login
