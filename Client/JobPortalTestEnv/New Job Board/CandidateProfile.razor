@@ -73,7 +73,7 @@
     }
     /* popup Content */
     .popup-content {
-        background-color: #fefefe;
+        background-color: rgb(48, 58, 73);
         margin: auto;
         padding: 20px;
         border: 1px solid #888;
@@ -197,11 +197,46 @@
             flex-direction: column;
         }
 
+    */
+
+    .app-comments {
+        margin-top: auto;
+        font-size: 8px;
+        color: #888;
+    }
+
+    
+
+    .app-form-control {
+        width: 100%;
+        padding: 10px 0;
+        background: none;
+        border: none;
+        border-bottom: 1px solid #666;
+        color: #ddd;
+        font-size: 14px;
+        text-transform: uppercase;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .app-form-control::placeholder {
+            color: #666;
+        }
+
+        .app-form-control:focus {
+            border-bottom-color: #ddd;
+        }
+    option {
+        background: #394656;
+        color: white;
+    }
+
     .app-title {
         display: flex;
         flex-direction: column;
         position: relative;
-        color: #ea1d6f;
+        color: #937a5c;
         font-size: 26px;
     }
 
@@ -216,117 +251,23 @@
             background: #ea1d6f;
         }
 
-    .app-contact {
-        margin-top: auto;
-        font-size: 8px;
-        color: #888;
+    .label {
+        color:#937a5c ;
     }
-
-    .app-form-group {
-        margin-bottom: 15px;
-    }
-
-        .app-form-group.message {
-            margin-top: 40px;
-        }
-
-        .app-form-group.buttons {
-            margin-bottom: 0;
-            text-align: right;
-        }
-
-    .app-form-control {
-        width: 100%;
-        padding: 10px 0;
-        background: none;
-        border: none;
-        border-bottom: 1px solid #666;
-        color: #ddd;
-        font-size: 14px;
-        text-transform: uppercase;
-        outline: none;
-        transition: border-color .2s;
-    }
-
-        .app-form-control::placeholder {
-            color: #666;
-        }
-
-        .app-form-control:focus {
-            border-bottom-color: #ddd;
-        }
-
     .app-form-button {
         background: none;
         border: none;
-        color: #ea1d6f;
+        color: #937a5c;
         font-size: 14px;
         cursor: pointer;
         outline: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     }
 
-        .app-form-button:hover {
+        .app-form-button:hover  {
             color: #b9134f;
-        }
+      }
 
-    .credits {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        color: #ffa4bd;
-        font-family: 'Roboto Condensed', sans-serif;
-        font-size: 16px;
-        font-weight: normal;
-    }
-
-    .credits-link {
-        display: flex;
-        align-items: center;
-        color: #fff;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-    .dribbble {
-        width: 20px;
-        height: 20px;
-        margin: 0 5px;
-    }
-
-    @@media screen and (max-width: 520px) {
-        .screen-body {
-            flex-direction: column;
-        }
-
-        .screen-body-item.left {
-            margin-bottom: 30px;
-        }
-
-        .app-title {
-            flex-direction: row;
-        }
-
-            .app-title span {
-                margin-right: 12px;
-            }
-
-            .app-title:after {
-                display: none;
-            }
-    }
-
-    @@media screen and (max-width: 600px) {
-        .screen-body {
-            padding: 40px;
-        }
-
-        .screen-body-item {
-            padding: 0;
-        }
-    }*/
-    .tab {
-    }
 </style>
 
 @if (DisplayedInfo != null && PhaseHelper != null && PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
@@ -383,107 +324,14 @@
 <div class="popup" style="display: @popupDisplay;">
 
     <!-- popup content -->
-    <div class="popup-content">
+    <div class="popup-content ">
         <div class="form-row">
             <span class="close" @onclick="ClosePopUp">&times;</span>
         </div>
-        @* <form>
-
-                <div class="form-row">
-                    <label class="my-1 mr-2" for="apphase">Change Status</label>
-                </div>
-                <div class="form-row">
-
-                    @if (PhaseHelper != null)
-                    {
-                        <div class="form-group col-md-6">
-                            <label class="my-1 mr-2" for="phases">Phase</label>
-
-                            @if (PhaseHelper.ApplicationPhase == null)
-                            {
-                                PhaseHelper.ApplicationPhase = new ApplicationPhase
-                                {
-                                    Description = "error: no application phase for user for user"
-                                };
-                            }
-                            <select id="phases" @bind="PhaseHelper.ApplicationPhase.Description" class="custom-select my-1 mr-sm-2">
-
-                                <option selected>Choose...</option>
-                                @foreach (var phase in applicationPhases)
-                                {
-                                    <option value="@phase.Description">@phase.Description</option>
-                                }
-                            </select>
-
-                            }
-                            else
-                            {
-                            <option selected>Loading...</option>
-                            }
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="my-1 mr-2" for="statuses">Status</label>
-
-                            <option selected>Choose...</option>
-
-                            @if (statuses != null && PhaseHelper != null)
-                            {
-
-                                @if (PhaseHelper.Status == null)
-                                {
-                                    PhaseHelper.Status = new Status
-                                    {
-                                        Description = "error: no status for user"
-                                    };
-                                }
-
-                                <select id="statuses" @bind="PhaseHelper.Status.Description" class="custom-select my-1 mr-sm-2">
-
-                                    <option selected>Choose...</option>
-                                    @foreach (var status in statuses)
-                                    {
-                                        <option value="@status.Description">@status.Description</option>
-                                    }
-                                </select>
-                            }
-                            else
-                            {
-                                <option selected>Loading...</option>
-                            }
-                        </div>
-                    }
-                </div>
-                <div class="form-group">
-                    <label for="comments">Comments</label>
-                    @if (PhaseHelper != null)
-                    {
-                        <input type="text" class="form-control" id="comments" placeholder="Empty" @bind-value="@PhaseHelper.Comments">
-                    }
-                </div>
-
-                <!--Testing-->
-                @if (PhaseHelper != null)
-                {
-                    <ul>
-                        <li>Phase id : @PhaseHelper.Id</li>
-                        <li>Comments : @PhaseHelper.Comments</li>
-                        @if (PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
-                        {
-                            <li>Status : @PhaseHelper.Status.Description</li>
-                            <li>Application Phase: @PhaseHelper.ApplicationPhase.Description</li>
-                        }
-                    </ul>
-                }
-                <!--/Testing-->
-                <div class="form-row">
-                    <button type="submit" onc class="btn btn-primary mb-2" @onclick="Save">Save</button>
-                    <button type="submit" class="btn btn-primary edit-btn">Save 2</button>
-                </div>
-            </form> *@
-        <div>
+        <div class="m-3">
             @if (DisplayedInfo != null)
             {
-                <h1 class="page-title">Details for @DisplayedInfo.FullName</h1>
+                <h1 class="app-title">Details for @DisplayedInfo.FullName</h1>
             }
 
             @if (PhaseHelper != null && Statuses != null && ApplicationPhases != null)
@@ -494,8 +342,8 @@
                     <ValidationSummary />
 
                     <div class="form-group row">
-                        <label for="phase" class="col-sm-3">Application Phase </label>
-                        <InputSelect id="phase" class="form-control col-sm-8" @bind-Value="@PhaseHelper.ApplicationPhase.Description">
+                        <label for="phase" class="col-sm-3 label">Application Phase </label>
+                        <InputSelect id="phase" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.ApplicationPhase.Description">
                             @foreach (var phase in ApplicationPhases)
                                 {
                                 <option value="@phase.Description">@phase.Description</option>
@@ -503,8 +351,8 @@
                         </InputSelect>
                     </div>
                     <div class="form-group row">
-                        <label for="status" class="col-sm-3">Application Status </label>
-                        <InputSelect id="status" class="form-control col-sm-8" @bind-Value="@PhaseHelper.Status.Description">
+                        <label for="status" class="col-sm-3 label">Application Status </label>
+                        <InputSelect id="status" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.Status.Description">
                             @foreach (var status in Statuses)
                                 {
                                 <option value="@status.Description">@status.Description</option>
@@ -512,77 +360,33 @@
                         </InputSelect>
                     </div>
                     <div class="form-group row">
-                        <label for="comment" class="col-sm-3">Comments: </label>
-                        <InputTextArea id="comment" class="form-control col-sm-8" @bind-Value="@PhaseHelper.Comments" placeholder="Enter comment"></InputTextArea>
+                        <label for="comment" class="col-sm-3 label">Comments: </label>
+                        <InputTextArea id="comment" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.Comments" placeholder=""></InputTextArea>
                         <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => PhaseHelper.Comments)" />
                     </div>
-                    <!--Testing-->
-                    @if (PhaseHelper != null)
-                    {
-                        <ul>
-                            <li>Phase id : @PhaseHelper.Id</li>
-                            <li>Comments : @PhaseHelper.Comments</li>
-                            <li>Status ID: @PhaseHelper.StatusId</li>
-                            <li>Application Phase ID: @PhaseHelper.ApplicationPhaseId</li>
-                            @if (PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
-                            {
-                                <li>Status : @PhaseHelper.Status.Description</li>
-                                <li>Application Phase: @PhaseHelper.ApplicationPhase.Description</li>
-                            }
-                        </ul>
-                    }
-                    <!--/Testing-->
-                    <button type="submit" class="btn btn-primary edit-btn">Save Changes</button>
+                    @*<!--Testing-->
+                        @if (PhaseHelper != null)
+                        {
+                            <ul>
+                                <li>Phase id : @PhaseHelper.Id</li>
+                                <li>Comments : @PhaseHelper.Comments</li>
+                                <li>Status ID: @PhaseHelper.StatusId</li>
+                                <li>Application Phase ID: @PhaseHelper.ApplicationPhaseId</li>
+                                @if (PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
+                                {
+                                    <li>Status : @PhaseHelper.Status.Description</li>
+                                    <li>Application Phase: @PhaseHelper.ApplicationPhase.Description</li>
+                                }
+                            </ul>
+                        }
+                        <!--/Testing-->*@
+                    <button type="submit" class="app-form-button">Save Changes</button>
                 </EditForm>
             }
             else
             {
                 <div class="alert">@Message</div>
             }
-
-            @*<div class="background">
-                    <div class="container">
-                        <div class="screen">
-                            <div class="screen-header">
-                                <div class="screen-header-left">
-                                    <div class="screen-header-button close"></div>
-                                    <div class="screen-header-button maximize"></div>
-                                    <div class="screen-header-button minimize"></div>
-                                </div>
-                                <div class="screen-header-right">
-                                    <div class="screen-header-ellipsis"></div>
-                                    <div class="screen-header-ellipsis"></div>
-                                    <div class="screen-header-ellipsis"></div>
-                                </div>
-                            </div>
-                            <div class="screen-body">
-                                @if (PhaseHelper != null && PhaseHelper.Application != null && PhaseHelper.Status != null)
-                                {
-                                    <div class="screen-body-item">
-                                        <div class="app-form">
-                                            <div class="app-form-group">
-                                                <input class="app-form-control" placeholder="" @bind="PhaseHelper.ApplicationPhase.Description">
-                                            </div>
-                                            <div class="app-form-group">
-                                                <input class="app-form-control" placeholder="" @bind="PhaseHelper.Status.Description">
-                                            </div>
-                                            <div class="app-form-group">
-                                                <input class="app-form-control" placeholder="CONTACT NO">
-                                            </div>
-                                            <div class="app-form-group message">
-                                                <input class="app-form-control" placeholder="Comments" @bind="PhaseHelper.Comments">
-                                            </div>
-                                            <div class="app-form-group buttons">
-                                                <button class="app-form-button" @onclick="ClosePopUp">CANCEL</button>
-                                                <button class="app-form-button" @onclick="ClosePopUp">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
         </div>
     </div>
 </div>
