@@ -201,14 +201,30 @@
 
     private async Task Save()
     {
-        if(Document.DocumentUrl != null)
+       
+       IList<Document> Documents = await http.GetFromJsonAsync<IList<Document>>($"/api/Document/all/{State.Id}");
+            
+
+        if(Documents != null && Documents.Count == 4)
         {
-            string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
-            Document.DocumentName = url != null ? url[url.Length - 1] : "";
-            message = "Saved!";
-            await http.PostAsJsonAsync("api/Document", Document);
-            State.IsSaved = true; 
-        }       
+            await jsRuntime.InvokeVoidAsync("alert", "You have reached your upload limit!");
+        }
+        else
+        {        
+
+            if(Document.DocumentUrl != null)
+            {
+                string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
+                Document.DocumentName = url != null ? url[url.Length - 1] : "";
+                message = "Saved!";
+                await http.PostAsJsonAsync("api/Document", Document);
+                State.IsSaved = true; 
+            }
+            else
+            {
+                await jsRuntime.InvokeVoidAsync("alert", "Please select a document before you save!");
+            }       
+        }
 
     }
 
