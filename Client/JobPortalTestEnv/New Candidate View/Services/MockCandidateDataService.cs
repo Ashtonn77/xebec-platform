@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XebecPortal.Client.JobPortalTestEnv;
 using XebecPortal.Shared;
 
 namespace XebecPortal.Client.JobPortalTestEnv.Services
@@ -53,8 +52,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Services
                 new ApplicationPhase{Id = 2, Description = "Code Submission"},
                 new ApplicationPhase{Id = 3, Description = "Interview"},
                 new ApplicationPhase{Id = 4, Description = "Hiring"},
-             
-
             };
         }
 
@@ -79,11 +76,8 @@ namespace XebecPortal.Client.JobPortalTestEnv.Services
                     Email = "example@mail.com",
                     FirstName = "Full",
                     LastName = "Name",
-                    
+
                     PhoneNumber = "324777888773",
-                    
-                   
-                    
                 };
                 _personalInformations = new List<PersonalInformation>() { p1 };
             }

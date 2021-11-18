@@ -24,6 +24,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
             return await JsonSerializer.DeserializeAsync<IEnumerable<ApplicationPhaseHelper>>
                 (await _httpClient.GetStreamAsync($"api/ApplicationPhaseHelpers/?UserId={AppUserId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task<IEnumerable<ApplicationPhaseHelper>> GetJobAssociatedApplicationPhaseHelpers(int AppUserId, int jobId)
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<ApplicationPhaseHelper>>
@@ -73,9 +74,9 @@ namespace XebecPortal.Client.JobPortalTestEnv
         public string Status { get; set; }
         public string ApplicationPhase { get; set; }
 
-        public async Task GetStatus(int AppUserId, int jobId )
+        public async Task GetStatus(int AppUserId, int jobId)
         {
-           var ApplicaionPhaseHelpers = await GetJobAssociatedApplicationPhaseHelpers(AppUserId, jobId);
+            var ApplicaionPhaseHelpers = await GetJobAssociatedApplicationPhaseHelpers(AppUserId, jobId);
             Status errorstatus = new Status
             {
                 Id = 1,
@@ -95,7 +96,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
                 ApplicationPhase = errorApplication
             };
             var temp = ApplicaionPhaseHelpers.Last();
-            if(temp != null)
+            if (temp != null)
             {
                 ApplicaionPhaseHelper = temp;
             }

@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
@@ -45,17 +42,22 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
         public IEnumerable<ApplicationPhase> ApplicationPhases { get; set; }
 
         private ApplicationPhaseHelper TempPhaseHelper { get; set; }
+
         [Inject]
-        IApplicationPhaseHelperDataService PhaseHelperDataService { get; set; }
+        private IApplicationPhaseHelperDataService PhaseHelperDataService { get; set; }
+
         [Inject]
-        IStatusDataService StatusDataService { get; set; }
+        private IStatusDataService StatusDataService { get; set; }
+
         [Inject]
-        IApplicationPhaseDataService ApplicationPhaseDataService { get; set; }
+        private IApplicationPhaseDataService ApplicationPhaseDataService { get; set; }
 
         [Parameter]
         public int JobId { get; set; }
+
         [Inject]
         public IJobDataService JobDataService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             Statuses = await StatusDataService.GetAllStatuses();
@@ -73,7 +75,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
 
         public string PopUpDisplay { get; set; }
 
-
         private string popupDisplay = "none";
 
         private void ShowPopUp()
@@ -85,7 +86,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
             {
                 Console.WriteLine("AssociatedPhaseHelpers != null && Candidate != null");
                 tempHelpers = AssociatedPhaseHelpers[Candidate];
-
             }
             else
             {
@@ -94,7 +94,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
                 System.Threading.Thread.Sleep(2000);
                 if (AssociatedPhaseHelpers != null && Candidate != null)
                 {
-
                     tempHelpers = AssociatedPhaseHelpers[Candidate];
                     if (tempHelpers != null)
                     {
@@ -126,8 +125,10 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
             ClosePopUp();
             Console.WriteLine("Sending Data");
         }
+
         public string Message { get; set; } = "";
         public bool Saved { get; set; } = false;
+
         protected async Task HandleValidSubmit()
         {
             await PhaseHelperChanged.InvokeAsync(PhaseHelper);
@@ -147,7 +148,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
                     TimeMoved = DateTime.Now,
                     Comments = PhaseHelper.Comments
                 };
-                
+
                 await PhaseHelperDataService.UpdateApplicationPhaseHelper(PhaseHelper.Id, PhaseHelper);
                 //var ApplicationHelperDTO = new StringContent(JsonSerializer.Serialize(PhaseHelper), Encoding.UTF8, "application/json");
                 //var response = await httpClient.PutAsync("api/ApplicationPhaseHelper", ApplicationHelperDTO);
@@ -165,8 +166,5 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
             Thread.Sleep(3000);
             ClosePopUp();
         }
-
-
-
     }
 }

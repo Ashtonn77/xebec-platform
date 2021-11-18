@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
 
@@ -18,8 +15,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Candidate_View.Components
 
         [Inject]
         public IPersonalInformationDataService PersonalInformationDataService { get; set; }
-
-
 
         public void Show()
         {

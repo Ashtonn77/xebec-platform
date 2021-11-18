@@ -160,9 +160,6 @@
             cursor: pointer;
         }
     /*POP UP Styling - end*/
-
-
-
 </style>
 <!--Popup window Start-->
 <!-- Trigger/Open The popup -->
@@ -182,9 +179,7 @@
             }
         </ul>
         <!--/Testing-->
-        
     </div>
-
 </div>
 
 <!--Pop up functionality-->
@@ -215,8 +210,6 @@
     public Status tempStatus { get; set; } = new Status();
     public ApplicationPhase tempPhase { get; set; } = new ApplicationPhase();
 
-
-
     IList<ApplicationPhaseHelper> CandidateAppPhases { get; set; }
     //Pass required Info to popup form
     int ind = 0;
@@ -226,7 +219,6 @@
         ShowPopUp();
         ind = jobId;
 
-
         //Get App User ID of candidate
         int AppUserId = Candidate.AppUserId;
 
@@ -234,17 +226,13 @@
         //this will get it from the api's database
         //Get status for candidate
 
-        //Get required info required by form >
+        //Get required info required by form>
         string firstname = Candidate.FirstName;
         string lastName = Candidate.LastName;
 
-
         CandidateAppPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>($"api/ApplicationPhaseHelper/appPhase?AppUserId=14&jobId=33");
 
-
-
     }
-
 
     /// <summary>
     /// Uses linear search to find the latest date
@@ -275,7 +263,6 @@
 <!--/Pop up functionality-->
 <!--Popup window End-->
 
-
 <div class="container-fluid" style="background-color: #6c85a3">
     <!--Entire page as a flexbox-->
     <div class="wrapper-job">
@@ -285,8 +272,6 @@
             <div class="col-12">
                 @*<h4 class="text-center">Candidates</h4>*@
             </div>
-
-
 
             <div class="col-12 bar">
                 <div class="d-flex justify-content-center input-group">
@@ -298,7 +283,6 @@
                 </div>
             </div>
             <br />
-
 
             @*<div class="col-12">
                     <div class="d-flex justify-content-center filterSection d-flex align-items-center">
@@ -393,7 +377,6 @@
 
                                                 }
                                             }
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -453,7 +436,6 @@
 
 @code {
     public ApplicationPhaseHelper TempPhaseHelper { get; set; } = new ApplicationPhaseHelper();
-
 
     private List<AppUser> RealCandidates { get; set; } = new List<AppUser>();
 

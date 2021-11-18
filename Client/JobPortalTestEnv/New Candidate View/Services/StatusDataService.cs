@@ -27,6 +27,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
             return await JsonSerializer.DeserializeAsync<Status>
                 (await _httpClient.GetStreamAsync($"api/Status{StatusId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task UpdateStatus(int id, Status Status)
         {
             var StatusJson =

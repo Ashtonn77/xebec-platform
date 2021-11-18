@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using XebecPortal.Client.GamifiedEnvBeta.Utils;
 using XebecPortal.Shared;
 
 namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
@@ -18,7 +16,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private List<Application> applications = new List<Application>();
         private static List<Job> LstJobs = new List<Job>();
         public List<JobType> JobTypes { get; set; }
-
 
         private string SearchLocation { get; set; } = String.Empty;
 
@@ -40,10 +37,8 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
                 LstJobs = new List<Job>();
                 JobTypes = new List<JobType>();
             }
-
-
-
         }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -102,9 +97,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             CurrentJob = SearchResults.FirstOrDefault(q => q.Id == ReturnedJobId);
         }
 
-
-
-
         #region Searching and Filtering
 
         private string SearchTerm { get; set; } = String.Empty;
@@ -128,17 +120,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         private void RealSearch()
         {
-
             SearchEvent();
-
         }
 
         private async Task<List<Job>> SearchEvent()
         {
-
             try
             {
-
                 SearchedJobs = await httpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
             }
             catch (Exception ex)
@@ -155,6 +143,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             return LstJobs;
         }
 
-        #endregion
+        #endregion Searching and Filtering
     }
 }

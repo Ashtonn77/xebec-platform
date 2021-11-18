@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace XebecPortal.Client.JobPortalTestEnv.Models
 {
     public class CandidateTest
@@ -16,6 +11,5 @@ namespace XebecPortal.Client.JobPortalTestEnv.Models
         public string ExtraInfo { get; set; }
 
         public string JobAppliedFor { get; set; }
-
     }
 }

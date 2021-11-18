@@ -59,9 +59,9 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
 
         [Inject]
         public IStatusDataService StatusDataService { get; set; }
+
         [Inject]
         public IApplicationPhaseHelperDataService ApplicationPhaseHelperDataService { get; set; }
-        
 
         [Parameter]
         public int JobId { get; set; }
@@ -96,7 +96,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
                     };
                     AllCandidates.Add(candidate);
                 }
-               
+
                 ShownCandidates = AllCandidates;
             }
             else

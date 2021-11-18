@@ -1,7 +1,6 @@
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
@@ -12,10 +11,10 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
     {
         #region Declared Variables
 
-        bool Spinner { get; set; } = false;
-        bool NoData { get; set; } = true;
+        private bool Spinner { get; set; } = false;
+        private bool NoData { get; set; } = true;
 
-        #endregion
+        #endregion Declared Variables
 
         #region Component Lifeycle Methods
 
@@ -55,7 +54,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         private string JobFilter { get; set; } = String.Empty;
         private bool jobFilterApplied = false;
         private List<Job> SearchedJobs { get; set; } = new List<Job>();
-       
+
         private void onValChanged(Microsoft.AspNetCore.Components.ChangeEventArgs args)
         {
             JobFilter = args.Value.ToString();

@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -9,10 +7,11 @@ using XebecPortal.Shared;
 
 namespace XebecPortal.Client.JobPortalTestEnv
 {
-    public class PersonalInformationDataService: IPersonalInformationDataService
+    public class PersonalInformationDataService : IPersonalInformationDataService
     {
         private readonly HttpClient _httpClient;
         public PersonalInformation SavedPersonalInformation { get; set; }
+
         public PersonalInformationDataService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -29,11 +28,13 @@ namespace XebecPortal.Client.JobPortalTestEnv
             return await JsonSerializer.DeserializeAsync<PersonalInformation>
                 (await _httpClient.GetStreamAsync($"api/PersonalInformation/{PersonalInformationId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task<PersonalInformation> GetSibglePersonalInformationByUserID(int AppUserId)
         {
             return await JsonSerializer.DeserializeAsync<PersonalInformation>
                 (await _httpClient.GetStreamAsync($"api/PersonalInformation/{AppUserId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task<IEnumerable<PersonalInformation>> GetPersonalInformationsByUserID(int id)
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<PersonalInformation>>
@@ -44,8 +45,8 @@ namespace XebecPortal.Client.JobPortalTestEnv
         {
             return await JsonSerializer.DeserializeAsync<PersonalInformation>
                 (await _httpClient.GetStreamAsync($"api/PersonalInformation/?email={email}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-
         }
+
         //public async Task<PersonalInformation> SearchApplicants(string jobId, string SearchQuery, string ethnicityFiler, string GenderFilter, string disabilityFilter)
         //{
         //    return await JsonSerializer.DeserializeAsync<PersonalInformation>
@@ -72,7 +73,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
         {
             var PersonalInformationJson =
                 new StringContent(JsonSerializer.Serialize(Candidate), Encoding.UTF8, "application/json");
-           
+
             await _httpClient.PutAsync("api/PersonalInformation", PersonalInformationJson);
         }
 

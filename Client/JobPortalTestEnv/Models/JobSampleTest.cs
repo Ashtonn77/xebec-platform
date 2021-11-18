@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace XebecPortal.Client.JobPortalTestEnv.Models
 {
@@ -27,7 +23,5 @@ namespace XebecPortal.Client.JobPortalTestEnv.Models
 
         [Required]
         public string Compensation { get; set; }
-
-
     }
 }

@@ -27,6 +27,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
             return await JsonSerializer.DeserializeAsync<ApplicationPhase>
                 (await _httpClient.GetStreamAsync($"api/ApplicationPhase/{ApplicationPhaseId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task UpdateApplicationPhase(int id, ApplicationPhase ApplicationPhase)
         {
             var ApplicationPhaseJson =

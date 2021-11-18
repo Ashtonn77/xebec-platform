@@ -290,10 +290,9 @@
                             </div>
                         }
                     </div> *@
-                </div>
             </div>
-        }
-
+        </div>
+    }
 </div>
 
 <div class="profile-wrapper">
@@ -306,10 +305,9 @@
 
                 @* <p><strong>Total jobs available: @LstJobs.Count</strong></p> *@
 
-
-            @foreach (var job in LstJobs)
-            {
-                 <div class="personal content" @onclick="() => ViewJob(job, State.Id)" style="cursor: pointer">
+                @foreach (var job in LstJobs)
+                {
+                    <div class="personal content" @onclick="() => ViewJob(job, State.Id)" style="cursor: pointer">
 
                         <div class="top">
                             <h5 class="box-title" style="color: #6c85a3;">@job.Title </h5>
@@ -330,18 +328,14 @@
                         </ul>
                     </div>
 
+                }
+
             }
-        
-        }
-        else
-        {
-             <p> No Jobs found</p>
-        }
-
-     
-       
-
-    </div>
+            else
+            {
+                <p> No Jobs found</p>
+            }
+        </div>
 
         <div class="right">
 
@@ -365,14 +359,10 @@
                             <hr />
 
                             <p style="font-size: 13.5px;">@CurrentJob2.Description</p>
-
                         </div>
                     </div>
                 }
-
-
             </div>
-
         </div>
     }
     else

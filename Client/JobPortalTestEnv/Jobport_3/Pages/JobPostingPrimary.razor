@@ -3,7 +3,6 @@
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
 @inject State State
-
 @*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
 
 <style>
@@ -12,7 +11,6 @@
     * {
         font-family: 'Montserrat', sans-serif;
     }
-
 
     .wrapper {
         height: 100vh;
@@ -40,7 +38,6 @@
         align-items: center;
         @* background-color: pink; *@
     }
-
 
     /*FOOTER*/
     .footer-container {
@@ -88,7 +85,6 @@
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
-
 </style>
 
 <div class="wrapper">
@@ -96,19 +92,18 @@
     <div id="testNav" class="sidenav">
         <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
         <a href="/profile_" class="mb-2">@State.UserEmail</a>
-        <a href="/jobpostforcandidate">Home</a>        
+        <a href="/jobpostforcandidate">Home</a>
         <a href="/testdashboard">Analytical Dashboard</a>
-        <a href="/testlogout">Logout</a> 
+        <a href="/testlogout">Logout</a>
 
         <hr style="width:90%; margin:0 auto" />
-            
+
         <a href="/jobboard">View Jobs</a>
         <a href="/jobposting">View Posted Jobs</a>
         <a href="/addpostsub">Post a Job</a>
-        
     </div>
 
-    <div class="nav">        
+    <div class="nav">
 
         <div class="nav-title">
             <h5 style="color:#fff;">Xebec Platform</h5>
@@ -116,35 +111,26 @@
 
         <div class="nav-icons">
 
-          
             <span style="font-size:30px;cursor:pointer; color:#fff;" @onclick="ShowMenu">&#9776;</span>
-
         </div>
-
-
     </div>
-
 
     <div class="main-body">
 
-        
-<JobPostingSubComponent/>
-
-  </div>
+        <JobPostingSubComponent />
+    </div>
 
     <div class="footer-container">
 
         <span>Nebula 2021 &reg;</span>
-
     </div>
-
 </div>
 
 @code
 {
-     protected override async void OnAfterRender(bool firstRender)
+    protected override async void OnAfterRender(bool firstRender)
     {
-        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");       
+        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
         base.OnAfterRender(firstRender);
     }
     private async Task ShowMenu()

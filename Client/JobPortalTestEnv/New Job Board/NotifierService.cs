@@ -8,10 +8,10 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
     {
         public NotifierService()
         {
-
         }
 
-        ApplicationPhaseHelper helper;
+        private ApplicationPhaseHelper helper;
+
         public ApplicationPhaseHelper PhaseHelper
         {
             get => PhaseHelper;
@@ -28,6 +28,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
                 }
             }
         }
+
         public event Func<Task> Notify;
     }
 }

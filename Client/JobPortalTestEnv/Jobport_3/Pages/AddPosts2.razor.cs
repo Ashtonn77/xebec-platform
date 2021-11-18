@@ -2,7 +2,6 @@
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using XebecPortal.Shared;
@@ -11,25 +10,25 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 {
     public partial class AddPosts2
     {
-        List<JobPlatform> jobPlatform { get; set; } = new List<JobPlatform>();
-        List<JobType> jobTypes { get; set; } = new List<JobType>();
+        private List<JobPlatform> jobPlatform { get; set; } = new List<JobPlatform>();
+        private List<JobType> jobTypes { get; set; } = new List<JobType>();
 
-        int[] jobPlatformHelper = new int[0];
-        string[] jobPlatformHelperText = new string[0];
-        int[] jobTypeHelper = new int[0];
-        string[] jobTypeHelperText = new string[0];
+        private int[] jobPlatformHelper = new int[0];
+        private string[] jobPlatformHelperText = new string[0];
+        private int[] jobTypeHelper = new int[0];
+        private string[] jobTypeHelperText = new string[0];
 
         private static Action<string> jobTypeAction;
         private static Action<string> jobPlatformAction;
-        protected override async Task OnInitializedAsync()
-        {            
 
+        protected override async Task OnInitializedAsync()
+        {
             try
             {
                 jobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/JobType");
                 jobPlatform = await httpClient.GetFromJsonAsync<List<JobPlatform>>("api/JobPlatform");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 jobTypes = new List<JobType>();
                 jobPlatform = new List<JobPlatform>();
@@ -40,6 +39,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             jobPlatformAction = jobPlatformModelData;
             await base.OnInitializedAsync();
         }
+
         protected override async void OnAfterRender(bool firstRender)
         {
             await JsRuntime.InvokeVoidAsync("jobElement");
@@ -66,17 +66,19 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             get;
             set;
         }
+
         private Task OnDepartmentChanged(ChangeEventArgs e)
         {
             job.Department = e.Value.ToString();
             return ValueChanged.InvokeAsync(job.Department);
         }
+
         private void jobTypeModelData(string value)
         {
             string[] fullMixedValue = value.Split(',');
             int arrayLength = fullMixedValue.Length;
-            Array.Resize(ref jobTypeHelper, arrayLength/2);
-            Array.Resize(ref jobTypeHelperText, arrayLength/2);
+            Array.Resize(ref jobTypeHelper, arrayLength / 2);
+            Array.Resize(ref jobTypeHelperText, arrayLength / 2);
 
             for (int i = 0; i < arrayLength / 2; i++)
                 jobTypeHelper[i] = int.Parse(fullMixedValue[i]);
@@ -91,8 +93,8 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         {
             string[] fullMixedValue = value.Split(',');
             int arrayLength = fullMixedValue.Length;
-            Array.Resize(ref jobPlatformHelper, arrayLength/2);
-            Array.Resize(ref jobPlatformHelperText, arrayLength/2);
+            Array.Resize(ref jobPlatformHelper, arrayLength / 2);
+            Array.Resize(ref jobPlatformHelperText, arrayLength / 2);
 
             for (int i = 0; i < arrayLength / 2; i++)
                 jobPlatformHelper[i] = int.Parse(fullMixedValue[i]);
@@ -119,10 +121,10 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         {
             await httpClient.PostAsJsonAsync("api/Job", job);
             await httpClient.PostAsJsonAsync("api/JobPlatform", jobPlatformHelper);
-            if(jobTypeHelper != null)
+            if (jobTypeHelper != null)
                 await httpClient.PostAsJsonAsync("api/JobTypeHelper", jobTypeHelper);
 
-            if(Array.IndexOf(jobPlatformHelperText, "Facebook") != -1)
+            if (Array.IndexOf(jobPlatformHelperText, "Facebook") != -1)
                 await httpClient.PostAsJsonAsync("https://prod-170.westeurope.logic.azure.com:443/workflows/49a8ebc95f394b97a948dd59dfdcef24/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Fm6VYnJ8pqgyoJD8v26j8ZICGlR6p82_pjgQbPGoQT4", job);
 
             if (Array.IndexOf(jobPlatformHelperText, "LinkedIn") != -1)
@@ -132,6 +134,5 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
             await JsRuntime.InvokeVoidAsync("alert", "Successfully Posted A New Job Post");
         }
-
     }
 }

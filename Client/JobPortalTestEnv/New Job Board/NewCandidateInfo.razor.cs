@@ -38,7 +38,6 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
         public EventCallback<DisplayInfo> DisplayedInfoChanged { get; set; }
 
         [Parameter]
-
         public List<ApplicationPhaseHelper> PhaseHelpers { get; set; }
 
         public EventCallback<List<ApplicationPhaseHelper>> PhaseHelpersChanged { get; set; }
@@ -72,7 +71,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.New_Job_Board
                     Console.WriteLine(Status.ToString());
                 }
 
-                if (applicationPhases != null && RealCandidatesInfo != null && statuses != null && AssociatedPhaseHelpers != null )
+                if (applicationPhases != null && RealCandidatesInfo != null && statuses != null && AssociatedPhaseHelpers != null)
                 {
                     if (AssociatedPhaseHelpers.Count > 0)
                     {

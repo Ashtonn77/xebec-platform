@@ -8,6 +8,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
     {
         // GET: api/<StatusesController>
         Task<IEnumerable<Status>> GetAllStatuses();
+
         // GET api/<StatusesController>/{id}
         Task<Status> GetStatusById(int StatusId);
 

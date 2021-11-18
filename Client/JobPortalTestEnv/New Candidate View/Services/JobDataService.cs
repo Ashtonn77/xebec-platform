@@ -27,6 +27,7 @@ namespace XebecPortal.Client.JobPortalTestEnv
             return await JsonSerializer.DeserializeAsync<Job>
                 (await _httpClient.GetStreamAsync($"api/job/{JobId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
         public async Task UpdateJob(int id, Job Job)
         {
             var JobJson =

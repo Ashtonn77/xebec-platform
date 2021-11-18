@@ -164,8 +164,9 @@
         box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
         background: rgb(108, 133, 163, 0.8);
     }
-    .right{
-    padding: 10px;
+
+    .right {
+        padding: 10px;
     }
 </style>
 
@@ -203,7 +204,7 @@
             {
                 @:<!--Left Side-->
                 <section class="right col-7 p-2">
-                    <CandidateViewTable Statuses=@statuses ApplicationPhases=@applicationPhases AssociatedPhaseHelpers=@AssociatedPhaseHelpers Candidates=@RealCandidatesInfo @bind-DisplayedInfo=@DisplayedInfo @bind-PhaseHelper=@CurrentPhase JobId="@int.Parse(JobId)"/>
+                    <CandidateViewTable Statuses=@statuses ApplicationPhases=@applicationPhases AssociatedPhaseHelpers=@AssociatedPhaseHelpers Candidates=@RealCandidatesInfo @bind-DisplayedInfo=@DisplayedInfo @bind-PhaseHelper=@CurrentPhase JobId="@int.Parse(JobId)" />
                 </section>
 
                 @:<!--Right Side-->
@@ -211,7 +212,7 @@
                     <header></header>
                     <div class="content">
 
-                        <CandidateProfile DisplayedInfo=@DisplayedInfo @bind-PhaseHelpers=@PhaseHelpers @bind-PhaseHelper=@CurrentPhase statuses=@statuses applicationPhases=@applicationPhases AssociatedPhaseHelpers=@AssociatedPhaseHelpers Candidate=@Candidate JobId="@int.Parse(JobId)"/>
+                        <CandidateProfile DisplayedInfo=@DisplayedInfo @bind-PhaseHelpers=@PhaseHelpers @bind-PhaseHelper=@CurrentPhase statuses=@statuses applicationPhases=@applicationPhases AssociatedPhaseHelpers=@AssociatedPhaseHelpers Candidate=@Candidate JobId="@int.Parse(JobId)" />
                     </div>
                     <footer></footer>
                 </section>
@@ -248,9 +249,9 @@
                 <div class="wave"></div>
                 <div class="wave"></div>
                 @*@Status.ToString()
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>*@
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>*@
             </div>
 
         }
@@ -263,9 +264,9 @@
         {
             <span>@DisplayedInfo.FullName</span>
         }
-        @if(CurrentPhase != null)
-            {
-                <span>@CurrentPhase</span>
-            }
+        @if (CurrentPhase != null)
+        {
+            <span>@CurrentPhase</span>
+        }
     </div>
 </div>

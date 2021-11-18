@@ -15,7 +15,6 @@
         font-family: 'Montserrat', sans-serif;
     }
 
-
     .wrapper {
         height: 100vh;
         width: 100%;
@@ -42,7 +41,6 @@
         align-items: center;
         @* background-color: pink; *@
     }
-
 
     /*FOOTER*/
     .footer-container {
@@ -96,7 +94,7 @@
    .profile-wrapper {
         width: 100%;
         height: 100%;
-        background-color: lightgray; 
+        background-color: lightgray;
         flex-grow: 1;
         display: flex;
         justify-content: space-evenly;
@@ -105,15 +103,14 @@
         min-height: 0;
     }
 
-
 .profile-wrapper::-webkit-scrollbar {
   width: 0.5em;
 }
- 
+
 .profile-wrapper::-webkit-scrollbar-track {
   box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
 }
- 
+
 .profile-wrapper::-webkit-scrollbar-thumb {
   background-color: #a9baba;
 }
@@ -123,9 +120,8 @@
         height: 100%;
         margin: auto;
         display: flex;
-        justify-content: center;        
+        justify-content: center;
     }
-
 
     .content {
         width: 100%;
@@ -135,7 +131,7 @@
         padding: 10px;
         border-radius: 5px;
         max-width: 550px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;        
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
 
 /*loading test*/
@@ -179,7 +175,7 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly;
-    align-items: center;    
+    align-items: center;
 }
 
 .search-bar-container .searchbar input{
@@ -213,13 +209,12 @@
     border: 0.5px solid #6c85a3;
 } *@
 
-
 .header-container{
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
-  
+
 .select-details
 {
     overflow-y: auto;
@@ -234,19 +229,18 @@
     <div id="testNav" class="sidenav">
         <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
         <a href="/profile_" class="mb-2">@State.UserEmail</a>
-        <a href="/jobpostforcandidate">Home</a>        
+        <a href="/jobpostforcandidate">Home</a>
         <a href="/testdashboard">Analytical Dashboard</a>
-        <a href="/testlogout">Logout</a> 
+        <a href="/testlogout">Logout</a>
 
         <hr style="width:90%; margin:0 auto" />
-            
+
         <a href="/jobboard">View Jobs</a>
         <a href="/jobposting">View Posted Jobs</a>
         <a href="/addpostsub">Post a Job</a>
-        
     </div>
 
-    <div class="nav">        
+    <div class="nav">
 
         <div class="nav-title">
             <h5 style="color:#fff;">Xebec Platform</h5>
@@ -254,27 +248,20 @@
 
         <div class="nav-icons">
 
-          
             <span style="font-size:30px;cursor:pointer; color:#fff;" @onclick="ShowMenu">&#9776;</span>
-
         </div>
-
-
     </div>
 
+    <div class="main-body">
 
-<div class="main-body">
+        <!--Start Component-->
+        <div class="search-bar-container">
 
-
-        
-<!--Start Component-->
-<div class="search-bar-container">
-
-    <div class="searchbar">
+            <div class="searchbar">
                 <div class="left-search">
-                
+
                     <div class="searchTitle">
-                    <span><input type="text" placeholder="Search Item"></span>
+                        <span><input type="text" placeholder="Search Item"></span>
                     </div>
                     <div class="searchLocation">
                         <span><input type="text" placeholder="Secondary Search Item"></span>
@@ -282,116 +269,96 @@
                     <div style="padding-bottom: 25px; padding-left: 15px;">
                         <span><button class="btn searchButton btn-info btn-sm" @onclick="RealSearch">Search</button></span>
                     </div>
-                
                 </div>
-
-    </div>
-
-</div>
-
-
-<div class="profile-wrapper">
-   
-    <div class="left">    
-       
-
-      <div class="personal content">
-
-         <table class="table table-sm table table-bordered table-dark">
-             <thead>
-                <tr>
-                    <th class="text-center" scope="col">#</th>
-                    <th class="text-center"  scope="col">Full Name</th>
-                     <th class="text-center" scope="col">Phase</th>
-                     <th class="text-center" scope="col">Change status</th>
-                 </tr>
-            </thead>
-            <tbody>
-                 @if (RealCandidatesInfo != null && RealCandidatesInfo.Count > 0)
-                {
-                    int num = 1;
-                    @for (int i = 0; i < RealCandidatesInfo.Count; i++)
-                    {
-                         var candidate = RealCandidatesInfo[i];
-                         <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
-                            <td class="text-center" scope="row">@(num++)</td>
-                            <td class="text-center" scope="row">@candidate.FirstName @candidate.LastName</td>
-
-                            <td class="text-center" scope="row">@applicationPhases[i].Description</td>
-                            <td class="text-center" scope="row">            
-                                 <a><i class="fa fa-edit"></i></a>
-                            </td>
-                         </tr>
-
-                    }
-                }
-
-             </tbody>
-        </table>
-                             
-      </div>
-       
-
-    </div>
-
-    <div class="right">
-   
-        <div class="content">
-
-         <div class="select-details">
-              @if (RealUserPersonalInfo != null)
-             {
-                 <img src="/img/Guy.png" alt="" width="70" lass="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                 <h5 class="mb-0 mt-2">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
-                  <hr />
-                  <span class="small text-uppercase text-muted">Gender</span>
-                  <hr>
-                  <span class="small text-uppercase text-muted">Contact Info</span>
-                  <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
-                  <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
-                  <hr>
-                  <div>
-                     <span class="small text-uppercase text-muted">APPLICATION STATUS</span>
-                     <br />
-                      @applicationPhases[0].Description (@statuses[0].Description)
-                      @*<ProgressBarComp />*@
-                  </div>
-                   <hr />
-                   <span class="small text-uppercase text-muted">More Info</span>
-                   <p>@applicationPhaseHelpers[0].Comments</p>
-                    @*<p>@CurrentCandidate.ExtraInfo</p>*@
-             }
             </div>
-                                     
-                                                
-            
-        
         </div>
 
+        <div class="profile-wrapper">
+
+            <div class="left">
+
+                <div class="personal content">
+
+                    <table class="table table-sm table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th class="text-center" scope="col">#</th>
+                                <th class="text-center" scope="col">Full Name</th>
+                                <th class="text-center" scope="col">Phase</th>
+                                <th class="text-center" scope="col">Change status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (RealCandidatesInfo != null && RealCandidatesInfo.Count > 0)
+                            {
+                                int num = 1;
+                                @for (int i = 0; i < RealCandidatesInfo.Count; i++)
+                                {
+                                    var candidate = RealCandidatesInfo[i];
+                                    <tr @onclick="() => ChangeCurrent(candidate)" id=@($"{(candidate.Id)}")>
+                                        <td class="text-center" scope="row">@(num++)</td>
+                                        <td class="text-center" scope="row">@candidate.FirstName @candidate.LastName</td>
+
+                                        <td class="text-center" scope="row">@applicationPhases[i].Description</td>
+                                        <td class="text-center" scope="row">
+                                            <a><i class="fa fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right">
+
+                <div class="content">
+
+                    <div class="select-details">
+                        @if (RealUserPersonalInfo != null)
+                        {
+                            <img src="/img/Guy.png" alt="" width="70" lass="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                            <h5 class="mb-0 mt-2">@RealUserPersonalInfo.FirstName @RealUserPersonalInfo.LastName</h5>
+                            <hr />
+                            <span class="small text-uppercase text-muted">Gender</span>
+                            <hr>
+                            <span class="small text-uppercase text-muted">Contact Info</span>
+                            <p><span class="small text-uppercase text-muted">Phone Number:</span> @RealUserPersonalInfo.PhoneNumber</p>
+                            <p><span class="small text-uppercase text-muted">Address:</span> @RealUserPersonalInfo.Address</p>
+                            <hr>
+                            <div>
+                                <span class="small text-uppercase text-muted">APPLICATION STATUS</span>
+                                <br />
+                                @applicationPhases[0].Description (@statuses[0].Description)
+                                @*<ProgressBarComp />*@
+                            </div>
+                            <hr />
+                            <span class="small text-uppercase text-muted">More Info</span>
+                            <p>@applicationPhaseHelpers[0].Comments</p>
+                            @*<p>@CurrentCandidate.ExtraInfo</p>*@
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-   
 
-    </div>
-
-</div>
-
-<!--End Component-->
-
+    <!--End Component-->
 
     <div class="footer-container">
 
         <span>Nebula 2021 &reg;</span>
-
     </div>
-
 </div>
 
 @code
 {
-   
+
     protected override async void OnAfterRender(bool firstRender)
     {
-        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");       
+        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
         base.OnAfterRender(firstRender);
     }
     private async Task ShowMenu()
@@ -404,9 +371,7 @@
         await jsRuntime.InvokeVoidAsync("closeNav");
     }
 
-
     public ApplicationPhaseHelper TempPhaseHelper { get; set; } = new ApplicationPhaseHelper();
-
 
     private List<AppUser> RealCandidates { get; set; } = new List<AppUser>();
 
@@ -462,9 +427,9 @@
             await jsRuntime.InvokeVoidAsync("initialize");  //Calls the initialize function from the javascript file.
         }
         @* if (Candidates.Count > 0)
-        {
-            CurrentCandidate = Candidates[0];
-        } *@
+            {
+                CurrentCandidate = Candidates[0];
+            } *@
     }
     #endregion Component LifeCycles
 
