@@ -85,8 +85,8 @@ namespace Server.Controllers
                 //await _unitOfWork.Applications.Insert(Application);
                 await _unitOfWork.Save();
 
-                //return CreatedAtAction("GetApplication", new { id = Application.Id }, Application);
-                return NoContent();
+                return CreatedAtAction("GetApplication", new { id = application.Id }, application);
+                //return NoContent();
             }
             catch (Exception e)
             {

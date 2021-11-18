@@ -142,13 +142,15 @@
 
     <div class="lower">
 
-        <form class="input-form">
+        <EditForm Model="Document" OnValidSubmit="Save" class="input-form">
 
+             <DataAnnotationsValidator />
+             <ValidationSummary />
 
             <div class="inline-inner">
                 <label for="documents">Documents:</label>
                 <input type="file" id="documents" @bind="Document.DocumentUrl">
-            </div> 
+            </div>
 
             <div class="btn-container">
 
@@ -157,7 +159,7 @@
 
             </div>
 
-        </form>
+        </EditForm>
 
     </div>
 
@@ -199,12 +201,30 @@
 
     private async Task Save()
     {
-        //TODO: Change controller
-        string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
-        Document.DocumentName = url != null ? url[url.Length - 1] : "";
-        message = "Saved!";
-        await http.PostAsJsonAsync("api/Document", Document);
-        State.IsSaved = true;        
+       
+       IList<Document> Documents = await http.GetFromJsonAsync<IList<Document>>($"/api/Document/all/{State.Id}");
+            
+
+        if(Documents != null && Documents.Count == 4)
+        {
+            await jsRuntime.InvokeVoidAsync("alert", "You have reached your upload limit!");
+        }
+        else
+        {        
+
+            if(Document.DocumentUrl != null)
+            {
+                string[] url = Document.DocumentUrl != null ? Document.DocumentUrl.Split('\\') : null;
+                Document.DocumentName = url != null ? url[url.Length - 1] : "";
+                message = "Saved!";
+                await http.PostAsJsonAsync("api/Document", Document);
+                State.IsSaved = true; 
+            }
+            else
+            {
+                await jsRuntime.InvokeVoidAsync("alert", "Please select a document before you save!");
+            }       
+        }
 
     }
 

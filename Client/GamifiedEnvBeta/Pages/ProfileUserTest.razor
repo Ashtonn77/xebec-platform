@@ -3,7 +3,6 @@
 @inject IJSRuntime jsRuntime
 @inject HttpClient client
 @inject State State
-
 @*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
 
 <style>
@@ -31,15 +30,35 @@
         box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
     }
 
-    .main-body {
-        height: 86vh;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        @* background-color: pink; *@
+    .nav-icons
+    {
+       display: flex;
+       justify-content: center;
+       align-items: center;
     }
+
+    .profile-btn
+    {
+        cursor: pointer;
+        margin-right: 8px;
+        transition: 0.7s;
+
+    }
+
+        .profile-btn:hover
+        {
+            transform: scale(1.1);
+        }
+
+        .main-body {
+            height: 86vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            @* background-color: pink; *@
+        }
 
 
     /*FOOTER*/
@@ -92,19 +111,35 @@
 
 <div class="wrapper">
 
-    <div id="testNav" class="sidenav">
-        <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
-        <a href="/profile_" class="mb-2">@State.UserEmail</a>
-        <a href="/jobpostforcandidate">Home</a>        
-        <a href="/testdashboard">Analytical Dashboard</a>
-        <a href="/jobboard">View Jobs</a>
-        <a href="/jobposting">View Posted Jobs</a>
-        <a href="/addpostsub">Post a Job</a>
-        <a href="/testlogout">Logout</a> 
-        
-    </div>
+    @if (State.Role != null && State.Role.ToLower().Equals("candidate"))
+    {
+        <div id="testNav" class="sidenav">
+            <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
+            <a href="/profile_" class="mb-2">@State.UserEmail</a>
+            <a href="/home">Home</a>
+            <a href="/jobboard">View Jobs</a>            
+            <a href="/testlogout">Logout</a>
 
-    <div class="nav">        
+        </div>
+    }
+    else if (State.Role != null && State.Role.ToLower().Equals("hradmin"))
+    {
+        <div id="testNav" class="sidenav">
+            <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
+            <a href="/profile_" class="mb-2">@State.UserEmail</a>
+            <a href="/home">Home</a>
+            <a href="/testdashboard">Analytical Dashboard</a>
+            <a href="/jobboard">View Jobs</a>
+            <a href="/jobposting">View Posted Jobs</a>
+            <a href="/addpostsub">Post a Job</a>
+            <a href="/testlogout">Logout</a>
+
+        </div>
+    }
+
+    
+
+    <div class="nav">
 
         <div class="nav-title">
             <h5 style="color:#fff;">Xebec Platform</h5>
@@ -112,7 +147,7 @@
 
         <div class="nav-icons">
 
-          
+            <a href="/home" class="profile-btn"><span class="iconify" data-icon="ph:user-circle-plus-thin" data-width="35" style="color: white;"></span></a>
             <span style="font-size:30px;cursor:pointer; color:#fff;" @onclick="ShowMenu">&#9776;</span>
 
         </div>
@@ -123,10 +158,10 @@
 
     <div class="main-body">
 
-        
-<UserProfileComponent_/>
 
-  </div>
+        <UserProfileComponent_ />
+
+    </div>
 
     <div class="footer-container">
 
@@ -138,9 +173,26 @@
 
 @code
 {
-     protected override async void OnAfterRender(bool firstRender)
+
+    protected override async Task OnInitializedAsync()
     {
-        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");       
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);
+
+        }
+
+    }
+
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
         base.OnAfterRender(firstRender);
     }
     private async Task ShowMenu()
@@ -152,4 +204,10 @@
     {
         await jsRuntime.InvokeVoidAsync("closeNav");
     }
+
+    private void GoTo()
+    {
+        NavigationManager.NavigateTo("/home");
+    }
+
 }

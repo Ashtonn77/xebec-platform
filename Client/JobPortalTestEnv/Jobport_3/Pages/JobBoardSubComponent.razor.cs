@@ -10,6 +10,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 {
     public partial class JobBoardSubComponent
     {
+        #region Declared Variables
+
+        bool Spinner { get; set; } = false;
+        bool NoData { get; set; } = true;
+
+        #endregion
+
         //Show and Hide Element
         private bool IsShown { get; set; } = false;
 
@@ -30,7 +37,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
                 if (LstJobs != null)
                 {
                     DisplayJobs = LstJobs;
-                    CurrentJob2 = LstJobs[0];
+                    await ViewJob(LstJobs[0], State.Id);
                 }
             }
             catch (Exception ex)
@@ -137,7 +144,7 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             try
             {
 
-                SearchedJobs = await httpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&jobtypeQuery={JobFilter}");
+                SearchedJobs = await httpClient.GetFromJsonAsync<List<Job>>($"api/jobtest/?searchQuery={SearchTerm}&searchLocation={SearchLocation}&jobtypeQuery={JobFilter}");
             }
             catch (Exception ex)
             {
@@ -148,7 +155,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             {
                 CurrentJob2 = SearchedJobs[0];
             }
+            else
+            {
+                Spinner = true;
+                NoData = false;
+            }
             DisplayJobs = SearchedJobs;
+            LstJobs = SearchedJobs;
             InvokeAsync(StateHasChanged);
             return LstJobs;
         }
