@@ -1,0 +1,332 @@
+﻿@page "/idealcandidate"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime jsRuntime
+@inject HttpClient client
+@inject State State
+@*TODO: ADD MAX AND MIN WIDTHS TO MAIN DIV*@
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    .wrapper {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .nav {
+        height: 8vh;
+        background-color: #6c85a3;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.8rem;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+    .main-body {
+        height: 86vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        @* background-color: pink; *@
+    }
+
+
+
+    /*FOOTER*/
+    .footer-container {
+        width: 100%;
+        height: 6vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+         background-color: #6c85a3;
+         color: #fff;
+    }
+
+    .footer-container span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 2rem;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #6c85a3;
+        overflow-x: hidden;
+        transition: 0.5s;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 15px;
+        color: #fff;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #333;
+    }
+
+
+    @@media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+
+
+    .col{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 5px;
+    }
+
+
+    /*Candidate Ana..*/
+    .report {
+        width: 95%;
+        height: 95%;
+        margin: auto;
+    }
+
+
+
+    .report-container {
+        width: 95%;
+        height: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+
+
+    iframe {
+        border-radius: 5px;
+        height: 100%;
+        width: 95%;
+    }
+
+
+
+    .enlarge-iframe-div {
+        height: 50px;
+        width: 5%;
+        text-align: center;
+        margin-top: 0;
+    }
+
+
+
+    .big {
+        height: 88vh;
+        width: 100%;
+        background-color: black;
+        position: absolute;
+        z-index: 1;
+        margin-top: -12vh;
+        display: flex;
+    }
+
+
+
+    .big-main {
+        height: 90%;
+        margin-top: 2.5%;
+        margin-bottom: 5%;
+        width: 90%;
+        margin-left: 5%;
+    }
+
+
+
+    .compress-iframe-div {
+        height: 5%;
+        justify-content: center;
+        justify-items: center;
+        align-content: center;
+        align-items: center;
+        margin: auto;
+        width: 5%;
+        text-align: center;
+    }
+
+
+
+    .report {
+        width: 90%;
+        height: 95%;
+        margin-left: 5%;
+    }
+
+
+
+    .report-nav {
+        width: 100%;
+        height: 10%;
+        display: flex;
+    }
+
+
+
+    .report-buttons {
+        width: 30%;
+        margin: auto;
+        height: 80%;
+        color: black;
+        font-weight: 700;
+        font-size: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+
+        .report-buttons:hover {
+            width: 30%;
+            margin: auto;
+            height: 80%;
+            color: ivory;
+            font-weight: 700;
+            font-size: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(0,0,0,0.5);
+        }
+
+
+
+        .report-buttons:focus {
+            width: 30%;
+            margin: auto;
+            height: 80%;
+            color: ivory;
+            font-weight: 700;
+            font-size: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: rgb(0,0,0,0.5);
+        }
+</style>
+
+
+
+<div class="report"><form>
+    <div class="form-row">
+        <div class="col">
+            <label for="salary" class="form-label">Expected Salary</label>
+            <input type="number" class="form-control" placeholder="Expected Salary" id="salary">
+        </div>
+        <div class="col">
+            <label for="salary-range" class="form-label">Level of importance</label>
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="salary-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="stat-date" class="form-label">Start date</label>
+            <input type="date" class="form-control" id="stat-date">
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="stat-date-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="notice-period" class="form-label">Notice Period (weeks)</label>
+            <input type="number" class="form-control" id="notice-period">
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="notice-period-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="location" class="form-label">Location</label>
+            <!--TODO-->
+            <!--Drop down of provinces-->
+            <!--Last one is remote-->
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="location-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="experience" class="form-label">Years of Experience</label>
+            <input type="number" class="form-control" placeholder="1" id="experience">
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="experience-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="citizenship" class="form-label">Citizenship</label>
+            <input type="text" class="form-control" placeholder="South African" id="citizenship">
+            <!--TODO-->
+            <!--Check box SA or not-->
+            <!--not two 3 box (work permit, visa, nothing)-->
+
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="citizenship-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="work-permit" class="form-label">Work Permit</label>
+            <input type="text" class="form-control" placeholder="1Nebula" id="work-permit">
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="work-permit-range">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="univerity" class="form-label">University</label>
+            <input type="text" class="form-control" placeholder="Univerisity" id="univerity">
+        </div>
+        <div class="col">
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="univerity-range">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col">
+            <label for="platform" class="form-label">Platform</label>
+            <input type="text" class="form-control" placeholder="LinkedIn" id="platform">
+            <!--TODO-->
+            <!--Drop down of platforms we're got'-->
+
+        </div>
+        <div class="col">
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="platform-range">
+        </div>
+    </div>
+
+</form>
+</div>

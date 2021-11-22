@@ -289,6 +289,11 @@
                     <h3 class="heading">Candidate Analytics</h3>
                 </div>
             </div>
+            <div hidden="@dashboard.candidateAnalytics" class="department-container">
+                <h3 class="department-name" @onclick="@toViewCandidates">View Candidates</h3>
+                <h3 class="department-name" @onclick="@toViewIdealCandidate">View Posted Jobs</h3>
+
+            </div>
             <div class="nav-item" @onclick="@DataAnalyticsController">
                 <div class="left">
                     <i class="fas fa-chart-bar"></i>
@@ -340,16 +345,20 @@
                     {
                         <HireData />
                     }
-                    else if (dashboard.candidateAnalytics == false)
+                    else if (dashboard.candidateCandidates == true)
                     {
-                        <XebecPortal.Client.Data_Analytics_Tool.Candidate_Analytics.CandidateAnalytics/>
+                        <XebecPortal.Client.Data_Analytics_Tool.Candidate_Analytics.CandidateAnalytics />
+                    }
+                    else if (dashboard.candidateIdeal == true)
+                    {
+                        <XebecPortal.Client.Data_Analytics_Tool.Candidate_Analytics.IdealCandidate />
                     }
                 }
             </div>
         </div>
     </div>
-    
-     
+
+
     <div class="footer-container">
         <span>Nebula 2021 &reg;</span>
     </div>
@@ -357,7 +366,7 @@
 
 @code {
 
-    private Dashboard dashboard {get; set;} = new Dashboard();
+    private Dashboard dashboard { get; set; } = new Dashboard();
 
     private void toViewJobs()
     {
@@ -386,50 +395,61 @@
     {
 
         dashboard.candidateAnalytics = dashboard.jobBoard = true;
-        dashboard.registration = dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = false;
+        dashboard.registration = dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
         dashboard.dataAnalytics = !dashboard.dataAnalytics;
     }
     private void CandidateAnalyticsController()
     {
 
         dashboard.dataAnalytics = dashboard.jobBoard = true;
-        dashboard.registration = dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = false;
+        dashboard.registration = dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
         dashboard.candidateAnalytics = !dashboard.candidateAnalytics;
     }
     private void toDepartment()
     {
         dashboard.department = !dashboard.department;
-        dashboard.candidateAnalytics = true;
-        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.hire = false;
+
+        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
 
     }
     private void toRegistration()
     {
         dashboard.registration = !dashboard.registration;
-        dashboard.candidateAnalytics = true;
-        dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = false;
+
+        dashboard.department = dashboard.traffic = dashboard.fill = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
 
     }
     private void toTraffic()
     {
         dashboard.traffic = !dashboard.traffic;
-        dashboard.candidateAnalytics = true;
-        dashboard.registration = dashboard.department = dashboard.fill = dashboard.hire = false;
+
+        dashboard.registration = dashboard.department = dashboard.fill = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
 
     }
     private void toFill()
     {
         dashboard.fill = !dashboard.fill;
-        dashboard.candidateAnalytics = true;
-        dashboard.registration = dashboard.traffic = dashboard.department = dashboard.hire = false;
+
+        dashboard.registration = dashboard.traffic = dashboard.department = dashboard.hire = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
 
     }
     private void toHire()
     {
         dashboard.hire = !dashboard.hire;
-        dashboard.candidateAnalytics = true;
-        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.department = false;
+
+        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.department = dashboard.candidateCandidates = dashboard.candidateIdeal = false;
     }
 
+    private void toViewCandidates()
+    {
 
+        dashboard.candidateCandidates = true;
+        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.department = dashboard.hire = dashboard.candidateIdeal = false;
+    }
+    private void toViewIdealCandidate()
+    {
+
+        dashboard.candidateIdeal = true;
+        dashboard.registration = dashboard.traffic = dashboard.fill = dashboard.department = dashboard.hire = dashboard.candidateCandidates = false;
+    }
 }
