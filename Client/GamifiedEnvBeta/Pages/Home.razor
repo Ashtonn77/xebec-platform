@@ -22,13 +22,13 @@ body
 
 .header
 {
-    height: 95vh;
+    height: 100vh;
     background-image: linear-gradient(rgba(0, 51, 64, 0.8), rgba(4, 78, 91, 0.8)), url(/img/home_1.jpg);
     background-size: cover;
     background-position: top;
     position: relative;
     
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+    @* clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%); *@
 }
 
 .logo-box
@@ -160,7 +160,73 @@ body
     }
 }
 
+.main, .main-sub
+{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: top;
+    position: relative;
+}
 
+.main
+{
+    background-image: linear-gradient(rgba(0, 51, 64, 0.9), rgba(4, 78, 91, 0.9)), url(/img/code_1.jpg);   
+    justify-content: space-around;
+}
+
+.main-pic
+{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.main-pic img
+{
+    width: 80%;
+    height: 80%;
+    border-radius: 5px;
+    opacity: 0.6;
+    border: 5px solid #fff;
+}
+
+.main-comment
+{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    color: #fff;
+    font-weight: 200;
+}
+
+.main-sub
+{
+    justify-content: space-evenly;    
+    flex-wrap: wrap;
+    background-image: linear-gradient(rgba(0, 51, 64, 0.9), rgba(4, 78, 91, 0.9)), url(/img/code_2.jpg);
+}
+
+.box
+{
+    height: 40%;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgba(171,219,227, 0.5);
+    color: #fff;
+}
 
 </style>
 
@@ -184,3 +250,44 @@ body
     </div>
 
 </header>
+
+<section class="main">
+
+    <div class="main-pic">
+
+        <img src="img\christina.jpg" alt="christina">
+
+    </div>
+
+    <div class="main-comment">
+
+        "Amazing company. Awesome managers. Great pay with regular raises. Super fun work environment and I adore my coworkers."
+        <br/>
+        - Sam, Developer.
+
+    </div>
+   
+</section>
+
+<section class="main-sub">
+
+    <div class="box">
+        Streamline the Recruitment Experience   
+    </div>
+    <div class="box">
+        Connect with Vetted Candidates
+    </div>
+    <div class="box">
+        Adaptive Scoring System 
+    </div>
+    <div class="box">
+        One-click Hiring
+    </div>
+    <div class="box">
+        A Sea of Talent
+    </div>
+    <div class="box">
+        Analytical Feedback in a Unified Space
+    </div>
+
+</section>
