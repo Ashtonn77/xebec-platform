@@ -113,6 +113,8 @@
         height: 90%;
         margin: auto;
         display: flex;
+        overflow-y: scroll;
+        
     }
 
 
@@ -223,110 +225,294 @@
             cursor: pointer;
             background-color: rgb(0,0,0,0.5);
         }
+
+    .app-form-control {
+        width: 100%;
+        padding: 10px 0;
+        background: none;
+        border: none;
+        border-bottom: 1px solid white;
+        border-top: 1px solid white;
+        color: #ddd;
+        font-size: 14px;
+        text-transform: uppercase;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .app-form-control::placeholder {
+            color: #666;
+        }
+
+        .app-form-control:focus {
+            border-bottom-color: #ddd;
+        }
+
+    option {
+        background: #394656;
+        color: white;
+    }
+
+    .app-title {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        color: #937a5c;
+        font-size: 26px;
+    }
+
+        .app-title:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 25px;
+            height: 4px;
+            background: #ea1d6f;
+        }
+
+    .label {
+        color: white;
+    }
+
+    .app-form-button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+
+        .app-form-button:hover {
+            color: #937a5c;
+        }
+
+
+
+
+/*Form Styling start*/
+
+
+.form-wrapper {
+    font-family: 'Balsamiq Sans', sans-serif;
+    background: #6c85a3;
+    width: 100%;
+    padding: 10px;
+    /*border: 6px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 20px 20px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 50px;*/
+    max-height: 100%;
+}
+
+.form-wrapper h2 {
+    color: white;
+    /*font-size: 60px;*/
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.form-wrapper .row {
+    width: 100%;
+    display: grid;
+    /*grid-template-columns: repeat(auto-fit,minmax(40%, 1fr));*/
+    grid-template-columns: repeat(2, minmax(50%, 1fr));
+
+}
+
+.form-wrapper .row .col {
+    position: relative;
+    width: 100%;
+    margin: 10px 20px 40px 0;
+    transition: 0.5s;
+}
+
+.form-wrapper .row .form-group {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    color: #ffffff;
+}
+
+/*These hide the weird up/down arrow */
+.form-wrapper .row .col .form-group input::-webkit-outer-spin-button,
+.form-wrapper .row .col .form-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-wrapper .row .col .form-group input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.form-wrapper .row .col .form-group input,
+.form-wrapper .row .col .form-group select
+ {
+    width: 50%;
+    outline: none;
+    /*font-size: 20px;*/
+    padding: 10px 0 10px 20px;
+    border: 5px solid rgba(41, 51, 63, 0.5);
+    /*box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
+    *background: rgba(0, 0, 0, 0.3);
+    */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset, 5px 5px 0 5px rgba(0, 0, 0, 0.3);
+    background: transparent;
+    color: white;
+    border-radius: 10px;
+}
+
+.form-wrapper .row .form-group label {
+    color: #ffffff;
+    /*font-size: 24px;*/
+    margin: 0 0 0 10px;
+    display: block;
+    pointer-events: none;
+}
+
+.form-wrapper .row .form-group h2 {
+    /*font-size: 20px;*/
+    color: white;
+    text-transform: capitalize;
+    width: 30%;
+    margin-right: 10%;
+}
+
+.check {
+    color: green;
+
+}
+
+/*.row .col:nth-child(6) {
+    margin-top: 64px;
+}*/
+
+.form-wrapper .row .col .form-group input:focus {
+    border: 5px solid #ffffff;
+    transition: all 0.3s;
+}
+
+.form-wrapper .row input[type="submit"] {
+    border-bottom: 5px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    background: transparent;
+    text-transform: uppercase;
+    color: #ffffff;
+    line-height: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 45px;
+    transition: all 0.4s;
+    grid-column-start: span 2;
+}
+
+.form-wrapper .row input[type="submit"]:hover {
+    border: 5px solid rgba(255, 255, 255, 1);
+    color: #ffffff;
+    transition: all 0.4s;
+
+}
+
+fieldset {
+    box-shadow: rgba(9, 30, 66, 0.25) 0 1px 1px, rgba(9, 30, 66, 0.13) 0 0 1px 1px;
+}
+
+.form-wrapper .row legend {
+    background: #6c85a3;
+    color: white;
+}
+
+.form-wrapper .row .check input[type="checkbox"] {
+    height: 70%;
+}
+
+/*Form Styling End*/
 </style>
 
 
 
-<div class="report"><form>
-    <div class="form-row">
+
+<div class="form-wrapper">
+    @*<h2>Ideal candidate</h2>*@
+    <div class="row">
+        <div class="col m-0">
+            <div class="form-group">
+                <label>Salary Expectation</label>
+                <input type="text">
+                <!--class="col-8"-->
+            </div>
+        </div>
+
         <div class="col">
-            <label for="salary" class="form-label">Expected Salary</label>
-            <input type="number" class="form-control" placeholder="Expected Salary" id="salary">
+            <div class="form-group">
+                <label>Available Start Date</label>
+                <input type="date">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label>Notice (weeks)</label>
+                <input type="number">
+            </div>
         </div>
         <div class="col">
-            <label for="salary-range" class="form-label">Level of importance</label>
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="salary-range">
+            <div class="form-group">
+                <label>Experience (years)</label>
+                <input type="text">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Last University</label>
+                <input type="text">
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Platform</label>
+                <select>
+                    <option>LinkedIn</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>SA Citizen</label>
+                <select>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Work Permit</label>
+                <select>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label>Visa</label>
+                <select>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <input type="submit" value="Submit">
         </div>
     </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="stat-date" class="form-label">Start date</label>
-            <input type="date" class="form-control" id="stat-date">
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="stat-date-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="notice-period" class="form-label">Notice Period (weeks)</label>
-            <input type="number" class="form-control" id="notice-period">
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="notice-period-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="location" class="form-label">Location</label>
-            <!--TODO-->
-            <!--Drop down of provinces-->
-            <!--Last one is remote-->
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="location-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="experience" class="form-label">Years of Experience</label>
-            <input type="number" class="form-control" placeholder="1" id="experience">
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="experience-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="citizenship" class="form-label">Citizenship</label>
-            <input type="text" class="form-control" placeholder="South African" id="citizenship">
-            <!--TODO-->
-            <!--Check box SA or not-->
-            <!--not two 3 box (work permit, visa, nothing)-->
-
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="citizenship-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="work-permit" class="form-label">Work Permit</label>
-            <input type="text" class="form-control" placeholder="1Nebula" id="work-permit">
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="work-permit-range">
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col">
-            <label for="univerity" class="form-label">University</label>
-            <input type="text" class="form-control" placeholder="Univerisity" id="univerity">
-        </div>
-        <div class="col">
-
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="univerity-range">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="col">
-            <label for="platform" class="form-label">Platform</label>
-            <input type="text" class="form-control" placeholder="LinkedIn" id="platform">
-            <!--TODO-->
-            <!--Drop down of platforms we're got'-->
-
-        </div>
-        <div class="col">
-            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="platform-range">
-        </div>
-    </div>
-
-</form>
 </div>
+
