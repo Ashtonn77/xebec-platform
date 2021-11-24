@@ -2,6 +2,7 @@
 #044E5B
 #003344
 
+#44c1e6
 #00BCAE
 */
 
@@ -13,19 +14,19 @@
     overflow: hidden;
 }
 
-.container-main:before{
-    content: '';
-    position: absolute;
-    width: 2000px;
-    height: 2000px;
-    border-radius: 50%;
-    background: linear-gradient(-45deg, #044E5B, #003344);
-    top: -10%;
-    right: 48%;
-    transform: translateY(-50%);
-    z-index: 6;
-    transition: 1.8s ease-in-out;
-}
+    .container-main:before {
+        content: '';
+        position: absolute;
+        width: 2000px;
+        height: 2000px;
+        border-radius: 50%;
+        background: linear-gradient(-45deg, #00BCAE, #44c1e6);
+        top: -10%;
+        right: 48%;
+        transform: translateY(-50%);
+        z-index: 6;
+        transition: 1.8s ease-in-out;
+    }
 
 
 .forms-container{
@@ -110,7 +111,7 @@ form.sign-up-form{
     font-weight: 500;
 }
 
-.btn{
+.btn {
     width: 150px;
     height: 49px;
     border: none;
@@ -118,15 +119,15 @@ form.sign-up-form{
     border-radius: 49px;
     color: #fff;
     cursor: pointer;
-    background-color: #6c85a3; /**/
+    background-color: #44c1e6; /**/
     text-transform: uppercase;
     font-weight: 600;
     margin: 10px 0;
     transition: 0.5s;
 }
 
-.btn:hover{
-    background-color: #365a99;
+.btn:hover {
+    background-color: #00BCAE;
 }
 
 
@@ -155,10 +156,10 @@ form.sign-up-form{
     transition: 0.3s;
 }
 
-.social-icon:hover{
-    color: #6c85a3;
-    border-color: #6c85a3;
-}
+    .social-icon:hover {
+        color: #00BCAE;
+        border-color: #00BCAE;
+    }
 
 
 .panels-container{
