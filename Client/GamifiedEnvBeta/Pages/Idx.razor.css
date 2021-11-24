@@ -1,3 +1,10 @@
+/*
+#044E5B
+#003344
+
+#00BCAE
+*/
+
 .container-main{
     position: relative;
     width: 100%;
@@ -12,7 +19,7 @@
     width: 2000px;
     height: 2000px;
     border-radius: 50%;
-    background: linear-gradient(-45deg, #6c85a3, rgb(35, 100, 122));
+    background: linear-gradient(-45deg, #044E5B, #003344);
     top: -10%;
     right: 48%;
     transform: translateY(-50%);

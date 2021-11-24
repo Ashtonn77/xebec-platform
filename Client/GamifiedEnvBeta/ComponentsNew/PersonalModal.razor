@@ -182,10 +182,21 @@
                     <input type="text" id="idNumber" @bind="Personal.IdNumber">
                 </div>
 
-                @* <div class="inline-inner">
-                    <label for="ethnicity">Ethnicity:</label>
-                    <input type="text" id="ethnicity" @bind="Additional.Ethnicity">
-                </div> *@
+                <div class="inline-inner">
+                    <label for="province">Province:</label>
+                    <select id="province" @onchange="OnProvinceChanged">
+                        <option value="--">--</option>
+                        <option value="Eastern Cape">Eastern Cape</option>
+                        <option value="Free State">Free State</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                        <option value="Limpopo">Limpopo</option>
+                        <option value="Mpumalanga">Mpumalanga</option>
+                        <option value="Northern Cape">Northern Cape</option>
+                        <option value="North West">North West</option>
+                        <option value="Western Cape">Western Cape</option>
+                    </select>
+                </div>
 
             </div>
 
@@ -217,14 +228,14 @@
 
             </div> *@
 
-            <div class="inline">
+            @* <div class="inline">
                 <div class="inline-inner address-inner">
                     <label for="address">Address:</label>
                     <textarea id="address" @bind="Personal.Address"></textarea>
                 </div>
-            </div>
+            </div> *@
 
-              <div class="btn-container">
+            <div class="btn-container">
 
                 <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
                 <p style="color:#fff;" class="mt-4 ml-3">@message</p>
@@ -289,6 +300,21 @@
         }
 
         State.IsSaved = false;
+    }
+
+    [Parameter]
+    public EventCallback<string> ProvinceChanged
+    {
+        get;
+        set;
+    }
+
+     private Task OnProvinceChanged(ChangeEventArgs e)
+    {
+        //change Disability to province
+        @* Additional.Disability = e.Value.ToString();
+        return ProvinceChanged.InvokeAsync(Additional.Disability); *@
+        return null;
     }
 
     private Task OnDisabilityChanged(ChangeEventArgs e)
