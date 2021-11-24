@@ -12,5 +12,7 @@ namespace Server.IRepository
         Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfo(int AppUserId);
 
         Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoDetailed(int AppUserId, int jobId);
+
+        Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoForUser(int AppUserId, int PhaseId);
     }
 }
