@@ -1,9 +1,9 @@
-﻿@page "/slider"
+﻿
 <div>
     <p id="">@SliderValue</p>
-    <div class="slider-heading">
+    @*<div class="slider-heading">
         <span>@Min</span><span>@Max</span>
-    </div>
+    </div>*@
     <input type="range" min="0" max="@Max" class="slider" @bind-value="SliderValue" @bind-value:event="oninput">
 </div>
 
