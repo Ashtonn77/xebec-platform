@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs.ViewModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -45,5 +46,37 @@ namespace Server.Repository
 
             return await queryFinal.AsNoTracking().ToListAsync();
         }
+
+        public async Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoForUser(int AppUserId, int PhaseId)
+        {
+            IQueryable<ApplicationPhaseHelper> queryphase;
+            IQueryable<myJobsViewModel> queryFinal;
+            IQueryable<Job> queryJobs = null;
+            queryphase = from users in _context.AppUser
+                         join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
+                             on users.Id equals applications.AppUserId
+                         join phases in _context.ApplicationPhasesHelpers.Where(p => p.ApplicationPhaseId == PhaseId)
+                              on applications.Id equals phases.ApplicationId
+                         select phases;
+            if (queryphase != null)
+            {
+                queryJobs = from phases in queryphase
+                            join jobs in _context.Jobs
+                            on phases.Application.JobId equals jobs.Id
+                            select jobs;
+            }
+            if (queryJobs != null)
+            {
+                queryFinal = from phases in queryphase
+                             join jobs in _context.Jobs
+                             on phases.Application.JobId equals jobs.Id
+                             select new myJobsViewModel() { Application = phases, Job = jobs };
+            }
+            queryphase = queryphase.Include(s => s.Status).Include(p => p.ApplicationPhase);
+
+            return await queryphase.AsNoTracking().ToListAsync();
+        }
+
+        
     }
 }

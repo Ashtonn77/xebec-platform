@@ -1,12 +1,12 @@
 @inject HttpClient httpClient
 @inject State State
 @inject IJSRuntime jsRuntime
-
+@using XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages;
 <style>
     .profile-wrapper {
         width: 100%;
         height: 100%;
-        background-color: lightgray;
+        background-color: #f5f5f5;
         flex-grow: 1;
         display: flex;
 
@@ -220,6 +220,10 @@ else if(addDocumentModal)
 {
     <DocumentsModalAddNew ToggleDocumentAddNewModal="ToggleDocumentAddNewModal"></DocumentsModalAddNew>
 }
+else if (ApplyModal)
+{
+    <ApplyQuestionnaireComponent ToggleApplyModal="ToggleModalApply"></ApplyQuestionnaireComponent>
+}
 
 @if(State.Id == 0)
 {
@@ -235,7 +239,7 @@ else
 
             <div class="top">
                 <h5>Personal Information</h5>
-                @if(Personals == null || Personals.Count <= 0)
+                @if (Personals == null || Personals.Count <= 0)
                 {
                     @* <button class="btn btn-success btn-sm" @onclick="TogglePersonalAddNewModal">Add New</button> *@
                     <a href="javascript:void(0)" @onclick="TogglePersonalAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
@@ -255,24 +259,24 @@ else
 
                 <div class="details">
 
-                    @if(Personals != null && Personals.Count > 0)
+                    @if (Personals != null && Personals.Count > 0)
                     {
 
-                       @foreach(var Personal in Personals)
-                       {
+                        @foreach (var Personal in Personals)
+                        {
                             <span>@Personal.FirstName @Personal.LastName</span>
                             <span>@Personal.Address</span>
                             <span>@Personal.Email</span>
                             <span>@Personal.PhoneNumber</span>
 
-                             <div class="btn-inline">
+                            <div class="btn-inline">
 
-                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button>  *@                                
+                                @* <button class="btn btn-danger btn-sm mt-2 mr-1" @onclick="() => RemovePersonalInfo(Personal)">Remove</button>  *@
                                 <a href="javascript:void(0)" @onclick="() => RemovePersonalInfo(Personal)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
-                                
-                                
+
+
                             </div>
-                       }
+                        }
 
                     }
                     else
@@ -282,7 +286,7 @@ else
                         <span>Email: N/A</span>
                         <span>Phone Number: N/A</span>
                     }
-                   
+
 
                 </div>
 
@@ -296,7 +300,7 @@ else
                 <h5>Education History</h5>
                 <div class="btn-container">
                     @* <button class="btn btn-success btn-sm" @onclick="ToggleEducationModalAddNew">Add New</button>    *@
-                    <a href="javascript:void(0)" @onclick="ToggleEducationModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                
+                    <a href="javascript:void(0)" @onclick="ToggleEducationModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 </div>
             </div>
 
@@ -304,9 +308,9 @@ else
 
                 <div class="details">
 
-                    @if(Educations != null && Educations.Count > 0)
+                    @if (Educations != null && Educations.Count > 0)
                     {
-                        @foreach(var Education in Educations)
+                        @foreach (var Education in Educations)
                         {
                             <span>@Education.Insitution</span>
                             <span>@Education.Qualification</span>
@@ -319,9 +323,9 @@ else
 
                                 @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
                                 <a href="javascript:void(0)" @onclick="() => ToggleEducationModal(Education)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
-                                
+
                             </div>
-                          
+
                             <div class="line"></div>
                         }
                     }
@@ -347,7 +351,7 @@ else
                 <h5>Work History</h5>
                 <div class="btn-container">
                     @* <button class="btn btn-success btn-sm" @onclick="ToggleWorkModalAddNew">Add New</button> *@
-                    <a href="javascript:void(0)" @onclick="ToggleWorkModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
+                    <a href="javascript:void(0)" @onclick="ToggleWorkModalAddNew"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 </div>
             </div>
 
@@ -355,24 +359,24 @@ else
 
                 <div class="details">
 
-                    @if(WorkHistories != null && WorkHistories.Count > 0)
+                    @if (WorkHistories != null && WorkHistories.Count > 0)
                     {
-                        @foreach(var Work in WorkHistories)
+                        @foreach (var Work in WorkHistories)
                         {
-                             <span>@Work.CompanyName</span>
-                             <span>@Work.JobTitle</span>
-                             <span>@Work.Description</span>
-                             <span>@Work.StartDate - @Work.EndDate</span>
-                             
-                            <div class="btn-inline">                                
-                                
+                            <span>@Work.CompanyName</span>
+                            <span>@Work.JobTitle</span>
+                            <span>@Work.Description</span>
+                            <span>@Work.StartDate - @Work.EndDate</span>
+
+                            <div class="btn-inline">
+
                                 <a href="javascript:void(0)" @onclick="() => RemoveWorkHistory(Work)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
                                 @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
-                                <a href="javascript:void(0)"  @onclick="() => ToggleWorkModal(Work)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
-                                
+                                <a href="javascript:void(0)" @onclick="() => ToggleWorkModal(Work)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
+
                             </div>
-                          
+
                             <div class="line"></div>
                         }
                     }
@@ -396,17 +400,17 @@ else
             <div class="top">
                 <h5>Profiles and Portfolios</h5>
                 <div class="btn-container">
-                @if(PortfolioLinks == null || PortfolioLinks.Count <= 0)
-                {
-                    @* <button class="btn btn-success btn-sm" @onclick="TogglePortfoiloAddNewModal">Add New</button> *@
-                    <a href="javascript:void(0)" @onclick="TogglePortfoiloAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
-                }
-                else
-                {
-                    @* <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button> *@
-                    <a href="javascript:void(0)" @onclick="TogglePorfoliosModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
-                }
-                    
+                    @if (PortfolioLinks == null || PortfolioLinks.Count <= 0)
+                    {
+                        @* <button class="btn btn-success btn-sm" @onclick="TogglePortfoiloAddNewModal">Add New</button> *@
+                        <a href="javascript:void(0)" @onclick="TogglePortfoiloAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
+                    }
+                    else
+                    {
+                        @* <button class="btn btn-primary btn-sm" @onclick="TogglePorfoliosModal">Edit</button> *@
+                        <a href="javascript:void(0)" @onclick="TogglePorfoliosModal"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
+                    }
+
                 </div>
             </div>
 
@@ -414,29 +418,29 @@ else
 
                 <div class="details">
 
-                    @if(PortfolioLinks != null && PortfolioLinks.Count > 0)
+                    @if (PortfolioLinks != null && PortfolioLinks.Count > 0)
                     {
-                        @foreach(var URL in PortfolioLinks)
+                        @foreach (var URL in PortfolioLinks)
                         {
                             <span>@URL.GitHubLink</span>
                             <span>@URL.LinkedInLink</span>
                             <span>@URL.TwitterLink</span>
                             <span>@URL.PersonalWebsiteUrl</span>
 
-                            <div class="btn-inline">                                
-                               
+                            <div class="btn-inline">
+
                                 <a href="javascript:void(0)" @onclick="() => RemoveSocialLinks(URL)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
-                                
+
                             </div>
                         }
                     }
                     else
                     {
-                            <span>GitHubLink: N/A</span>
-                            <span>LinkedInLink: N/A</span>
-                            <span>FacebookLink: N/A</span>
-                            <span>PersonalWebsiteUrl: N/A</span>
-                    }                     
+                        <span>GitHubLink: N/A</span>
+                        <span>LinkedInLink: N/A</span>
+                        <span>FacebookLink: N/A</span>
+                        <span>PersonalWebsiteUrl: N/A</span>
+                    }
 
                 </div>
 
@@ -450,7 +454,7 @@ else
                 <h5>Documents</h5>
                 <div class="btn-container">
                     @* <button class="btn btn-success btn-sm" @onclick="ToggleDocumentAddNewModal">Upload</button> *@
-                    <a href="javascript:void(0)" @onclick="ToggleDocumentAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>                    
+                    <a href="javascript:void(0)" @onclick="ToggleDocumentAddNewModal"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
                 </div>
             </div>
 
@@ -458,37 +462,49 @@ else
 
                 <div class="details">
 
-                    @if(Documents != null && Documents.Count > 0)
+                    @if (Documents != null && Documents.Count > 0)
                     {
-                        @foreach(var Document in Documents)
+                        @foreach (var Document in Documents)
                         {
-                             <span>@Document.DocumentName</span> 
-                             <span>@Document.DocumentUrl</span>                             
-                              
+                            <span>@Document.DocumentName</span>
+                            <span>@Document.DocumentUrl</span>
 
-                            <div class="btn-inline">                                
-                                
+
+                            <div class="btn-inline">
+
 
                                 <a href="javascript:void(0)" @onclick="() => RemoveDocument(Document)"><span class="iconify icon-btn" data-icon="carbon:delete" style="color: #bf4342;" data-width="20"></span></a>
 
                                 @* <button type="button" class="btn btn-primary btn-sm ml-1 mt-2" @onclick="() => ToggleEducationModal(Education)">Edit</button>  *@
-                                <a href="javascript:void(0)"  @onclick="() => ToggleDocumentsModal(Document)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
+                                <a href="javascript:void(0)" @onclick="() => ToggleDocumentsModal(Document)"><span class="iconify ml-2 icon-btn" data-icon="bx:bxs-edit" style="color: #8ecae6; margin-top:2.2px;" data-width="22"></span></a>
 
                             </div>
-                          
+
                             <div class="line"></div>
                         }
                     }
                     else
                     {
                         <span>No Documents Uploaded</span>
-                       
+
                     }
 
                 </div>
 
             </div>
 
+
+        </div>
+
+        <div class="content">
+
+            <div class="top">
+                <h5>Apply</h5>
+                <div class="btn-container">
+                    @* <button class="btn btn-success btn-sm" @onclick="ToggleDocumentAddNewModal">Upload</button> *@
+                    <a href="javascript:void(0)" @onclick="ToggleModalApply"><span class="iconify icon-btn" data-icon="fluent:add-circle-20-regular" style="color: #74c69d;" data-width="22"></span></a>
+                </div>
+            </div>
 
         </div>
 
@@ -803,7 +819,7 @@ else
     bool addDocumentModal = false;
     private async Task ToggleDocumentAddNewModal()
     {
-        
+
         loadSpinner = true;
         addDocumentModal = !addDocumentModal;
 
@@ -815,17 +831,33 @@ else
 
         int docCount = Documents == null ? 0 : Documents.Count;
 
-            uploadCount = $"{docCount}/4";
-            if(docCount < 4)
-                documentsColor = "#9a9c9a";
-            else
-                documentsColor = "#6c85a3";
+        uploadCount = $"{docCount}/4";
+        if(docCount < 4)
+            documentsColor = "#9a9c9a";
+        else
+            documentsColor = "#6c85a3";
 
 
-            string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
-            State.IsUserProfileComplete = IsProfileComplete(colors);           
-    
-        
+        string[] colors = {educationProgress, workProgress, personalProgress, porfolioProgress, documentsColor};
+        State.IsUserProfileComplete = IsProfileComplete(colors);
+
+
+        loadSpinner = false;
+
+    }
+
+    bool ApplyModal = false;
+    private async Task ToggleModalApply()
+    {
+        loadSpinner = true;
+        ApplyModal = !ApplyModal;
+        try
+        {
+            WorkHistories = await httpClient.GetFromJsonAsync<IList<WorkHistory>>($"/api/WorkHistory/all/{State.Id}");
+        }
+        catch (Exception ex) { }
+
+
         loadSpinner = false;
 
     }

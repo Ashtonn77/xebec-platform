@@ -203,5 +203,24 @@ namespace Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+
+        // GET: api/<ApplicationPhaseHelpersController>
+        [HttpGet("myJobs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetApplicationPhaseDetailsUser([FromQuery] int AppUserId, [FromQuery] int PhaseId)
+        {
+            try
+            {
+                var ApplicationPhaseHelpers = await applicationPhaseHelperRepository.GetApplicationPhaseInfoForUser(AppUserId, PhaseId);
+
+                return Ok(ApplicationPhaseHelpers);
+
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
     }
 }

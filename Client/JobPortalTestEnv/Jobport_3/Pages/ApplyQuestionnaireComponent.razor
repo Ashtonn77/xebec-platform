@@ -1,0 +1,446 @@
+﻿@inject State State
+@inject HttpClient http
+@inject IJSRuntime jsRuntime
+
+<style>
+    @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .modal-wrapper {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .upper button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .lower {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 10px;
+    }
+
+    /*form styles*/
+    .input-form {
+        background-color: #fff;
+        padding: 10px;
+        height: 90%;
+        width: 90%;
+        margin: auto;
+        max-width: 700px;
+        max-height: 450px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 5px;
+        overflow-y: auto;
+        background-color: #283747;
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    }
+
+        .input-form::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .input-form::-webkit-scrollbar-track {
+            background-color: #EAF2F8;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .input-form::-webkit-scrollbar-thumb {
+            background-color: #95A5A6;
+            border: 3px solid #EAF2F8;
+            border-radius: 20px;
+        }
+
+    .inline {
+        width: 90%;
+        margin: auto;
+        display: flex;
+    }
+
+
+    .inline-inner {
+        width: 45%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 0px;
+        color: #fff;
+    }
+
+    .inline-inner input,
+    select {
+        padding: 5px 7px;
+        border-radius: 5px;
+        border: 0.5px solid #7C7C7C;
+        font-size: 13px;
+    }
+
+        .inline-inner input:focus,
+        select:focus,
+        .address-inner textarea:focus,
+        .radio-inner input:focus {
+            outline: none !important;
+            border: 1px solid #0077b6;
+            box-shadow: 0 0 10px #719ECE;
+        }
+
+    .address-inner {
+        width: 80%;
+    }
+
+        .address-inner textarea {
+            height: 150px;
+            padding: 5px 10px;
+            resize: none;
+            border-radius: 5px;
+            border: 0.5px solid #7C7C7C;
+        }
+
+    .radio-inner {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+    }
+
+
+
+    .btn-container,
+    .form-title {
+        padding: 1rem 0;
+        width: 90%;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="modal-wrapper">
+
+    <div class="upper">
+        <button class="btn btn-danger btn-sm" @onclick="@(() => ToggleApplyModal.InvokeAsync())">Close</button>
+    </div>
+
+    <div class="lower">
+
+        <form class="input-form">
+
+
+            <div class="inline">
+
+                <div class="inline-inner">
+                    <label for="expectedSalary">Expeceted Salary</label>
+                    <input type="text" id="expectedSalary" @bind="Ideal.ExpectedSalary">
+                </div>
+
+                <div class="inline-inner">
+                    <label for="experience">Years of Experience:</label>
+                    <input type="number" id="experience" @bind="Ideal.Experience">
+                </div>
+
+
+            </div>
+
+            <div class="inline">
+
+                <div class="inline-inner">
+                    <label for="startDate">Earliest Start Date:</label>
+                    <input type="date" id="startDate" @bind="Ideal.StartDate">
+                </div>
+                <div class="inline-inner">
+                    <label for="noticePeriod">notice Period (weeks):</label>
+                     <select id="location" @onchange="OnLocationChanged">
+                        <option value="--" disabled selected>--</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="inline">
+
+                <div class="inline-inner">
+
+                    <label for="location">Province:</label>
+                    <select id="location" @onchange="OnLocationChanged">
+                        <option value="--" disabled selected>--</option>
+                        <option value="1">Eastern Cape</option>
+                        <option value="2">Free State</option>
+                        <option value="3">Gauteng</option>
+                        <option value="4">KwaZulu-Natal</option>
+                        <option value="5">Limpopo</option>
+                        <option value="6">Mpumalanga</option>
+                        <option value="7">Northern Cape</option>
+                        <option value="8">North West</option>
+                        <option value="9">Western Cape</option>
+                        <option value="10">Remote</option>
+                    </select>
+
+                </div>
+
+                <div class="inline-inner">
+
+                    <label for="platform">Platform:</label>
+                    <select id="platform" @onchange="OnPlatformChanged">
+                        <option value="--" disabled selected>--</option>
+                        <option value="1">Indeed</option>
+                        <option value="2">LinkedIn</option>
+                        <option value="3">Pnet</option>
+                        <option value="4">Twitter</option>
+                        <option value="5">Facebook</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="inline">
+
+                <div class="inline-inner">
+                    <label for="university">University</label>
+                    <input type="text" id="university" @bind="Ideal.University">
+                </div>
+
+                <div class="inline-inner">
+                    <label for="citizenship">Are you a South African Citizen</label>
+                    <div class="radio-inner">
+                        <input type="radio" id="sa" name="citizen" value="1" @onchange="OnCitizenChanged" checked>
+                        <label for="sa">Yes</label>
+                        <input type="radio" id="foreigner" name="citizen" value="2" @onchange="OnCitizenChanged">
+                        <label for="foreigner">No</label>
+                    </div>
+                </div>
+
+            </div>
+
+            @if (nonCitizen)
+            {
+                <div class="inline">
+
+                    <div class="inline-inner">
+                        <label for="workvisa">Do you have a work visa?</label>
+                        <div class="radio-inner">
+                            <input type="radio" id="yes" name="visa" value="1" @onchange="OnVisaChanged">
+                            <label for="yes">Yes</label>
+                            <input type="radio" id="no" name="visa" value="2" @onchange="OnVisaChanged">
+                            <label for="no">No</label>
+                        </div>
+                    </div>
+
+                    <div class="inline-inner">
+                        <label for="workpermit">Do you have a work permit?</label>
+                        <div class="radio-inner">
+                            <input type="radio" id="yes" name="permit" value="1" @onchange="OnPermitChanged">
+                            <label for="yes">Yes</label>
+                            <input type="radio" id="no" name="permit" value="2" @onchange="OnPermitChanged">
+                            <label for="no">No</label>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <div class="inline">
+
+                <div class="inline-inner">
+                    <div class="radio-inner">
+                        <input type="checkbox" id="permission" name="permission" @bind="PermissionChecked">
+                        <label for="permission"> Yes I give my permission for my info to be processed</label>
+                    </div>
+                </div>
+
+
+            </div>
+            @if (PermissionChecked)
+            {
+                <div class="btn-container">
+
+                    <button type="button" class="btn btn-success btn-sm mt-2" @onclick="Save">Save</button>
+                    <p style="color:#fff;" class="mt-4 ml-3">@message</p>
+
+                </div>
+            }
+
+        </form>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public EventCallback<int> ToggleApplyModal { get; set; }
+
+    private class IdealCandy
+    {
+        public int Id { get; set; }
+        public decimal ExpectedSalary { get; set; }
+        public DateTime StartDate { get; set; }
+
+        public int NoticePeriodId { get; set; }
+        public int Experience { get; set; }
+
+        public int LocationId { get; set; }
+        public int PlatformId { get; set; }
+
+        public string University { get; set; }
+        public int CitizenId { get; set; }
+
+        public int VisaId { get; set; }
+        public int WorkPermit { get; set; }
+
+        public int PermissionId { get; set; }
+        public int JobId { get; set; }
+    }
+
+    private IdealCandy Ideal = new IdealCandy();
+
+    private string message = string.Empty;
+
+    private bool nonCitizen = false;
+
+    private bool PermissionChecked = false;
+
+
+    [Parameter]
+    public EventCallback<int> NotcePeriodChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<int> LocationChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<int> PlatfromChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<int> CitizenChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<int> VisaChanged
+    {
+        get;
+        set;
+    }
+
+    [Parameter]
+    public EventCallback<int> PermitChanged
+    {
+        get;
+        set;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);
+
+        }
+
+
+        Ideal = new IdealCandy();
+        Ideal.StartDate = DateTime.Now;
+
+    }
+
+    private Task OnNoticePeriodChanged(ChangeEventArgs e)
+    {
+        Ideal.NoticePeriodId = int.Parse(e.Value.ToString());
+        return NotcePeriodChanged.InvokeAsync(Ideal.NoticePeriodId);
+    }
+
+    private Task OnLocationChanged(ChangeEventArgs e)
+    {
+        Ideal.LocationId = int.Parse(e.Value.ToString());
+        return LocationChanged.InvokeAsync(Ideal.LocationId);
+    }
+
+
+    private Task OnPlatformChanged(ChangeEventArgs e)
+    {
+        Ideal.PlatformId = int.Parse(e.Value.ToString());
+        return PlatfromChanged.InvokeAsync(Ideal.PlatformId);
+    }
+
+    private Task OnCitizenChanged(ChangeEventArgs e)
+    {
+        Ideal.CitizenId = int.Parse(e.Value.ToString());
+        nonCitizen = !nonCitizen;
+        return CitizenChanged.InvokeAsync(Ideal.CitizenId);
+    }
+
+    private Task OnVisaChanged(ChangeEventArgs e)
+    {
+        Ideal.VisaId = int.Parse(e.Value.ToString());
+        return VisaChanged.InvokeAsync(Ideal.VisaId);
+    }
+
+    private Task OnPermitChanged(ChangeEventArgs e)
+    {
+        Ideal.WorkPermit = int.Parse(e.Value.ToString());
+        return PermitChanged.InvokeAsync(Ideal.WorkPermit);
+    }
+
+    private async Task Save()
+    {
+        if (!PermissionChecked)
+        {
+            message = "Please agree to the permission for the use of your detaiils";
+        }
+        else
+            message = "Saved!";
+
+    }
+
+}
