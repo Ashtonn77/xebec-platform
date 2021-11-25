@@ -14,6 +14,8 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
         List<JobPlatform> jobPlatform { get; set; } = new List<JobPlatform>();
         List<JobType> jobTypes { get; set; } = new List<JobType>();
 
+        public List<Department> Departments { get; set; } = new List<Department>();
+
         int[] jobPlatformHelper = new int[0];
         string[] jobPlatformHelperText = new string[0];
         int[] jobTypeHelper = new int[0];
@@ -28,11 +30,13 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
             {
                 jobTypes = await httpClient.GetFromJsonAsync<List<JobType>>("api/JobType");
                 jobPlatform = await httpClient.GetFromJsonAsync<List<JobPlatform>>("api/JobPlatform");
+                Departments = await httpClient.GetFromJsonAsync<List<Department>>("api/Department");
             }
             catch(Exception ex)
             {
                 jobTypes = new List<JobType>();
                 jobPlatform = new List<JobPlatform>();
+                Departments = new List<Department>();
             }
 
             job.CreationDate = DateTime.Now;
@@ -61,16 +65,17 @@ namespace XebecPortal.Client.JobPortalTestEnv.Jobport_3.Pages
 
         //This is the event callback we use in the select drop down elements
         [Parameter]
-        public EventCallback<string> ValueChanged
+        public EventCallback<int> ValueChanged
         {
             get;
             set;
         }
         private Task OnDepartmentChanged(ChangeEventArgs e)
         {
-            job.Department = e.Value.ToString();
-            return ValueChanged.InvokeAsync(job.Department);
+            job.DepartmentId = int.Parse(e.Value.ToString());
+            return ValueChanged.InvokeAsync(job.DepartmentId);
         }
+
         private void jobTypeModelData(string value)
         {
             string[] fullMixedValue = value.Split(',');
