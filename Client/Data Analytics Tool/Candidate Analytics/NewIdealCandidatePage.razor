@@ -215,7 +215,7 @@ position: fixed; /* Stay in place */
 
 .form-wrapper {
     font-family: 'Balsamiq Sans', sans-serif;
-    background: #6c85a3;
+    background: #231E39;
     width: 100%;
     padding: 30px 90px 90px 90px;
     border: 6px solid rgba(0, 0, 0, 0.3);
@@ -270,7 +270,7 @@ position: fixed; /* Stay in place */
     outline: none;
     /*font-size: 20px;*/
     padding: 10px 0 10px 20px;
-    border: 5px solid rgba(41, 51, 63, 0.5);
+    border: 5px solid rgba(3, 191, 203, 0.5);
     /*box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
     *background: rgba(0, 0, 0, 0.3);
     */
@@ -278,16 +278,17 @@ position: fixed; /* Stay in place */
     background: transparent;
     color: white;
     border-radius: 10px;
+    
 }
 .in-small{
     width: 100%;
     outline: none;
     /*font-size: 20px;*/
     padding: 10px 0 10px 20px;
-    border: 5px solid rgba(41, 51, 63, 0.5);
+    border: 5px solid rgba(3, 191, 203);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-    
-    color: white;
+    font-weight: 700;
+    color: black;
     border-radius: 10px;
 }
 .form-wrapper .row .form-group label {
@@ -319,7 +320,22 @@ position: fixed; /* Stay in place */
     border: 5px solid #ffffff;
     transition: all 0.3s;
 }
-.form-wrapper .row .in[type="submit"] {
+
+label{
+font-weight: 600;
+text-transform: uppercase;
+text-decoration: blink;
+}
+.in{
+font-weight: 700;
+}
+    option {
+        background: #6c85a3;
+        color: whitesmoke;
+        margin: 10px;
+    }
+
+.in[type="submit"] {
     border-bottom: 5px solid rgba(0, 0, 0, 0.3);
     box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
     padding: 10px;
@@ -338,10 +354,10 @@ position: fixed; /* Stay in place */
     grid-column-start: span 2;
 }
 
-.form-wrapper .row .in[type="submit"]:hover {
+.in:hover {
     border: 5px solid rgba(255, 255, 255, 1);
     color: #ffffff;
-    transition: all 0.4s;
+    transition: all 0.5s;
 
 }
 
@@ -371,7 +387,7 @@ fieldset {
         <a href="#">Job Board</a>
         <a href="/testlogout">Logout</a>
 
-        <hr style="width:90%; margin:0 auto"/>
+        <hr style="width:90%; margin:0 auto" />
 
         @* <a href="javascript:void(0)" @onclick="@us1Action">Department Analysis</a>
             <a href="javascript:void(0)" @onclick="@us2Action">Rate of Registration</a>
@@ -401,134 +417,161 @@ fieldset {
     <div class="main-body">
 
         <!--BEGIN NEW CONTENT-->
-
         <!--Dropdown -->
-        <header class="bg-info" style="height: 10vh;width: 100%;"></header>
-        <!--/Dropdown -->
+        <header class="" style="height: 10vh;width: 100%;">
+            <div class="report-buttons">
+                <label for="phase" class="col-sm-3 label">Department</label>
+                <select class="app-form-control" id="phase">
+                    <option selected>Select Department</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Finance">Finance</option>
+                    <option value="IT">IT</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Research">Research</option>
+                    <option value="Sales">Sales</option>
+                </select>
+            </div>
 
-        <!--Show Idea Candidate-->
+            <div class="report-buttons">
+                <label for="status" class="col-sm-3 label">Job</label>
+                <select class="app-form-control" id="status">
+                    <option selected>Select Job</option>
+                    <option value="Administration">Administration</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Finance">Finance</option>
+                    <option value="IT">IT</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Research">Research</option>
+                    <option value="Sales">Sales</option>
+                </select>
+            </div>
+    
+    </header>
+    <!--/Dropdown -->
+    <!--Show Idea Candidate-->
 
-        <section class="" style="height: 80vh; width: 100%;">
-            <div class="card-container">
-            
-                    <img width="60" class="round" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="user" />
-                    <h3>The Ideal Candidate</h3>
-                    <h6>xx: Department</h6>
-                    <p>xx:job-applied</p>
-                    <div class="buttons">
-                        <button class="primary">
-                            Save
-                        </button>
-                        <button class="primary ghost">
-                            Edit
-                        </button>
-                    </div>
-                    <div class="details-container">
-            
-                        <div class="skills">
-                            <h6>Salary Expection <span class="value">Rxx</span></h6>
-            
-                        </div>
-                        <div class="skills">
-                            <h6>Availability (Start Date) <span class="value">xx/xx/xxxx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Notice (Weeks) <span class="value">xx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Experience <span class="value">xx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>University <span class="value">xxxxx</span></h6>
-                        </div>
-                        <div class="skills">
-                            <h6>Platform <span class="value">xxxxx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Citizen <span class="value">xxxx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Work Permit <span class="value">Rxx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Visa <span class="value">Rxx</span></h6>
-                        </div>
-            
-                        <div class="skills">
-                            <h6>Expectation <span class="value">Rxx</span></h6>
-                        </div>
-                    </div>
-            
-            
-            
-            
-                    <!--
-            <div class="skills">
-            		<h6>Skills</h6>
-            		<ul>
-            			<li>UI / UX</li>
-            			<li>Front End Development</li>
-            			<li>HTML</li>
-            			<li>CSS</li>
-            			<li>JavaScript</li>
-            			<li>React</li>
-            			<li>Node</li>
-            		</ul>
-            	</div>
-            -->
+    <section class="" style="height: 80vh; width: 100%;">
+        <div class="card-container">
+
+            <img width="60" class="round" src="https://randomuser.me/api/portraits/lego/3.jpg" alt="user" />
+            <h3>The Ideal Candidate</h3>
+            <h6>xx: Department</h6>
+            <p>xx:job-applied</p>
+            <div class="buttons">
+                <button class="primary">
+                    Save
+                </button>
+                <button class="primary ghost" @onclick="ShowPopUp">
+                    Edit
+                </button>
+            </div>
+            <div class="details-container">
+
+                <div class="skills">
+                    <h6>Salary Expection <span class="value">Rxx</span></h6>
+
                 </div>
-            
-        </section>
+                <div class="skills">
+                    <h6>Availability (Start Date) <span class="value">xx/xx/xxxx</span></h6>
+                </div>
 
-        <!--/Show Idea Candidate-->
+                <div class="skills">
+                    <h6>Notice (Weeks) <span class="value">xx</span></h6>
+                </div>
 
-        <!--Edit Ideal Candidate (Pop up)-->
+                <div class="skills">
+                    <h6>Experience <span class="value">xx</span></h6>
+                </div>
 
-        <section class="popup-wrapper">
-            <div class="form-wrapper">
-                <h2>Ideal candidate</h2>
+                <div class="skills">
+                    <h6>University <span class="value">xxxxx</span></h6>
+                </div>
+                <div class="skills">
+                    <h6>Platform <span class="value">xxxxx</span></h6>
+                </div>
+
+                <div class="skills">
+                    <h6>Citizen <span class="value">xxxx</span></h6>
+                </div>
+
+                <div class="skills">
+                    <h6>Work Permit <span class="value">Rxx</span></h6>
+                </div>
+
+                <div class="skills">
+                    <h6>Visa <span class="value">Rxx</span></h6>
+                </div>
+
+                <div class="skills">
+                    <h6>Expectation <span class="value">Rxx</span></h6>
+                </div>
+            </div>
+
+
+
+
+            <!--
+            <div class="skills">
+                    <h6>Skills</h6>
+                    <ul>
+                        <li>UI / UX</li>
+                        <li>Front End Development</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>JavaScript</li>
+                        <li>React</li>
+                        <li>Node</li>
+                    </ul>
+                </div>
+            -->
+        </div>
+
+    </section>
+
+    <!--/Show Idea Candidate-->
+    <!--Edit Ideal Candidate (Pop up)-->
+
+    <section class="popup-wrapper" style="display: @PopupDisplay ;">
+        <div class="form-wrapper">
+            <h2>Ideal candidate <span @onclick="ClosePopUp">Close</span></h2>
+            <EditForm Model="@TempIdealCandidate" OnValidSubmit="@HandleValidSubmit">
                 <div class="row">
-        
+
                     <div class="col">
                         <div class="form-group">
                             <label>Salary Expectation</label>
-        
+
                             <div class="input-group row col-12 col-12">
-                                <input class="in col-12" type="text">
+                                <InputNumber @bind-Value="TempIdealCandidate.SalaryExpectation" class="in col-12" />
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.SalaryImportance" class="form-control in-small" />
                                 </div>
                             </div>
                             <!--class="col-8"-->
                         </div>
                     </div>
-        
+
                     <div class="col">
                         <div class="form-group">
                             <label>Available Start Date</label>
                             <div class="input-group row col-12">
-                                <input class="in col-12" type="date">
+                                <InputDate @bind-Value="TempIdealCandidate.Availability" class="in col-12" />
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.StartDateImportance" class="form-control in-small" />
                                 </div>
                             </div>
-        
+
                         </div>
                     </div>
-        
+
                     <div class="col">
                         <div class="form-group">
                             <label>Notice (weeks)</label>
                             <div class="input-group row col-12">
-                                <input class="in col-12" type="number">
+                                <InputNumber @bind-Value="TempIdealCandidate.Notice" class="in col-12" />
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.NoticeImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -536,22 +579,22 @@ fieldset {
                     <div class="col">
                         <div class="form-group">
                             <label>Experience (years)</label>
-        
+
                             <div class="input-group row col-12">
-                                <input class="in col-12" type="text">
+                                <InputNumber @bind-Value="TempIdealCandidate.Experience" class="in col-12" />
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.ExperienceImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label>Last University</label>
+                            <label>University</label>
                             <div class="input-group row col-12">
-                                <input class="in col-12" type="text">
+                                <InputText @bind-Value="TempIdealCandidate.University" class="in col-12" />
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.UniversityImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -559,17 +602,17 @@ fieldset {
                     <div class="col">
                         <div class="form-group">
                             <label>Platform</label>
-        
-        
+
+
                             <div class="input-group row col-12">
-                                <select class="app-form-control" id="platform">
+                                <InputSelect @bind-Value="TempIdealCandidate.Platform" class="app-form-control" id="platform">
                                     <option selected disabled>Select Platform</option>
                                     <option value="LinkedIn">LinkedIn</option>
                                     <option value="PNet">PNET</option>
                                     <option value="Xebec">Xebec</option>
-                                </select>
+                                </InputSelect>
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.PlatformImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -578,13 +621,13 @@ fieldset {
                         <div class="form-group">
                             <label>SA Citizen</label>
                             <div class="input-group row col-12">
-                                <select class="app-form-control" id="citizenship">
-                                    <option selected>Yes or No</option>
+                                <InputSelect @bind-Value="TempIdealCandidate.Citizenship" class="app-form-control" id="citizenship">
+                                    <option selected disabled>Yes or No</option>
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                </select>
+                                </InputSelect>
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.CitizenshipImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -592,16 +635,16 @@ fieldset {
                     <div class="col">
                         <div class="form-group">
                             <label>Work Permit</label>
-        
-        
+
+
                             <div class="input-group row col-12">
-                                <select class="app-form-control" id="permit">
-                                    <option selected>Yes or No</option>
+                                <InputSelect @bind-Value="TempIdealCandidate.Permit" class="app-form-control" id="permit">
+                                    <option selected disabled>Yes or No</option>
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                </select>
+                                </InputSelect>
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.PermitImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -609,16 +652,16 @@ fieldset {
                     <div class="col">
                         <div class="form-group">
                             <label>Visa</label>
-        
-        
+
+
                             <div class="input-group row col-12">
-                                <select class="app-form-control" id="visa">
-                                    <option selected>Yes or No</option>
+                                <InputSelect @bind-Value="TempIdealCandidate.Visa" class="app-form-control" id="visa">
+                                    <option selected disabled>Yes or No</option>
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
-                                </select>
+                                </InputSelect>
                                 <div class="input-group-append col-4">
-                                    <input type="number" class="form-control in-small"/>
+                                    <InputNumber @bind-Value="TempIdealCandidate.VisaImportance" class="form-control in-small" />
                                 </div>
                             </div>
                         </div>
@@ -627,15 +670,15 @@ fieldset {
                         <input class="in col-12" type="submit" value="Submit">
                     </div>
                 </div>
-            </div>
-        </section>
+            </EditForm>
+        </div>
+    </section>
 
-        <!--/Edit Ideal Candidate (Pop up)-->
+    <!--/Edit Ideal Candidate (Pop up)-->
+    <!--END NEW CONTENT-->
 
-        <!--END NEW CONTENT-->
 
-
-    </div>
+</div>
 
 
     <div class="footer-container">

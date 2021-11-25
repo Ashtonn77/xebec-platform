@@ -33,4 +33,6 @@ namespace XebecPortal.Client.Data_Analytics_Tool.Candidate_Analytics
             GlobalMax -= importance;
         }
     }
+    
+    
 }
