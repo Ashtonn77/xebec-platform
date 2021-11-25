@@ -1,0 +1,393 @@
+﻿@inject HttpClient httpClient
+@page "/pro"
+<style>
+    .select-details {
+        max-height: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    legend {
+        align-self: center;
+        text-wrap: normal;
+    }
+
+    fieldset {
+        /*box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;*/
+        width: 100%;
+        padding: 10px;
+    }
+
+    fieldset, p {
+        justify-content: center;
+    }
+
+    .fieldset {
+        position: relative;
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        padding: 10px;
+        width: 100%;
+        border-radius: 0 10px 10px 10px;
+    }
+
+        .fieldset h1 {
+            position: absolute;
+            top: 0;
+            font-size: 20px;
+            line-height: 1;
+            margin: -10px 0 0 -0.5rem; /* half of font-size up top */
+
+            background: white;
+            padding: 0 0.5rem;
+        }
+
+        .fieldset p {
+            margin: 10px;
+        }
+
+    .select-details {
+        /* box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgb(61 148 241 / 0.65) 0px 4px 6px -1px, rgb(199 247 247 / 0.08) 0px 1px 0px inset;*/
+        border-radius: 10px;
+        background: white;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    }
+
+    /*POP UP Styling*/
+
+    /* The popup (background) */
+    .popup {
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    /* popup Content */
+    .popup-content {
+        background-color: rgb(48, 58, 73);
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .fa-edit :hover {
+        cursor: pointer;
+    }
+    /*POP UP Styling - end*/
+
+    /*New Pop up*/
+    /*button, input {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+    }
+
+    .background {
+        display: flex;
+        min-height: 100%;
+    }
+
+    .container {
+        flex: 0 1 700px;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .screen {
+        position: relative;
+        background: #3e3e3e;
+        border-radius: 15px;
+    }
+
+        .screen:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 20px;
+            right: 20px;
+            bottom: 0;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+            z-index: -1;
+        }
+
+    .screen-header {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        background: #4d4d4f;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .screen-header-left {
+        margin-right: auto;
+    }
+
+    .screen-header-button {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 3px;
+        border-radius: 8px;
+        background: white;
+    }
+
+        .screen-header-button.close {
+            background: #ed1c6f;
+        }
+
+        .screen-header-button.maximize {
+            background: #e8e925;
+        }
+
+        .screen-header-button.minimize {
+            background: #74c54f;
+        }
+
+    .screen-header-right {
+        display: flex;
+    }
+
+    .screen-header-ellipsis {
+        width: 3px;
+        height: 3px;
+        margin-left: 2px;
+        border-radius: 8px;
+        background: #999;
+    }
+
+    .screen-body {
+        display: flex;
+    }
+
+    .screen-body-item {
+        flex: 1;
+        padding: 50px;
+    }
+
+        .screen-body-item.left {
+            display: flex;
+            flex-direction: column;
+        }
+
+    */
+
+    .app-comments {
+        margin-top: auto;
+        font-size: 8px;
+        color: #888;
+    }
+
+
+
+    .app-form-control {
+        width: 100%;
+        padding: 10px 0;
+        background: none;
+        border: none;
+        border-bottom: 1px solid #666;
+        color: #ddd;
+        font-size: 14px;
+        text-transform: uppercase;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .app-form-control::placeholder {
+            color: #666;
+        }
+
+        .app-form-control:focus {
+            border-bottom-color: #ddd;
+        }
+
+    option {
+        background: #394656;
+        color: white;
+    }
+
+    .app-title {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        color: #937a5c;
+        font-size: 26px;
+    }
+
+        .app-title:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 25px;
+            height: 4px;
+            background: #ea1d6f;
+        }
+
+    .label {
+        color: #937a5c;
+    }
+
+    .app-form-button {
+        background: none;
+        border: none;
+        color: #937a5c;
+        font-size: 14px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+
+        .app-form-button:hover {
+            color: #b9134f;
+        }
+</style>
+
+@if (DisplayedInfo != null && PhaseHelper != null && PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
+{
+    <fieldset>
+        <legend>Profile</legend>
+        <div class=" select-details">
+            <img src="/img/Guy.png" alt="" width="100" class="img-fluid rounded-circle mb-2 img-thumbnail shadow">
+            <h2>@DisplayedInfo.FullName</h2>
+            <p>Job Applied : @DisplayedInfo.JobApplied</p>
+            <h5 class="mb-0"></h5>
+            <hr>
+            <section class="fieldset">
+                <h1>
+                    <span class="small text-uppercase text-muted">Contact Info</span>
+                </h1>
+                <p>
+                    <span class="small text-uppercase text-muted">Phone Number:<span class="mr-3"></span> @DisplayedInfo.PhoneNumber</span>
+                </p>
+                <p>
+                    <span class="small text-uppercase text-muted">Email Address:<span class="mr-3"></span> @DisplayedInfo.Email</span>
+                </p>
+            </section>
+            <hr />
+            <section class="fieldset">
+                <h1>
+                    <span class="small text-uppercase text-muted">APPLICATION STATUS</span>
+                    <span>
+                        <i class="fa fa-edit" @onclick="ShowPopUp"></i>
+                    </span>
+                </h1>
+                <p>
+                    <span class="small text-uppercase text-muted">Application Phase:<span class="mr-3"></span></span> <input class="form-control" disabled @bind=@PhaseHelper.ApplicationPhase.Description />
+                </p>
+                <p>
+                    <span class="small text-uppercase text-muted">Status: <span class="mr-3"></span> </span> <input class="form-control" disabled @bind=@PhaseHelper.Status.Description />
+                </p>
+            </section>
+            <hr>
+            <section class="fieldset">
+                <h1>
+                    <span class="small text-uppercase text-muted">Comments</span>
+                </h1>
+                <p>
+                    <span class="small text-uppercase text-muted"> @PhaseHelper.Comments</span>
+                </p>
+            </section>
+        </div>
+    </fieldset>
+}
+
+<!--Popup window Start-->
+<!-- Trigger/Open The popup -->
+<div class="popup" style="display: @popupDisplay;">
+
+    <!-- popup content -->
+    <div class="popup-content ">
+        <div class="form-row">
+            <span class="close" @onclick="ClosePopUp">&times;</span>
+        </div>
+        <div class="m-3">
+            @if (DisplayedInfo != null)
+            {
+                <h1 class="app-title">Details for @DisplayedInfo.FullName</h1>
+            }
+
+            @if (PhaseHelper != null && Statuses != null && ApplicationPhases != null)
+            {
+                <EditForm Model="@PhaseHelper" OnValidSubmit="@HandleValidSubmit">
+
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group row">
+                        <label for="phase" class="col-sm-3 label">Application Phase </label>
+                        <InputSelect id="phase" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.ApplicationPhase.Description">
+                            @foreach (var phase in ApplicationPhases)
+                                {
+                                <option value="@phase.Description">@phase.Description</option>
+                                }
+                        </InputSelect>
+                    </div>
+                    <div class="form-group row">
+                        <label for="status" class="col-sm-3 label">Application Status </label>
+                        <InputSelect id="status" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.Status.Description">
+                            @foreach (var status in Statuses)
+                                {
+                                <option value="@status.Description">@status.Description</option>
+                                }
+                        </InputSelect>
+                    </div>
+                    <div class="form-group row">
+                        <label for="comment" class="col-sm-3 label">Comments: </label>
+                        <InputTextArea id="comment" class="app-form-control col-sm-8" @bind-Value="@PhaseHelper.Comments" placeholder=""></InputTextArea>
+                        <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => PhaseHelper.Comments)" />
+                    </div>
+                    @*<!--Testing-->
+                        @if (PhaseHelper != null)
+                        {
+                            <ul>
+                                <li>Phase id : @PhaseHelper.Id</li>
+                                <li>Comments : @PhaseHelper.Comments</li>
+                                <li>Status ID: @PhaseHelper.StatusId</li>
+                                <li>Application Phase ID: @PhaseHelper.ApplicationPhaseId</li>
+                                @if (PhaseHelper.Status != null && PhaseHelper.ApplicationPhase != null)
+                                {
+                                    <li>Status : @PhaseHelper.Status.Description</li>
+                                    <li>Application Phase: @PhaseHelper.ApplicationPhase.Description</li>
+                                }
+                            </ul>
+                        }
+                        <!--/Testing-->*@
+                    <button type="submit" class="app-form-button">Save Changes</button>
+                </EditForm>
+            }
+            else
+            {
+                <div class="alert">@Message</div>
+            }
+        </div>
+    </div>
+</div>

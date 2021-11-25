@@ -90,7 +90,7 @@ namespace Server.Controllers
                 await _unitOfWork.Jobs.Insert(Job);
                 await _unitOfWork.Save();
 
-                return CreatedAtAction("GetJob", new { id = Job.Id }, Job);
+                return CreatedAtAction("GetJob", new {id = Job.Id}, Job);
 
             }
             catch (Exception e)
@@ -99,11 +99,6 @@ namespace Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     e.InnerException);
             }
-
-
         }
-
-
-       
     }
 }

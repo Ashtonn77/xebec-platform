@@ -132,23 +132,18 @@
             </div>
         </div>
 
-            <div class="form-content">
-            
-                <div class="inner-content">
-                    <label for="department">Department:</label>
-                    <select class="department" id="inputGroupSelect01" @onchange="OnDepartmentChanged">
-                        <option selected disabled>-- Select Department --</option>
-                        <option value="Accounting">Accounting</option>
-                        <option value="Legal">Legal</option>
-                        <option value="IT">IT</option>
-                    </select>
-                </div>
-            
-            
-            </div>   
-       
-       
-       
+        <div class="form-content">
+
+            <div class="inner-content">
+                <label for="department">Department:</label>
+                <select class="department" id="inputGroupSelect01" @onchange="OnDepartmentChanged">
+                    <option selected disabled>-- Select Department --</option>
+                    <option value="Accounting">Accounting</option>
+                    <option value="Legal">Legal</option>
+                    <option value="IT">IT</option>
+                </select>
+            </div>
+        </div>
 
         <div class="form-content">
 
@@ -168,6 +163,7 @@
                     @foreach (var items in jobPlatform)
                     {
                         <option value="@items.Id">@items.PlatformName</option>
+
                     }
                 </select>
             </div>

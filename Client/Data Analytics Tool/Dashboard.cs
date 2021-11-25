@@ -18,6 +18,9 @@ namespace XebecPortal.Client.Data_Analytics_Tool
         public bool traffic { get; set; } = false;
         public bool fill { get; set; } = false;
         public bool hire { get; set; } = false;
+
+        public bool candidateIdeal { get; set; }
+        public bool candidateCandidates { get; set; }
         public bool d1 { get; set; } = true;
         public bool d2 { get; set; } = false;
         public bool d3 { get; set; } = false;

@@ -118,7 +118,6 @@ namespace Server.Controllers
 
                 await _unitOfWork.Documents.Insert(Document);
                 await _unitOfWork.Save();
-
                 return CreatedAtAction("GetDocument", new { id = Document.Id }, Document);
 
             }
