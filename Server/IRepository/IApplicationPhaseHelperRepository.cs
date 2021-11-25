@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using XebecPortal.Server.DTOs.ViewModels;
 using XebecPortal.Shared;
 using XebecPortal.Shared.Security;
 
@@ -13,6 +14,6 @@ namespace Server.IRepository
 
         Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoDetailed(int AppUserId, int jobId);
 
-        Task<List<ApplicationPhaseHelper>> GetApplicationPhaseInfoForUser(int AppUserId, int PhaseId);
+        Task<List<myJobsViewModel>> GetApplicationPhaseInfoForUser(int AppUserId, int PhaseId);
     }
 }
