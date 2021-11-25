@@ -52,6 +52,27 @@ namespace Server.IRepository
         //Newly Added (Kian) 
         IGenericRepository<ProfilePortfolioLink> ProfilePortfolioLinks { get; }
 
+        //New tables
+        IGenericRepository<Department> Departments { get; }
+
+        IGenericRepository<Citizenship> Citizenships { get; }
+
+        IGenericRepository<IdealCandidate> IdealCandidates { get; }
+
+        IGenericRepository<Location> Locations { get; }
+
+        IGenericRepository<NoticePeriod> NoticePeriods { get; }
+
+        IGenericRepository<Permission> Permissions { get; }
+
+        IGenericRepository<Questionnaire> Questnionnaires { get; }
+
+        IGenericRepository<Result> Results { get; }
+
+        IGenericRepository<Visa> Visas { get; }
+
+        IGenericRepository<WorkPermit> WorkPermits { get; }
+
 
 
         //Saving to the DB

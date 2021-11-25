@@ -10,8 +10,8 @@ using Server.Data;
 namespace XebecPortal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211029095023_test")]
-    partial class test
+    [Migration("20211125074707_testMigrate")]
+    partial class testMigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,16 +31,13 @@ namespace XebecPortal.Server.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FacebookLink")
+                    b.Property<string>("Disability")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GitHubLink")
+                    b.Property<string>("Ethnicity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LinkedInLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalWebsiteUrl")
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -59,12 +56,6 @@ namespace XebecPortal.Server.Migrations
 
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("DocumentName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DocumentUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FacebookLink")
                         .HasColumnType("nvarchar(max)");
@@ -153,7 +144,39 @@ namespace XebecPortal.Server.Migrations
 
                     b.HasIndex("ApplicationPhaseId");
 
+                    b.HasIndex("StatusId");
+
                     b.ToTable("ApplicationPhasesHelpers");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Citizenship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Citizen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Citizenships");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DepartmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.Document", b =>
@@ -170,6 +193,7 @@ namespace XebecPortal.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -208,6 +232,76 @@ namespace XebecPortal.Server.Migrations
                     b.ToTable("Educations");
                 });
 
+            modelBuilder.Entity("XebecPortal.Shared.IdealCandidate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CitizenshipId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ExpectedSalary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobPlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoticePeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("University")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VisaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkPermitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitizenshipId");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("JobPlatformId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("NoticePeriodId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("VisaId");
+
+                    b.HasIndex("WorkPermitId");
+
+                    b.ToTable("IdealCandidates");
+                });
+
             modelBuilder.Entity("XebecPortal.Shared.Job", b =>
                 {
                     b.Property<int>("Id")
@@ -215,14 +309,11 @@ namespace XebecPortal.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Compensation")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Department")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -237,6 +328,8 @@ namespace XebecPortal.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Jobs");
                 });
@@ -313,6 +406,21 @@ namespace XebecPortal.Server.Migrations
                     b.HasIndex("JobTypeID");
 
                     b.ToTable("JobTypeHelpers");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Province")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.LoginHelper", b =>
@@ -411,6 +519,36 @@ namespace XebecPortal.Server.Migrations
                     b.ToTable("PersonalTestInfos");
                 });
 
+            modelBuilder.Entity("XebecPortal.Shared.NoticePeriod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Notice")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoticePeriods");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PermissionGranted")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("XebecPortal.Shared.PersonalInformation", b =>
                 {
                     b.Property<int>("Id")
@@ -424,22 +562,16 @@ namespace XebecPortal.Server.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Disability")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ethnicity")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
+                    b.Property<string>("IdNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdNumber")
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -453,6 +585,108 @@ namespace XebecPortal.Server.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("PersonalInformations");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.ProfilePortfolioLink", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GitHubLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkedInLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PersonalWebsiteUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TwitterLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("ProfilePortfolioLinks");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Questionnaire", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CitizenshipId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("ExpectedSalary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobPlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoticePeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("University")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VisaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkPermitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CitizenshipId");
+
+                    b.HasIndex("JobPlatformId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("NoticePeriodId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("VisaId");
+
+                    b.HasIndex("WorkPermitId");
+
+                    b.ToTable("Questionnaires");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.RegisterHelper", b =>
@@ -473,6 +707,61 @@ namespace XebecPortal.Server.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("RegisterHelpers");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Result", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("CitizenId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("ExpectedSalary")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Experience")
+                        .HasColumnType("real");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("LocationId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("NoticePeriodId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PermissionId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PlatformId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("StartDate")
+                        .HasColumnType("real");
+
+                    b.Property<float>("University")
+                        .HasColumnType("real");
+
+                    b.Property<float>("VisaId")
+                        .HasColumnType("real");
+
+                    b.Property<float>("WorkPermitId")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("JobId");
+
+                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.Security.AppUser", b =>
@@ -509,6 +798,21 @@ namespace XebecPortal.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Statuses");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Visa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ValidVisa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Visas");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.WorkHistory", b =>
@@ -575,6 +879,21 @@ namespace XebecPortal.Server.Migrations
                     b.ToTable("WorkHistoryTests");
                 });
 
+            modelBuilder.Entity("XebecPortal.Shared.WorkPermit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ValidPermit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkPermits");
+                });
+
             modelBuilder.Entity("XebecPortal.Shared.AdditionalInformation", b =>
                 {
                     b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
@@ -630,9 +949,17 @@ namespace XebecPortal.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("XebecPortal.Shared.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Application");
 
                     b.Navigation("ApplicationPhase");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.Document", b =>
@@ -655,6 +982,80 @@ namespace XebecPortal.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.IdealCandidate", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Citizenship", "Citizenship")
+                        .WithMany()
+                        .HasForeignKey("CitizenshipId");
+
+                    b.HasOne("XebecPortal.Shared.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.JobPlatform", "JobPlatform")
+                        .WithMany()
+                        .HasForeignKey("JobPlatformId");
+
+                    b.HasOne("XebecPortal.Shared.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.NoticePeriod", "NoticePeriod")
+                        .WithMany()
+                        .HasForeignKey("NoticePeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Visa", "Visa")
+                        .WithMany()
+                        .HasForeignKey("VisaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.WorkPermit", "WorkPermit")
+                        .WithMany()
+                        .HasForeignKey("WorkPermitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Citizenship");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("JobPlatform");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("NoticePeriod");
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Visa");
+
+                    b.Navigation("WorkPermit");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Job", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.JobPlatformHelper", b =>
@@ -739,6 +1140,80 @@ namespace XebecPortal.Server.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("XebecPortal.Shared.ProfilePortfolioLink", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Questionnaire", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Citizenship", "Citizenship")
+                        .WithMany()
+                        .HasForeignKey("CitizenshipId");
+
+                    b.HasOne("XebecPortal.Shared.JobPlatform", "JobPlatform")
+                        .WithMany()
+                        .HasForeignKey("JobPlatformId");
+
+                    b.HasOne("XebecPortal.Shared.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.NoticePeriod", "NoticePeriod")
+                        .WithMany()
+                        .HasForeignKey("NoticePeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Visa", "Visa")
+                        .WithMany()
+                        .HasForeignKey("VisaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.WorkPermit", "WorkPermit")
+                        .WithMany()
+                        .HasForeignKey("WorkPermitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Citizenship");
+
+                    b.Navigation("JobPlatform");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("NoticePeriod");
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Visa");
+
+                    b.Navigation("WorkPermit");
+                });
+
             modelBuilder.Entity("XebecPortal.Shared.RegisterHelper", b =>
                 {
                     b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
@@ -748,6 +1223,25 @@ namespace XebecPortal.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("XebecPortal.Shared.Result", b =>
+                {
+                    b.HasOne("XebecPortal.Shared.Security.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("XebecPortal.Shared.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("XebecPortal.Shared.WorkHistory", b =>

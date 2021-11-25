@@ -54,6 +54,28 @@ namespace Server.Data
         public DbSet<ProfilePortfolioLink> ProfilePortfolioLinks { get; set; }
 
 
+        //New table changes
+        public DbSet<Visa> Visas { get; set; }
+
+        public DbSet<WorkPermit> WorkPermits { get; set; }
+
+        public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<NoticePeriod> NoticePeriods { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
+        public DbSet<Citizenship> Citizenships { get; set; }
+
+        public DbSet<IdealCandidate> IdealCandidates { get; set; }
+
+        public DbSet<Questionnaire> Questionnaires { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Result> Results { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

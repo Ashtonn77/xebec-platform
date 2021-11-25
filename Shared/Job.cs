@@ -18,7 +18,10 @@ namespace XebecPortal.Shared
 
         public string Location { get; set; }
 
-        public string Department { get; set; }
+        public int DepartmentId { get; set; }
+
+        public Department Department { get; set; }
+
         public DateTime DueDate { get; set; }
         //public string JobType { get; set; }
         public DateTime CreationDate { get; set; }

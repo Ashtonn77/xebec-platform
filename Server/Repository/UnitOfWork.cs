@@ -51,6 +51,27 @@ namespace Server.Repository
         //Newly Added(Kian) 
         private IGenericRepository<ProfilePortfolioLink> _profilePortfolioLinks;
 
+        //New Tables
+        private IGenericRepository<Citizenship> _citizenships;
+
+        private IGenericRepository<Department> _departments;
+
+        private IGenericRepository<IdealCandidate> _idealCandidates;
+
+        private IGenericRepository<Location> _locations;
+
+        private IGenericRepository<NoticePeriod> _noticePeriods;
+
+        private IGenericRepository<Permission> _permissions;
+
+        private IGenericRepository<Questionnaire> _questionnaires;
+
+        private IGenericRepository<Result> _results;
+
+        private IGenericRepository<Visa> _visas;
+
+        private IGenericRepository<WorkPermit> _workPermits;
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -102,6 +123,27 @@ namespace Server.Repository
         public IGenericRepository<JobPlatformHelper> JobPlatformHelpers => _jobPlatformHelpers ??= new GenericRepository<JobPlatformHelper>(_context);
 
         public IGenericRepository<ProfilePortfolioLink> ProfilePortfolioLinks => _profilePortfolioLinks??= new GenericRepository<ProfilePortfolioLink>(_context);
+
+        //New tables
+        public IGenericRepository<Citizenship> Citizenships => _citizenships ??= new GenericRepository<Citizenship>(_context);
+
+        public IGenericRepository<Department> Departments => _departments ??= new GenericRepository<Department>(_context);
+
+        public IGenericRepository<IdealCandidate> IdealCandidates => _idealCandidates ??= new GenericRepository<IdealCandidate>(_context);
+
+        public IGenericRepository<Location> Locations => _locations ??= new GenericRepository<Location>(_context);
+
+        public IGenericRepository<NoticePeriod> NoticePeriods => _noticePeriods ??= new GenericRepository<NoticePeriod>(_context);
+
+        public IGenericRepository<Permission> Permissions => _permissions ??= new GenericRepository<Permission>(_context);
+
+        public IGenericRepository<Questionnaire> Questnionnaires => _questionnaires ??= new GenericRepository<Questionnaire>(_context);
+
+        public IGenericRepository<Result> Results => _results ??= new GenericRepository<Result>(_context);
+
+        public IGenericRepository<Visa> Visas => _visas ??= new GenericRepository<Visa>(_context);
+
+        public IGenericRepository<WorkPermit> WorkPermits => _workPermits ??= new GenericRepository<WorkPermit>(_context);
 
         public void Dispose()
         {

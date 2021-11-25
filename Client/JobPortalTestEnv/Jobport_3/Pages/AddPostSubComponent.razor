@@ -150,14 +150,15 @@ label{
                     <label for="department">Department:</label>
                     <select class="department" id="inputGroupSelect01" @onchange="OnDepartmentChanged">
                         <option selected disabled>-- Select Department --</option>
-                        <option value="Accounting">Accounting</option>
-                        <option value="Legal">Legal</option>
-                        <option value="IT">IT</option>
+                        @foreach(var department in Departments)
+                        {
+                            <option value="@department.Id">@department.DepartmentName</option>
+                        }
                     </select>
                 </div>
             
             
-            </div>   
+            </div>
        
        
        
