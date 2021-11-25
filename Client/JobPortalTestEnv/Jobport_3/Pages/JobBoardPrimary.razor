@@ -89,19 +89,31 @@
 
 <div class="wrapper">
 
-    <div id="testNav" class="sidenav">
-        <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
-        <a href="/profile_" class="mb-2">@State.UserEmail</a>
-        <a href="/jobpostforcandidate">Home</a>
-        <a href="/testdashboard">Analytical Dashboard</a>
-        <a href="/testlogout">Logout</a>
+  @if (State.Role != null && State.Role.ToLower().Equals("candidate"))
+    {
+        <div id="testNav" class="sidenav">
+            <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
+            <a href="/profile_" class="mb-2">@State.UserEmail</a>
+            <a href="/">Home</a>
+            <a href="/jobboard">View Jobs</a>            
+            <a href="/testlogout">Logout</a>
 
-        <hr style="width:90%; margin:0 auto" />
+        </div>
+    }
+    else if (State.Role != null && State.Role.ToLower().Equals("hradmin"))
+    {
+        <div id="testNav" class="sidenav">
+            <a href="javascript:void(0)" style="font-size: 36px;" class="closebtn" @onclick="CloseMenu">&times;</a>
+            <a href="/profile_" class="mb-2">@State.UserEmail</a>
+            <a href="/">Home</a>
+            <a href="/data-analytics-tool">Analytical Dashboard</a>
+            <a href="/jobboard">View Jobs</a>
+            <a href="/jobposting">View Posted Jobs</a>
+            <a href="/addpostsub">Post a Job</a>
+            <a href="/testlogout">Logout</a>
 
-        <a href="/jobboard">View Jobs</a>
-        <a href="/jobposting">View Posted Jobs</a>
-        <a href="/addpostsub">Post a Job</a>
-    </div>
+        </div>
+    }
 
     <div class="nav">
 
@@ -128,6 +140,21 @@
 
 @code
 {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var userdata = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "user").ConfigureAwait(false);
+        if (!string.IsNullOrWhiteSpace(userdata))
+        {
+            string[] userdetails = userdata.Split(';');
+            State.UserEmail = userdetails[0];
+            State.Role = userdetails[1].ToLower();
+            State.Id = Int32.Parse(userdetails[3]);
+
+        }
+
+    }
     protected override async void OnAfterRender(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("initalizeSlideOutNav");
