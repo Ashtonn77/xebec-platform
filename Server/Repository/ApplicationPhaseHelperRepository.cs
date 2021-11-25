@@ -55,7 +55,7 @@ namespace Server.Repository
             queryphase = from users in _context.AppUser
                          join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
                              on users.Id equals applications.AppUserId
-                         join phases in _context.ApplicationPhasesHelpers
+                         join phases in _context.ApplicationPhasesHelpers.Where(p => p.ApplicationPhaseId == PhaseId)
                               on applications.Id equals phases.ApplicationId
                          select phases;
             queryphase = queryphase.Include(s => s.Status).Include(p => p.ApplicationPhase);

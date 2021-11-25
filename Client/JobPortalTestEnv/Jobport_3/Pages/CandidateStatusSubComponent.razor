@@ -24,7 +24,7 @@
                 {
                     <button class="btn nav-link flex-row" type="button" @onclick="() => JobApplicationPhase(items.Id)">
                         <h5>@items.Description</h5>
-                        <span>@applicationPhaseHelpers.Count(x => x.ApplicationPhaseId == items.Id)</span>
+                        <span>@myJobsViewModels.Count(x => x.Application.ApplicationPhaseId == items.Id)</span>
                     </button>
                 }
             </nav>
@@ -52,17 +52,27 @@
 
 @code{
 
+    int phaseID = 3;
+
     List<ApplicationPhase> applicationPhases { get; set; } = new List<ApplicationPhase>();
-    List<ApplicationPhaseHelper> applicationPhaseHelpers { get; set; } = new List<ApplicationPhaseHelper>();
+    List<myJobsViewModel>  myJobsViewModels { get; set; } = new List<myJobsViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
         applicationPhases = await httpClient.GetFromJsonAsync<List<ApplicationPhase>>("api/ApplicationPhase");
-        applicationPhaseHelpers = await httpClient.GetFromJsonAsync<List<ApplicationPhaseHelper>>("api/ApplicationPhaseHelper/myJobs?AppUserId=9&PhaseId=2");
+        myJobsViewModels = await httpClient.GetFromJsonAsync<List<myJobsViewModel>>($"api/ApplicationPhaseHelper/myJobs?AppUserId=9&PhaseId={phaseID}");
     }
 
     private void JobApplicationPhase(int value)
     {
     }
 
+    private class myJobsViewModel
+
+    {
+
+        public Job Job { get; set; }
+        public ApplicationPhaseHelper Application { get; set; }
+
+    }
 }
