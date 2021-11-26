@@ -52,12 +52,24 @@ namespace Server.Repository
             IQueryable<ApplicationPhaseHelper> queryphase;
             IQueryable<myJobsViewModel> queryFinal = null;
             IQueryable<Job> queryJobs = null;
-            queryphase = from users in _context.AppUser
-                         join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
-                             on users.Id equals applications.AppUserId
-                         join phases in _context.ApplicationPhasesHelpers.Where(p => p.ApplicationPhaseId == PhaseId)
-                              on applications.Id equals phases.ApplicationId
-                         select phases;
+            if (PhaseId <1 || PhaseId > 4)
+            {
+                queryphase = from users in _context.AppUser
+                             join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
+                                 on users.Id equals applications.AppUserId
+                             join phases in _context.ApplicationPhasesHelpers
+                                  on applications.Id equals phases.ApplicationId
+                             select phases;
+            }
+            else
+            {
+                queryphase = from users in _context.AppUser
+                             join applications in _context.Applications.Where(a => a.AppUserId == AppUserId)
+                                 on users.Id equals applications.AppUserId
+                             join phases in _context.ApplicationPhasesHelpers.Where(p => p.ApplicationPhaseId == PhaseId)
+                                  on applications.Id equals phases.ApplicationId
+                             select phases;
+            }
             queryphase = queryphase.Include(s => s.Status).Include(p => p.ApplicationPhase);
             if (queryphase != null)
             {

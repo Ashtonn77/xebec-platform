@@ -1,7 +1,6 @@
 ﻿@inject State State
 @inject HttpClient http
 @inject IJSRuntime jsRuntime
-
 <style>
     @@importurl('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
 
@@ -324,7 +323,7 @@
         public int JobId { get; set; }
     }
 
-    private IdealCandy Ideal = new IdealCandy();
+    private Questionnaire Ideal = new Questionnaire();
 
     private string message = string.Empty;
 
@@ -389,8 +388,9 @@
         }
 
 
-        Ideal = new IdealCandy();
+        Ideal = new Questionnaire();
         Ideal.StartDate = DateTime.Now;
+        Ideal.AppUserId = State.Id;
 
     }
 
@@ -428,18 +428,25 @@
 
     private Task OnPermitChanged(ChangeEventArgs e)
     {
-        Ideal.WorkPermit = int.Parse(e.Value.ToString());
-        return PermitChanged.InvokeAsync(Ideal.WorkPermit);
+        Ideal.WorkPermitId = int.Parse(e.Value.ToString());
+        return PermitChanged.InvokeAsync(Ideal.WorkPermitId);
     }
 
     private async Task Save()
     {
         if (!PermissionChecked)
         {
+
             message = "Please agree to the permission for the use of your detaiils";
         }
         else
+        {
+            await http.PostAsJsonAsync("api/Questionnaire", Ideal);
             message = "Saved!";
+            State.QuestionnaireFilled = true;
+            await ToggleApplyModal.InvokeAsync();
+        }
+
 
     }
 

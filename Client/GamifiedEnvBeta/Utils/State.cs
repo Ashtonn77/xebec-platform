@@ -27,6 +27,8 @@ namespace XebecPortal.Client.GamifiedEnvBeta.Utils
 
         public int JobPostEditId { get; set; } = -1;
 
+        public bool QuestionnaireFilled { get; set; } = false;
+
     }
 
 }
