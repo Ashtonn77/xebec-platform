@@ -380,6 +380,7 @@ else
 @code
 {
     Questionnaire questionnaire = new Questionnaire();
+    //Application application = new Application();
     private async Task Apply(Job jobTest, int id)
     {
 
@@ -420,6 +421,7 @@ else
     private async Task ToggleModalApply()
     {
         questionnaire = new Questionnaire() { AppUserId = State.Id };
+        //application.beginApplication = DateTime.Now
         ApplyModal = !ApplyModal;
         try
         {
@@ -429,7 +431,7 @@ else
                 await Apply(CurrentJob2, State.Id);
                 State.QuestionnaireFilled = false;
             }
-            //questionnaire = await httpClient.GetFromJsonAsync<Questionnaire>($"/api/questionnaire/");
+            questionnaire = await httpClient.GetFromJsonAsync<Questionnaire>($"/api/questionnaire/");
             Console.WriteLine("This ran");
 
 
