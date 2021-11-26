@@ -28,7 +28,7 @@ namespace XebecPortal.Server.DTOs
 
         public PermissionDTO Permission { get; set; }
 
-        public int CitizenId { get; set; }
+        public int CitizenshipId { get; set; }
 
         public CitizenshipDTO Citizenship { get; set; }
 
@@ -42,7 +42,7 @@ namespace XebecPortal.Server.DTOs
 
         public string University { get; set; }
 
-        public int PlatformId { get; set; }
+        public int JobPlatformId { get; set; }
 
         public JobPlatformDTO JobPlatform { get; set; }
 

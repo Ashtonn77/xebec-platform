@@ -11,6 +11,8 @@ namespace XebecPortal.Server.DTOs
         public int Id { get; set; }
         public int JobId { get; set; }
         public JobDTO Job { get; set; }
+
+        public DateTime beginApplication { get; set; }
        
         //foreign key
         public int AppUserId { get; set; }

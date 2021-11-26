@@ -11,7 +11,7 @@ namespace XebecPortal.Shared
     {
         public int Id { get; set; }
 
-        public double ExpectedSalary { get; set; }
+        public decimal ExpectedSalary { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -29,7 +29,7 @@ namespace XebecPortal.Shared
 
         public Permission Permission { get; set; }
 
-        public int CitizenId { get; set; }
+        public int CitizenshipId { get; set; }
 
         public Citizenship Citizenship { get; set; }
 
@@ -43,9 +43,9 @@ namespace XebecPortal.Shared
 
         public string University { get; set; }
 
-        public DateTime EndDate { get; set; }
+        //public DateTime EndDate { get; set; }
 
-        public int PlatformId { get; set; }
+        public int JobPlatformId { get; set; }
 
         public JobPlatform JobPlatform { get; set; }
 
