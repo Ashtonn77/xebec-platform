@@ -12,6 +12,8 @@ namespace XebecPortal.Shared
         public int Id { get; set; }
         public int JobId { get; set; }
         public Job Job { get; set; }
+
+        public DateTime beginApplication { get; set; }
        
         //foreign key
         public int AppUserId { get; set; }
