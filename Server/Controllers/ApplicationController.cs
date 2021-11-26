@@ -63,14 +63,12 @@ namespace Server.Controllers
         }
 
         // POST api/<ApplicationsController>
-        [HttpPost("{id}")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateApplication([FromBody] Job jobTest, int id)
+        public async Task<IActionResult> CreateApplication([FromBody] Application application)
         {
-            Application application = new Application();
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -78,11 +76,17 @@ namespace Server.Controllers
 
             try
             {
-                application.JobId = jobTest.Id;
-                application.AppUserId = id;
-                application.TimeApplied= DateTime.Now;
+               
                 await _unitOfWork.Applications.Insert(application);
-                //await _unitOfWork.Applications.Insert(Application);
+                await _unitOfWork.Save();
+                ApplicationPhaseHelper applicationPhaseHelper = new ApplicationPhaseHelper
+                {
+                    ApplicationId = application.Id,
+                    StatusId = 1,
+                    ApplicationPhaseId = 1,
+                    TimeMoved = application.TimeApplied
+                };
+                await _unitOfWork.ApplicationPhaseHelpers.Insert(applicationPhaseHelper);
                 await _unitOfWork.Save();
 
                 return CreatedAtAction("GetApplication", new { id = application.Id }, application);
