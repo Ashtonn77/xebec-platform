@@ -414,7 +414,14 @@ else
 
     private void ApplyJob()
     {
-        ToggleModalApply();
+        if(State.IsUserProfileComplete)
+        {
+            ToggleModalApply();
+        }
+        else
+        {
+            NavManager.NavigateTo("/incomplete");
+        }
     }
 
     bool ApplyModal = false;

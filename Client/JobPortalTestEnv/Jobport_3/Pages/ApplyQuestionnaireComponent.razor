@@ -409,15 +409,15 @@
 
     private Task OnPlatformChanged(ChangeEventArgs e)
     {
-        Ideal.PlatformId = int.Parse(e.Value.ToString());
-        return PlatfromChanged.InvokeAsync(Ideal.PlatformId);
+        Ideal.JobPlatformId = int.Parse(e.Value.ToString());
+        return PlatfromChanged.InvokeAsync(Ideal.JobPlatformId);
     }
 
     private Task OnCitizenChanged(ChangeEventArgs e)
     {
-        Ideal.CitizenId = int.Parse(e.Value.ToString());
+        Ideal.CitizenshipId = int.Parse(e.Value.ToString());
         nonCitizen = !nonCitizen;
-        return CitizenChanged.InvokeAsync(Ideal.CitizenId);
+        return CitizenChanged.InvokeAsync(Ideal.CitizenshipId);
     }
 
     private Task OnVisaChanged(ChangeEventArgs e)
